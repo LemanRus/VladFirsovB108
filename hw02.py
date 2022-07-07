@@ -54,6 +54,6 @@ max_digit = 0
 for i in number:
     if int(i) > max_digit:
         max_digit = int(i)
-print("Самая большая цифра в этом числе:", max)
+print("Самая большая цифра в этом числе:", max_digit)
 
 # print("Самая большая цифра в этом числе:", max(number))
