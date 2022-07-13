@@ -101,3 +101,41 @@ else:
 #
 # Вход: 11
 # Выход: 5 3
+
+
+
+
+interested_room = int(input("Введите номер комнаты от 1 до 2000000000\n"))
+
+i = 0
+x = 1
+squares = []
+rooms = []
+tower = {}
+
+interested_floor = "Не получается"
+interested_pos = "Не получается"
+
+while True:
+    break_flag = 1
+    current_square = x**2
+    squares.append(current_square)
+    if rooms:
+        current_room = rooms[-1]
+    else:
+        current_room = 0
+    tower[current_square] = []
+    for raise_num in range(current_square):
+        rooms.append(current_room + raise_num + 1)
+        tower[current_square].append(current_room + raise_num + 1)
+        if current_room + raise_num + 1 >= interested_room:
+            break_flag = 0
+            break
+    if not break_flag:
+        break
+    x += 1
+
+for floor, rooms in tower.items():
+    if interested_room in rooms:
+        print(squares.index(floor))
+#TODO: переделать логику по отдельным "этажам"
