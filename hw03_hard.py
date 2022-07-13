@@ -38,6 +38,39 @@ print(y)
 # date = '-2.10.3001'
 
 
+date = '01.12.1985'
+thirty_one = (1, 3, 5, 7, 8, 10, 12)
+
+if len(date) == 10:
+    dates = date.split(".")                            # Dates - финики с английского)
+    try:
+        if len(dates) == 3:
+            day = int(dates[0])
+            month = int(dates[1])
+            year = int(dates[2])
+            if year in range(0, 10000):
+                if month in range(0,13):
+                    if month in thirty_one:
+                        if day in range(1, 31):
+                            print("Дата корректна")
+                        else:
+                            print("Неверно задан день")
+                    else:
+                        if day in range(1, 30):
+                            print("Дата корректна")
+                        else:
+                            print("Неверно задан день")
+                else:
+                    print("Неверно задан месяц")
+            else:
+                print("Неверно задан год")
+        else:
+            print("Числа необходимо разделить точкой")
+    except ValueError:
+        print("Дату необходимо задать в числовом виде")
+else:
+    print("Некорректная дата")
+
 
 # Задание-3: "Перевёрнутая башня" (Задача олимпиадного уровня)
 #
