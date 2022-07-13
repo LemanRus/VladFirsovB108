@@ -6,6 +6,17 @@
 # вычислите и выведите y
 
 
+equation = "y = -12x + 11111140.2121"
+x = 2.5
+
+x_pos = equation.find("x")
+eq_pos = equation.find("=")
+
+a = float(equation[eq_pos+1:x_pos])             # Считаем, что уравнение записано как в задании
+b = float(equation[x_pos+3:len(equation)+1])    # С пробелами и в заданном порядке
+
+y = a * x + b
+print(y)
 
 
 # Задание-2: Дата задана в виде строки формата 'dd.mm.yyyy'.
