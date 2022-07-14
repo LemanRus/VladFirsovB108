@@ -105,37 +105,63 @@ else:
 
 
 
-interested_room = int(input("Введите номер комнаты от 1 до 2000000000\n"))
+interested_room = int(input("Введите номер комнаты от 1 до 2000000000\n"))  # При n > 10000000 компу плохо
 
-i = 0
-x = 1
-squares = []
-rooms = []
-tower = {}
+# Условие таково, что налицо квадратные числа, т.к. сначала 1, потом 2 по 2, т.е. 2 в квадрате, потом 3 по 3 и т. д.
+# Будем сначала строить башню до соответствующего квадратного числа, а потом находить этаж комнаты и её колонку
 
-interested_floor = "Не получается"
+x = 1                   # Заполнитель для цикла
+rooms = []              # Потом заполним комнатами "под" интересующей нас
+floors_in_square = {}   # Потом определим количество этажей внутри определённого квадратного числа
+tower = {}              # Заполним парами квадратное число - комнаты в нём
+
+interested_floor = "Не получается"  # Проверял вывод, пусть останется
 interested_pos = "Не получается"
+interested_square = "Не получается"
 
 while True:
-    break_flag = 1
-    current_square = x**2
-    squares.append(current_square)
+    break_flag = 0                  # Будем мощно выходить из цикла
+    current_square = x**2           # Квадратное число, в которое поместим его комнаты
     if rooms:
-        current_room = rooms[-1]
+        start_room = rooms[-1]
     else:
-        current_room = 0
-    tower[current_square] = []
+        start_room = 0            # Точка отсчёта для цикла
+    tower[current_square] = []      # Поместим квадратное число в словарик и обозначим для него комнаты
     for raise_num in range(current_square):
-        rooms.append(current_room + raise_num + 1)
-        tower[current_square].append(current_room + raise_num + 1)
-        if current_room + raise_num + 1 >= interested_room:
-            break_flag = 0
+        current_room = start_room + raise_num +1  # Добавляем по одной комнате, +1 потому, что человеки считают не с нуля
+        rooms.append(current_room)
+        tower[current_square].append(current_room)
+        if current_room >= interested_room:  # Не будем строить башню далее, чем необходимо
+            break_flag = 1
             break
-    if not break_flag:
+    if break_flag:
         break
     x += 1
 
-for floor, rooms in tower.items():
+for square, rooms in tower.items():  # Смотрим, в какой квадрат попала наша комната
     if interested_room in rooms:
-        print(squares.index(floor))
-#TODO: переделать логику по отдельным "этажам"
+        interested_square = square
+
+rooms_in_square = tower[interested_square]  # Будем работать только с комнатами внутри определённого выше квадрата
+
+floors_qty_in_square = int(interested_square**0.5)
+
+for row in range(floors_qty_in_square):  # Разместим комнаты внутри квадрата по этажам
+    floors_in_square[row] = []
+    for column in range(floors_qty_in_square):  # Числа квадратные, количество этажей и колонок равно
+        if rooms_in_square:
+            floors_in_square[row].append(rooms_in_square[0])
+            rooms_in_square.pop(0)
+
+for current_floor, room_in_floor in floors_in_square.items():
+    if interested_room in room_in_floor:
+        floor_in_square = current_floor + 1  # Считаем с 1, ключ в словарике - наш этаж в квадрате
+        floors_under_current_floor = sum([x for x in range(floors_qty_in_square)]) # Все этажи под нашим квадратом
+        interested_floor = floors_under_current_floor + floor_in_square # Суммируем все этажи
+        interested_column = floors_in_square[current_floor].index(interested_room) + 1  # Порядковый номер слева, как просили
+
+print("Вход:", interested_room)
+print("Выход:", interested_floor, interested_column)
+
+
+
