@@ -5,19 +5,29 @@
 
 fruits = ["banana", "apple", "pineapple", "melon", "watermelon"]
 
+max_fruit_value = 0
 for fruit in fruits:
-    print("{:>3}. {:>12}".format(fruits.index(fruit) + 1, fruit))
+    if len(fruit) > max_fruit_value:
+        max_fruit_value = len(fruit)
+
+fruit_output_template = ":>{}".format(max_fruit_value)
+fruit_output_template = "{:>3}. {" + fruit_output_template + "}"  # Красиво до 999 фруктов
+
+for fruit in fruits:
+    print(fruit_output_template.format(fruits.index(fruit) + 1, fruit))
+
 
 # Задача-2:
 # Даны два произвольные списка.
 # Удалите из первого списка элементы, присутствующие во втором списке.
 
-scientists = ["Alex", "Bob", "Mike", "John", "Tom", "Jim"]
+scientists = ["Alex", "Bob", "Mike", "John", "Tom", "Jim", "Amber", "Jim", "Jim", "Jim"]
 chemists = ["Amber", "Mike", "Rob", "Jim"]
 
-for name in scientists:
-    if name in chemists:
-        scientists.remove(name)
+for name in chemists:
+    if name in scientists:
+        while scientists.count(name) != 0:
+            scientists.remove(name)
 
 print(scientists)
 
