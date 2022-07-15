@@ -22,7 +22,16 @@ convert(-6) #  На случай какой-нибудь разницы или �
 
 
 def my_round(number, ndigits):
-    pass
+    str_number = str(number)
+    num_parts = str_number.split(".")
+    if num_parts[1][ndigits:ndigits+1] in range(5):
+        frac_part = num_parts[1][:ndigits]
+    else:
+        frac_part = str(int(num_parts[1][:ndigits]) + 1)
+    if len(frac_part) == ndigits:
+        return num_parts[0] + "." + frac_part
+    else:
+        return str(int(num_parts[0]) + 1) + "." + "0"*ndigits
 
 print(my_round(2.1234567, 4))
 print(my_round(2.1999947, 3))
