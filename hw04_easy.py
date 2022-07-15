@@ -46,9 +46,23 @@ print(my_round(2.9999967, 2))
 # ибо False (если счастливый и несчастливый соответственно)
 
 def lucky_ticket(ticket_number):
-    pass
+    str_ticket_number = str(ticket_number)
+    first_part = str_ticket_number[:len(str_ticket_number) // 2]
+    if len(str_ticket_number) % 2 == 0:
+        last_part = str_ticket_number[len(str_ticket_number) // 2:]
+    else:
+        last_part = str_ticket_number[len(str_ticket_number) // 2 + 1:]
+    first_nums = []
+    last_nums = []
+    for i in first_part:
+        first_nums.append(int(i))
+    for k in last_part:
+        last_nums.append(int(k))
+    return sum(first_nums) == sum(last_nums)
 
 
 print(lucky_ticket(123006))
 print(lucky_ticket(12321))
+print(lucky_ticket(436651))
 print(lucky_ticket(436751))
+print(lucky_ticket(43759))
