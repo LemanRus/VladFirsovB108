@@ -1,6 +1,8 @@
 # Задание-1:
 # Напишите функцию, возвращающую ряд Фибоначчи с n-элемента до m-элемента.
 # Первыми элементами ряда считать цифры 1 1
+from functools import reduce
+
 
 def fibonacci(n, m):
     fib_row = ["1", "1"]
@@ -60,7 +62,7 @@ def my_filter(func, list_to_filter):  # Обойдёмся без генерат
 
 seq = (1, 2, 3, 4, 5, 6, 7, 8, 9)
 filtered = my_filter(is_even, seq)
-filtered2 = my_filter(lambda x: x in (3, 4, 5), seq)
+filtered2 = my_filter(lambda x: x in (3, 4, 5), seq)  # Вроде всё работает) Может, есть какой непредусмотренный случай
 filtered3 = my_filter(lambda x: str(x).isdigit(), seq)
 print(filtered, filtered2, filtered3, sep="\n")
 
@@ -68,3 +70,41 @@ print(filtered, filtered2, filtered3, sep="\n")
 # Задача-4:
 # Даны четыре точки А1(х1, у1), А2(x2 ,у2), А3(x3 , у3), А4(х4, у4).
 # Определить, будут ли они вершинами параллелограмма.
+
+
+def is_parallelogram(a1, a2, a3, a4):  # Принимаем кортежи с 2 координатами
+    point1 = complex(a1[0], a1[1])  # Складывает-вычитает пусть сам, и модуль тоже находит
+    point2 = complex(a2[0], a2[1])  # Т.к. на комплексной плоскости числа - те же самые точки и вектора
+    point3 = complex(a3[0], a3[1])
+    point4 = complex(a4[0], a4[1])
+
+    prob_vec_1_2 = point1 - point2  # Точки в любом случае липо по кругу, либа слева направо (справа налево) по очереди
+    prob_vec_3_4 = point3 - point4  # И направление вектора неважно
+    prob_vec_1_3 = point1 - point3
+    prob_vec_2_4 = point2 - point4
+
+    prob_vec_2_3 = point2 - point3  # Для случая расположения точек по кругу
+    prob_vec_1_4 = point1 - point4
+
+    vecs = [prob_vec_1_4, prob_vec_2_3, prob_vec_2_4, prob_vec_1_2, prob_vec_1_3, prob_vec_3_4]
+
+    """Даже если мы не угадали, как расположены на плоскости точки, мы либо докажем, что 4 противоположные стороны 
+    попарно равны, что доказывает, что дан параллелограмм, либо 2 противоположные стороны равны и равны диагонали, 
+    что даёт квадрат, который тоже параллелограмм"""
+    # if 0 in list(map(abs, vecs)):  # Защита от вырожденных случаев
+    #     return False
+    # elif:
+    if abs(prob_vec_1_2) == abs(prob_vec_3_4) and abs(prob_vec_2_4) == abs(prob_vec_1_3):
+        return True
+    elif abs(prob_vec_1_2) == abs(prob_vec_3_4) and abs(prob_vec_2_3) == abs(prob_vec_1_4):
+        return True
+    else:
+        return False
+
+
+print(is_parallelogram((0, 0), (5, 3), (5, 0), (0, 3)))
+print(is_parallelogram((0, 0), (5, 3), (5, 0), (0, -3)))
+print(is_parallelogram((0, 0), (5, 3), (-5, 0), (0, -3)))
+print(is_parallelogram((0, 0), (5, 3), (5, 0), (0, 2)))
+print(is_parallelogram((0, 0), (0, 0), (0, 0), (0, 0)))  # Вырожденный параллелограмм со сторонами бесконечно малой длины)
+print(is_parallelogram((1, 1), (1, 1), (2, 2), (2, 2)))  # Условие задачи не уточняет, куда это относить
