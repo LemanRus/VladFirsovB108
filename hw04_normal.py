@@ -44,6 +44,27 @@ print(origin_list)
 # Разумеется, внутри нельзя использовать саму функцию filter.
 
 
+def is_even(num):  # Для проверки
+    if num % 2 == 0:
+        return True
+    else:
+        return False
+
+def my_filter(func, list_to_filter):  # Обойдёмся без генераторов и вернём список
+    my_list = []
+    for item in list_to_filter:
+        if func(item):
+            my_list.append(item)
+    return my_list
+
+
+seq = (1, 2, 3, 4, 5, 6, 7, 8, 9)
+filtered = my_filter(is_even, seq)
+filtered2 = my_filter(lambda x: x in (3, 4, 5), seq)
+filtered3 = my_filter(lambda x: str(x).isdigit(), seq)
+print(filtered, filtered2, filtered3, sep="\n")
+
+
 # Задача-4:
 # Даны четыре точки А1(х1, у1), А2(x2 ,у2), А3(x3 , у3), А4(х4, у4).
 # Определить, будут ли они вершинами параллелограмма.
