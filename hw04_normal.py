@@ -25,10 +25,19 @@ print(fibonacci(10, 20))
 # Для решения данной задачи нельзя использовать встроенную функцию и метод sort()
 
 
-def sort_to_max(origin_list):
-    pass
+def sort_to_max(origin_list):  # Суперклассика) Пузырёк не интересно, на быструю сортировку меня не хватит, пусть будет сортировка выбором)
+    for pos in range(len(origin_list)):
+        min_num_pos = pos
+        for rest_pos in range(pos + 1, len(origin_list)):
+            if origin_list[rest_pos] < origin_list[min_num_pos]:
+                min_num_pos = rest_pos
+        origin_list[pos], origin_list[min_num_pos] = origin_list[min_num_pos], origin_list[pos]
 
-sort_to_max([2, 10, -12, 2.5, 20, -11, 4, 4, 0])
+
+origin_list = [2, 10, -12, 2.5, 20, -11, 4, 4, 0]
+sort_to_max(origin_list)
+print(origin_list)
+
 
 # Задача-3:
 # Напишите собственную реализацию стандартной функции filter.
