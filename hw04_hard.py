@@ -130,3 +130,17 @@ with open(path_salary, "w", encoding="UTF-8") as salary_file:
 # Подсказка:
 # Чтобы получить список больших букв русского алфавита:
 # print(list(map(chr, range(ord('А'), ord('Я')+1))))
+
+
+path_fruits = os.path.join("data", "fruits.txt")
+
+for char in map(chr, range(ord("А"), ord("Я") + 1)):
+    with open(path_fruits, "r", encoding="UTF-8") as fruits:
+        print(char)
+        cur_path = os.path.join("data",  "fruits_output", "fruits_{}.txt".format(char))   # Чтобы не засорять, создал папку вручную
+        with open(cur_path, "w", encoding="UTF-8") as fruit_output:
+            for line in fruits:
+                print(line)
+                if line.capitalize()[0] == char:
+                    print("!!!!!")
+                    print(line, file=fruit_output)
