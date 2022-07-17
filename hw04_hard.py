@@ -4,12 +4,11 @@
 # n x/y ,где n - целая часть, x - числитель, у - знаменатель.
 # Дроби могут быть отрицательные и не иметь целой части, или иметь только целую часть.
 # Примеры:
-# Ввод: -4 5/6 + -5 4/7 (всё выражение вводится целиком в виде строки)
+# Ввод: 5/6 + 4/7 (всё выражение вводится целиком в виде строки)
 # Вывод: 1 17/42  (результат обязательно упростить и выделить целую часть)
 # Ввод: -2/3 - -2
 # Вывод: 1 1/3
-
-
+import os.path
 import re
 
 expression = input("Введите выражние: ")
@@ -21,8 +20,8 @@ frac1, frac2 = fracs
 
 
 def dissolve_frac(frac):  # Для избегания повторения кода
-    frac_int = 0 if not frac.split(" ")[0] else int(frac.split(" ")[0])
-    frac_frac = frac.split(" ")[1]
+    frac_int = 0 if len(frac) < 4 else int(frac.split(" ")[0])
+    frac_frac = frac if len(frac) < 4 else frac.split(" ")[1]
     frac_frac_enumerator = int(frac_frac.split("/")[0])
     frac_frac_denominator = int(frac_frac.split("/")[1])
     frac_enumerator = frac_int * frac_frac_denominator + frac_frac_enumerator if frac_int >= 0 else \
@@ -68,6 +67,8 @@ else:
 # то их ЗП уменьшается пропорционально, а за заждый час переработки
 # они получают удвоенную ЗП, пропорциональную норме.
 # Кол-во часов, которые были отработаны, указаны в файле "data/hours_of"
+
+path_workers = os.path.join("data", "workers")
 
 
 # Задание-3:
