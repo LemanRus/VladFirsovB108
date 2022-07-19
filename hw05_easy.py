@@ -11,7 +11,7 @@ import random
 
 
 random_list = [random.randint(0, 100) for _ in range(0, 20)]
-new_list = [x**2 for x in random_qlist]
+new_list = [x**2 for x in random_list]
 
 print("Исходный список:", random_list)
 print("Элементы в квадрате:", new_list)
@@ -19,6 +19,14 @@ print("Элементы в квадрате:", new_list)
 # Задание-2:
 # Даны два списка фруктов.
 # Получить список фруктов, присутствующих в обоих исходных списках.
+
+
+fruit_list1 = ["Banana", "Apple", "Grapefruit", "Grapes", "Orange", "Strawberry"]
+fruit_list2 = ["Apple", "Grapes", "Melon", "Watermelon", "Banana"]
+
+fruits = [fruit for fruit in fruit_list1 if fruit in fruit_list2]
+
+print(fruits)
 
 
 # Задание-3:
