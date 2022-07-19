@@ -35,3 +35,10 @@ print(fruits)
 # + Элемент кратен 3
 # + Элемент положительный
 # + Элемент не кратен 4
+
+
+random_list_for_task_3 = [random.randint(-100, 100) for _ in range(0, 20)]
+new_list_for_task_3 = [x for x in random_list if x % 3 == 0 and x >= 0 and x % 4 != 0]
+
+print("Исходный список:", random_list_for_task_3)
+print("Новый список:", new_list_for_task_3)
