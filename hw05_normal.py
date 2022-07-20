@@ -23,6 +23,35 @@ line = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysmNO' \
        'XiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQoiQ' \
        'zTYwZAiRwycdlHfyHNGmkNqSwXUrxGc'
 
+"""Без re:"""
+
+temp_lower_seqs = []
+temp_upper_seqs = []
+temp_list_upper = []
+temp_list_lower = []
+
+for i in line:
+    if i.isupper():
+        temp_list_upper.append(i)
+        temp_lower_seqs.append("".join(temp_list_lower))
+        temp_list_lower = []
+
+    else:
+        temp_list_lower.append(i)
+        temp_upper_seqs.append("".join(temp_list_upper))
+        temp_list_upper = []
+
+temp_lower_seqs.append("".join(temp_list_lower))
+temp_upper_seqs.append("".join(temp_list_upper))
+
+lowers = [x for x in temp_lower_seqs if x]  # Уберём пустые элементы - не стал исключать их в цикле for выше
+print(lowers)
+
+"""# С re:"""
+
+lowers = re.findall("(?<=[A-Z])*[a-z]+(?=[A-Z]+)*", line)
+print(lowers)
+
 
 # Задание-2:
 # Вывести символы в верхнем регистре, слева от которых находятся
