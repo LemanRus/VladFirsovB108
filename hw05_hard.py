@@ -14,6 +14,13 @@ matrix = [[1, 0, 8],
 # Суть сложности hard: Решите задачу в одну строку
 
 
+transponded_matrix = list(zip(*matrix))
+print(transponded_matrix)
+
+transponded_matrix_listed = [list(x) for x in transponded_matrix]  # Если принципиально важно в виде списка
+print(transponded_matrix_listed)
+
+
 # Задание-2:
 # Найдите наибольшее произведение пяти последовательных цифр в 1000-значном числе.
 # Выведите произведение и индекс смещения первого числа последовательных 5-ти цифр.
