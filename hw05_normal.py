@@ -47,11 +47,10 @@ temp_upper_seqs.append("".join(temp_list_upper))
 lowers = [x for x in temp_lower_seqs if x]  # Уберём пустые элементы - не стал исключать их в цикле for выше
 print(lowers)
 
-"""# С re:"""
+"""С re:"""
 
-lowers = re.findall("(?<=[A-Z])*[a-z]+(?=[A-Z]+)*", line)
-print(lowers)
-
+lowers_2 = re.findall("(?<=[A-Z])*[a-z]+(?=[A-Z]+)*", line)
+print(lowers_2)
 
 # Задание-2:
 # Вывести символы в верхнем регистре, слева от которых находятся
@@ -76,6 +75,38 @@ line_2 = 'mtMmEZUOmcqWiryMQhhTxqKdSTKCYEJlEZCsGAMkgAYEOmHBSQsSUHKvSfbmxULaysm' \
          'uXBqHFjvihuNGEEFsfnMXTfptvIOlhKhyYwxLnqOsBdGvnuyEZIheApQGOXWeXoLWiDQN' \
          'JFaXiUWgsKQrDOeZoNlZNRvHnLgCmysUeKnVJXPFIzvdDyleXylnKBfLCjLHntltignbQ' \
          'oiQzTYwZAiRwycdlHfyHNGmkNqSwXUrxGC'
+
+"""Без re:"""
+
+temp_lowers = []
+temp_uppers = []
+uppers = []
+flush = False
+
+for i in line_2:  # Вытащим последовательности всех заглавных букв, от которых слева 2 маленькие
+    if i.islower():
+        if flush:
+            temp_lowers = [i]
+            uppers.append("".join(temp_uppers))  # Даже если пусто, нам не мешает
+            temp_uppers = []
+            flush = False
+        else:
+            temp_lowers.append(i)
+            flush = False
+    else:
+        if len(temp_lowers) >= 2:
+            temp_uppers.append(i)
+            flush = True
+        else:
+            flush = True
+
+uppers_done = [x[:-2] for x in uppers if len(x) >= 3]  # Т.к. тут уже все заглавные с первым условием задачи, применим второе
+print(uppers_done)
+
+"""С re:"""
+
+uppers_done_2 = re.findall("(?<=[a-z]{2})[A-Z]+(?=[A-Z]{2})", line_2)
+print(uppers_done_2)
 
 # Задание-3:
 # Напишите скрипт, заполняющий указанный файл (самостоятельно задайте имя файла)
