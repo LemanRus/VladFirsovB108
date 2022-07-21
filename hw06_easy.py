@@ -37,6 +37,27 @@ else:
 # И второй скрипт, удаляющий эти папки.
 
 
+def make_dirs():
+    for i in range(1, 10):
+        dir_path = os.path.join(os.getcwd(), f"dir_{i}")
+        try:
+            os.mkdir(dir_path)
+        except FileExistsError:
+            print(f"Директория dir_{i} существует!")
+
+
+def del_dirs():
+    for i in range(1, 10):
+        dir_path = os.path.join(os.getcwd(), f"dir_{i}")
+        try:
+            os.rmdir(dir_path)
+        except FileNotFoundError:
+            print(f"Директории dir_{i} не существует!")
+
+make_dirs()
+del_dirs()
+
+
 # Задача-3:
 # Напишите скрипт, отображающий папки текущей директории.
 
