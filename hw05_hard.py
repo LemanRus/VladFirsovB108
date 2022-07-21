@@ -1,3 +1,5 @@
+import math
+
 # Задание-1:
 # Матрицы в питоне реализуются в виде вложенных списков:
 # Пример. Дано:
@@ -17,7 +19,7 @@ matrix = [[1, 0, 8],
 transponded_matrix = list(zip(*matrix))
 print(transponded_matrix)
 
-transponded_matrix_listed = [list(x) for x in transponded_matrix]  # Если принципиально важно в виде списка
+transponded_matrix_listed = [list(x) for x in list(zip(*matrix))]  # Если принципиально важно в виде списка
 print(transponded_matrix_listed)
 
 
@@ -47,6 +49,17 @@ number = """
 05886116467109405077541002256983155200055935729725
 71636269561882670428252483600823257530420752963450"""
 
+number_clean = "".join(number.split("\n"))
+seqs = []
+
+for i in range(len(number_clean)-5):
+    seqs.append(int(number_clean[i+1:i+6]))
+
+seqs_with_pos = list(enumerate(seqs, 0))
+
+seqs_len_5 = [x for x in seqs_with_pos if len(str(x[1])) == 5]
+
+print(max(seqs_len_5, key=lambda i: math.prod([int(x) for x in str(i[1])])))
 
 # Задание-3 (Ферзи):
 # Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били
