@@ -22,7 +22,6 @@ print(transponded_matrix)
 transponded_matrix_listed = [list(x) for x in list(zip(*matrix))]  # Если принципиально важно в виде списка
 print(transponded_matrix_listed)
 
-
 # Задание-2:
 # Найдите наибольшее произведение пяти последовательных цифр в 1000-значном числе.
 # Выведите произведение и индекс смещения первого числа последовательных 5-ти цифр.
@@ -52,14 +51,15 @@ number = """
 number_clean = "".join(number.split("\n"))
 seqs = []
 
-for i in range(len(number_clean)-5):
-    seqs.append(int(number_clean[i+1:i+6]))
+for i in range(len(number_clean) - 5):
+    seqs.append(int(number_clean[i + 1:i + 6]))
 
 seqs_with_pos = list(enumerate(seqs, 0))
 
 seqs_len_5 = [x for x in seqs_with_pos if len(str(x[1])) == 5]
 
 print(max(seqs_len_5, key=lambda i: math.prod([int(x) for x in str(i[1])])))
+
 
 # Задание-3 (Ферзи):
 # Известно, что на доске 8×8 можно расставить 8 ферзей так, чтобы они не били
@@ -73,20 +73,31 @@ print(max(seqs_len_5, key=lambda i: math.prod([int(x) for x in str(i[1])])))
 def check_queens(*coordinates):
     if len(coordinates) != 8:
         return "Должно быть 8 ферзей!"
-    print(coordinates)
     cols = []
     rows = []
-    for queen in coordinates:
+    diags = []
+    for queen in coordinates:  # Проверяем бой "ладьёй" - если в одном ряду больше двух ферзей, то сразу всё ясно)
         if queen[0] in rows:
             return "YES"
-        if queen[1] in cols:
+        if queen[1] in cols:  # И для столбца так же
             return "YES"
-        cols.append(queen[0])
-        rows.append(queen[1])
-
-    return "end"
+        rows.append(queen[0])  # Запоминаем все занятые ряды и столбцы
+        cols.append(queen[1])
+        diags_right = {(queen[0] + x, queen[1] + x) for x in range(-8, 8)
+                       if 0 < queen[0] + x <= 8 and 0 < queen[1] + x <= 8 and x!= 0}  # Бой по диагонали "вверх-направо"
+        diags_left = {(queen[0] + x, queen[1] - x) for x in range(-8, 8)
+                      if 0 < queen[0] + x <= 8 and 0 < queen[1] - x <= 8 and x != 0}  # Бой по диагонали "вверх-налево"
+        for i in diags_right:  # Засунем все занятые диагонали в один список - на шагах выше не получилось...)
+            diags.append(i)
+        for i in diags_left:
+            diags.append(i)
+        if tuple(queen) in diags:
+            return "YES"
+    return "NO"
 
 
 print(check_queens((1, 9)))
-print(check_queens((1, 6), (1, 5), (1, 4), (4, 5), (6, 7), (7, 8), (8, 8), (4, 4)))
-print(check_queens([1, 2], [8, 5], [4, 1], [2, 1], [4, 3], [7, 1], [8, 2], [1, 1]))
+print(check_queens((1, 6), (1, 5), (1, 4), (4, 5), (6, 7), (7, 8), (8, 8), (4, 4)))  # Пары кортежами принимает
+print(check_queens([1, 2], [8, 5], [4, 1], [2, 1], [4, 3], [7, 1], [8, 2], [1, 1]))  # Пары списками тоже
+print(check_queens((1, 3), (2, 5), (3, 2), (4, 8), (5, 1), (6, 7), (7, 4), (8, 6)))
+print(check_queens((1, 3), (2, 6), (3, 2), (4, 8), (5, 1), (6, 7), (7, 4), (8, 5)))
