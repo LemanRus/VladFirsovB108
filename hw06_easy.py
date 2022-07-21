@@ -1,10 +1,11 @@
-import sys, os
+import os, shutil
 
 # Задача-1:
 # Следующая программа написана верно, однако содержит места потенциальных ошибок.
 # используя конструкцию try добавьте в код обработку соответствующих исключений.
 # Пример.
 # Исходная программа:
+import sys
 
 
 def avg(a, b):
@@ -73,3 +74,12 @@ ls_dir()
 
 # Задача-4:
 # Напишите скрипт, создающий копию файла, из которого запущен данный скрипт.
+
+
+def mk_main_copy():
+    src_path = os.path.join(os.getcwd(), os.path.split(__file__)[1])
+    des_path = os.path.join(os.getcwd(), "copy_" + os.path.split(__file__)[1])
+    shutil.copy(src_path, des_path)
+
+
+mk_main_copy()
