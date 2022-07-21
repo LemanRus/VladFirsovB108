@@ -68,3 +68,25 @@ print(max(seqs_len_5, key=lambda i: math.prod([int(x) for x in str(i[1])])))
 # Программа получает на вход восемь пар чисел,
 # каждое число от 1 до 8 — координаты 8 ферзей.
 # Если ферзи не бьют друг друга, выведите слово NO, иначе выведите YES.
+
+
+def check_queens(*coordinates):
+    if len(coordinates) != 8:
+        return "Должно быть 8 ферзей!"
+    print(coordinates)
+    cols = []
+    rows = []
+    for queen in coordinates:
+        if queen[0] in rows:
+            return "YES"
+        if queen[1] in cols:
+            return "YES"
+        cols.append(queen[0])
+        rows.append(queen[1])
+
+    return "end"
+
+
+print(check_queens((1, 9)))
+print(check_queens((1, 6), (1, 5), (1, 4), (4, 5), (6, 7), (7, 8), (8, 8), (4, 4)))
+print(check_queens([1, 2], [8, 5], [4, 1], [2, 1], [4, 3], [7, 1], [8, 2], [1, 1]))
