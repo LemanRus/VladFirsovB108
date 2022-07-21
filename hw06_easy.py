@@ -19,14 +19,16 @@ def avg(a, b):
     """
     return (a * b) ** 0.5  # Из отрицательных чисел корни тоже бывают, комплексные числа тоже числа))
 
-try:
-    a = float(input("a = "))
-    b = float(input("b = "))
-except ValueError:  # Ограничено вводом, больше не предвижу ошибок...
-    print("Вводите числа!")
-else:
-    c = avg(a, b)
-    print("Среднее геометрическое = {:.2f}".format(c))
+
+if __name__ == '__main__':
+    try:
+        a = float(input("a = "))
+        b = float(input("b = "))
+    except ValueError:  # Ограничено вводом, больше не предвижу ошибок...
+        print("Вводите числа!")
+    else:
+        c = avg(a, b)
+        print("Среднее геометрическое = {:.2f}".format(c))
 
 # ПРИМЕЧАНИЕ: Для решения задач 2-4 необходимо познакомиться с модулями os, sys!
 # СМ.: https://pythonworld.ru/moduli/modul-os.html, https://pythonworld.ru/moduli/modul-sys.html
@@ -55,8 +57,10 @@ def del_dirs():
         except FileNotFoundError:
             print(f"Директории dir_{i} не существует!")
 
-make_dirs()
-del_dirs()
+
+if __name__ == '__main__':
+    make_dirs()
+    del_dirs()
 
 
 # Задача-3:
@@ -69,7 +73,8 @@ def ls_dir():
             print(item)
 
 
-ls_dir()
+if __name__ == '__main__':
+    ls_dir()
 
 
 # Задача-4:
@@ -82,4 +87,6 @@ def mk_main_copy():
     shutil.copy(src_path, des_path)
 
 
-mk_main_copy()
+if __name__ == '__main__':
+    mk_main_copy()
+
