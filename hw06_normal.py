@@ -4,6 +4,8 @@
 # используя конструкцию try добавьте в код обработку соответствующих исключений.
 # Пример.
 # Исходная программа:
+import os
+import sys
 
 
 def avg(a, b):
@@ -52,7 +54,9 @@ from hw06_easy import ls_dir
 
 
 def change_dir():
-    pass
+    dir_to_go = input("Введите имя папки: ")
+    if dir_to_go in os.listdir(os.getcwd()):
+        pass
 
 
 def del_dir():
@@ -63,10 +67,25 @@ def make_dir():
     pass
 
 
+action = {
+    "1": change_dir,
+    "2": ls_dir,
+    "3": del_dir,
+    "4": make_dir,
+}
 while True:
-    print("Выберите действие:"
-          "1. Перейти в папку"
-          "2. Просмотреть содержимое текущей папки"
-          "3. Удалить папку"
-          "4. Создать папку")
+    print("Выберите действие:\n"
+          "1. Перейти в папку\n"
+          "2. Просмотреть содержимое текущей папки\n"
+          "3. Удалить папку\n"
+          "4. Создать папку\n"
+          "Для выхода введите 'exit'")
+
     user_choise = input()
+    if user_choise == "exit":
+        sys.exit()
+    if action.get(user_choise):
+        action[user_choise]()
+        print("-" * 25 + "Выполнено" + "-" * 25 + "\n")
+    else:
+        print("\nВыбран несуществующий пункт меню\n")
