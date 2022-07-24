@@ -56,15 +56,30 @@ from hw06_easy import ls_dir
 def change_dir():
     dir_to_go = input("Введите имя папки: ")
     if dir_to_go in os.listdir(os.getcwd()):
-        pass
+        os.chdir(dir_to_go)
+        print("Текущая папка:", os.getcwd())
+    else:
+        print("Такой папки нет в текущем рабочем каталоге")
 
 
 def del_dir():
-    pass
+    dir_to_del = input("Введите имя папки: ")
+    try:
+        os.rmdir(os.path.join(os.getcwd(), dir_to_del))
+    except FileNotFoundError:
+        print("Такой папки нет в текущем рабочем каталоге")
+    else:
+        print(f"Папка {dir_to_del} удалена")
 
 
 def make_dir():
-    pass
+    dir_to_make = input("Введите имя папки: ")
+    try:
+        os.mkdir(os.path.join(os.getcwd(), dir_to_make))
+    except FileExistsError:
+        print(f"Директория {dir_to_make} существует!")
+    else:
+        print(f"Папка {dir_to_make} создана")
 
 
 action = {
@@ -86,6 +101,6 @@ while True:
         sys.exit()
     if action.get(user_choise):
         action[user_choise]()
-        print("-" * 25 + "Выполнено" + "-" * 25 + "\n")
+        print("-" * 30 + "Выполнено" + "-" * 30 + "\n")
     else:
         print("\nВыбран несуществующий пункт меню\n")

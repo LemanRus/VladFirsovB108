@@ -68,8 +68,12 @@ if __name__ == '__main__':
 
 
 def ls_dir():
-    for item in os.listdir(os.getcwd()):
-        if os.path.isdir(item):
+    if __name__ == '__main__':
+        for item in os.listdir(os.getcwd()):
+            if os.path.isdir(item):
+                print(item)
+    else:
+        for item in os.listdir(os.getcwd()):
             print(item)
 
 
