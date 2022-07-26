@@ -4,7 +4,7 @@
 
 class Triangle:
     def __init__(self, point1, point2, point3):
-        self.point1 = complex(*point1)
+        self.point1 = complex(*point1)  # Комплексные числа по определению есть координаты на плоскости, просто удобно
         self.point2 = complex(*point2)
         self.point3 = complex(*point3)
 
@@ -47,3 +47,41 @@ print(triangle.calculate_height((9, 15)))
 # Предусмотреть в классе методы:
 # проверка, является ли фигура равнобочной трапецией;
 # вычисления: длины сторон, периметр, площадь
+
+
+class Trapeze:
+    def __init__(self, point1, point2, point3, point4):  # Нужно ли для уровня easy проверять, что дана точно трапеция?
+        self.point1 = complex(*point1)
+        self.point2 = complex(*point2)
+        self.point3 = complex(*point3)
+        self.point4 = complex(*point4)
+
+    def calculate_sides(self):
+        a = abs(self.point1 - self.point2)
+        b = abs(self.point2 - self.point3)
+        c = abs(self.point3 - self.point4)
+        d = abs(self.point4 - self.point1)
+        return a, b, c, d
+
+    def calculate_perimeter(self):
+        perimeter = sum(self.calculate_sides())
+        return perimeter
+
+    def calculate_area(self):  # Результат float не совсем точный, можно прописывать читаемый формат вывода
+        a, b, c, d = self.calculate_sides()
+        area = (a + b) / 2 * (c**2 - (((a - b)**2 + c**2 - d**2) / (2 * (a - b)))**2)**0.5
+        return area
+
+    def is_eq_sides(self):  # Снова для easy - нужно ли искать непараллельные стороны? Или нумерация по часовой подойдёт?
+        a, b, c, d = self.calculate_sides()
+        if round(b, 3) == round(d, 3):
+            return True
+        else:
+            return False
+
+
+trapeze = Trapeze((5, 5), (6, 6), (9, 15), (14, 10))
+print(trapeze.calculate_sides())
+print(trapeze.calculate_perimeter())
+print(trapeze.calculate_area())
+print(trapeze.is_eq_sides())
