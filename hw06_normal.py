@@ -82,7 +82,7 @@ def make_dir():
         print(f"Папка {dir_to_make} создана")
 
 
-action = {
+actions = {
     "1": change_dir,
     "2": ls_dir,
     "3": del_dir,
@@ -99,8 +99,9 @@ while True:
     user_choise = input()
     if user_choise == "exit":
         sys.exit()
-    if action.get(user_choise):
-        action[user_choise]()
+    choised_action = actions.get(user_choise)
+    if choised_action is not None:
+        choised_action()
         print("-" * 30 + "Выполнено" + "-" * 30 + "\n")
     else:
         print("\nВыбран несуществующий пункт меню\n")
