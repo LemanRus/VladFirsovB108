@@ -53,6 +53,7 @@ class ClassRoom:
 
     def accept_student(self, particular_student):
         self.students.append(particular_student)
+        particular_student.class_room = self.name
 
     def list_students(self):
         print(f"Ученики класса {self.name}:")
@@ -76,15 +77,18 @@ class Person:
 
 
 class Student(Person):
-    def __init__(self, name, patronymic, surname, class_room, *parents):  # На случай неполных или шведских семей)))
+    def __init__(self, name, patronymic, surname, *parents):  # На случай неполных или шведских семей)))
         super().__init__(name, patronymic, surname)
-        self.class_room = class_room
         self.parents = parents
+        self.class_room = ""
 
     def list_parents(self):
         print("Родители ученика по имени {}.{}. {}:".format(self.name[0], self.patronymic[0], self.surname))
         for parent in self.parents:
             print(parent.name, parent.patronymic, parent.surname)
+
+    def show_my_class_room(self):
+        print(self.class_room)
 
 
 class Parent(Person):  # Проверки по полу делать не будем, считаем, што это школа в толерантном обществе)))
@@ -104,25 +108,59 @@ parent2 = Parent("Марина", "Петровна", "Сидорова")
 parent3 = Parent("Дмитрий", "Григорьевич", "Морозов")
 parent4 = Parent("Анастасия", "Владимировна", "Морозова")
 
+student1 = Student("Сергей", "Иванович", "Сидоров", parent1, parent2)  # Сибсы
+student2 = Student("Екатерина", "Ивановна", "Сидорова", parent1, parent2)
+student3 = Student("Дмитрий", "Дмитриевич", "Морозов", parent3, parent4)
+student4 = Student("Пётр", "Дмитриевич", "Морозов", parent3, parent4)
+student5 = Student("Елизавета", "Дмитриевна", "Морозова", parent3, parent4)
+
 outside_student = Student("Андрей", "Васильевич", "Петров", None)  # Левый чел для проверки
 
 teacher1 = Teacher("Иван", "Аркадьевич", "Арсеньев", "Математика")
 teacher2 = Teacher("Мария", "Ивановна", "Васильева", "Русский язык")
-teacher3 = Teacher("Людмила", "Степановна", "Аганина", "Химия")
+teacher3 = Teacher("Людмила", "Степановна", "Аганина", "Химия")  # Теперь там есть жизнь, прям как Трон)))
 
-school.hire_teacher(teacher1)
-class_1B = ClassRoom("1B", "Математика", "Обществознание")
-school.assign_class_room(class_1B)
+school.hire_teacher(teacher1)  # Нанимаем учителей
+school.hire_teacher(teacher2)
+school.hire_teacher(teacher3)
 
+class_7B = ClassRoom("7Б", "Математика", "Химия")  # Назначим расписание
+class_9A = ClassRoom("9А", "Математика", "Русский язык")
+class_11A = ClassRoom("11А", "Математика", "Русский язык", "Химия")
 
+school.assign_class_room(class_7B)  # Классы (которые школьные) организованы в школе
+school.assign_class_room(class_9A)
+school.assign_class_room(class_11A)
 
-student1 = Student("Сергей", "Иванович", "Сидоров", "1B", parent1, parent2)
-student1.list_parents()
+# Для проверки предлагаю раскомментировать любой код ниже
 
-class_1B.accept_student(student1)
+# class_7B.accept_student(student1)
+# class_7B.accept_student(student4)
+# class_9A.accept_student(student2)
+# class_9A.accept_student(student3)
+# class_11A.accept_student(student5)
+#
+# school.list_classes()
+#
+# school.list_teachers(class_7B)
+# school.list_teachers(class_9A)
+# school.list_teachers(class_11A)
+#
+# class_7B.list_students()
+# class_9A.list_students()
+# class_11A.list_students()
+#
+# class_7B.student_objects(student1)
+# class_7B.student_objects(student2)
+# class_9A.student_objects(student3)
+# class_9A.student_objects(student4)
+# class_9A.student_objects(outside_student)
+# class_11A.student_objects(student5)
+# class_11A.student_objects(student1)
+#
+# student1.list_parents()
+# student2.list_parents()
+# student3.list_parents()
+# student4.list_parents()
+# student5.list_parents()
 
-school.list_teachers(class_1B)
-school.list_classes()
-
-class_1B.list_students()
-class_1B.student_objects(student1)
