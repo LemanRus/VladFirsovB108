@@ -64,8 +64,11 @@ def make_dir(path):
 
 
 def list_dir(path):
-    for item in os.listdir(os.path.join(path)):
-        print(item)
+    try:
+        for item in os.listdir(os.path.join(path)):
+            print(item)
+    except NotADirectoryError:
+        print(f"{path} не является папкой")
 
 
 def make_file(path):
@@ -84,4 +87,4 @@ actions = {
 
 for arg, parameter in vars(args).items():  # Наверняка есть более правильный и изящный способ,
     if parameter:                          # но и этот работает))
-        actions[arg](parameter)
+        actions.get(arg)(parameter)
