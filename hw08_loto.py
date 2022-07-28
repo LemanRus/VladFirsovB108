@@ -104,7 +104,7 @@ class Loto:
                 print("Вы проиграли!")
                 sys.exit()
             else:
-                self.player_card[row_index][item_index] = "-"
+                self.player_card[row_index][item_index] = "-"  # После завершения циклов for выше последние значения - то, что нужно
         elif player_choise == "n":
             if is_in_card:
                 print("Вы проиграли!")
