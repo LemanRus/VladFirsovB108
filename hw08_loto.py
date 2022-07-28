@@ -80,18 +80,18 @@ class Loto:
             raise StopIteration
 
     def turn(self, barrel):
-        print("Новый бочонок: {} (Осталось: {})".format(barrel, len(self.bag_of_barrels)))
+        print("\n\n\nНовый бочонок: {} (Осталось: {})".format(barrel, len(self.bag_of_barrels)))
         print("------ Ваша карточка ------")
         self.print_card(self.player_card)
         print("--- Карточка компьютера ---")
         self.print_card(self.computer_card)
+        player_choise = input("Зачеркнуть карточку? (y/n)\n")
         for row in self.computer_card:
             for item in row:
                 if item == barrel:
                     row_index = self.computer_card.index(row)
                     item_index = self.computer_card[row_index].index(item)
                     self.computer_card[row_index][item_index] = "-"
-        player_choise = input("Зачеркнуть карточку? (y/n)\n")
         is_in_card = False
         for row in self.player_card:
             for item in row:
@@ -114,7 +114,27 @@ class Loto:
         else:
             print("Советуем изучить правила и начать заново")
             sys.exit()
+        computer_card_nums = self.parse_card(self.computer_card)
+        player_card_nums = self.parse_card(self.player_card)
+        if computer_card_nums == set("-"):
+            if player_card_nums == set("-"):
+                print("Ничья!")
+                sys.exit()
+            else:
+                print("Вы проиграли!")
+                sys.exit()
+        else:
+            if player_card_nums == set("-"):
+                print("Вы выиграли!")
+                sys.exit()
 
+    def parse_card(self, card):
+        parse = []
+        for row in card:
+            for item in row:
+                if item is not None:
+                    parse.append(item)
+        return set(parse)
 
 
     def make_card(self):
