@@ -5,28 +5,32 @@ from typing import Tuple
 
 
 class Triangle:
-    def __init__(self, point1: Tuple[int], point2: Tuple[int], point3: Tuple[int]): ->
+    def __init__(self, point1: Tuple[float, float], point2: Tuple[float, float], point3: Tuple[float, float]) -> None:
         self.point1 = complex(*point1)  # Комплексные числа по определению есть координаты на плоскости, просто удобно
         self.point2 = complex(*point2)
         self.point3 = complex(*point3)
 
-    def calculate_sides(self):  # Вспомогательная функция, чтобы не дублировать код, считает длины сторон
+    def calculate_sides(self) -> Tuple[float, float, float]:
+        """
+        Вспомогательная функция, чтобы не дублировать код, считает длины сторон
+        :return: кортеж из трёх длин сторон заданного треугольника
+        """
         a = abs(self.point1 - self.point2)
         b = abs(self.point2 - self.point3)
         c = abs(self.point3 - self.point1)
         return a, b, c
 
-    def calculate_perimeter(self):
+    def calculate_perimeter(self) -> float:
         perimeter = sum(self.calculate_sides())
         return perimeter
 
-    def calculate_area(self):  # Результат float не совсем точный, можно прописывать читаемый формат вывода
+    def calculate_area(self) -> float:  # Результат float не совсем точный, можно прописывать читаемый формат вывода
         a, b, c = self.calculate_sides()
         half_perimeter = self.calculate_perimeter() / 2
         area = (half_perimeter * (half_perimeter - a) * (half_perimeter - b) * (half_perimeter - c)) ** 0.5
         return area
 
-    def calculate_height(self, pos_of_top):
+    def calculate_height(self, pos_of_top: Tuple[float, float]) -> float:
         """
         Считает высоту треугольника из указанной точки
         :param pos_of_top: координаты вершины треугольника, из которой необходимо опустить высоту
@@ -52,29 +56,35 @@ print(triangle.calculate_height((9, 15)))
 
 
 class Trapeze:
-    def __init__(self, point1, point2, point3, point4):  # Нужно ли для уровня easy проверять, что дана точно трапеция?
+    def __init__(
+            self, point1: Tuple[float, float], point2: Tuple[float, float],
+            point3: Tuple[float, float], point4: Tuple[float, float]) -> None:
         self.point1 = complex(*point1)
         self.point2 = complex(*point2)
         self.point3 = complex(*point3)
         self.point4 = complex(*point4)
 
-    def calculate_sides(self):
+    def calculate_sides(self) -> Tuple[float, float, float, float]:
+        """
+        Вспомогательная функция, чтобы не дублировать код, считает длины сторон
+        :return: кортеж из четырёх длин сторон заданной трапеции
+        """
         a = abs(self.point1 - self.point2)
         b = abs(self.point2 - self.point3)
         c = abs(self.point3 - self.point4)
         d = abs(self.point4 - self.point1)
         return a, b, c, d
 
-    def calculate_perimeter(self):
+    def calculate_perimeter(self) -> float:
         perimeter = sum(self.calculate_sides())
         return perimeter
 
-    def calculate_area(self):  # Результат float не совсем точный, можно прописывать читаемый формат вывода
+    def calculate_area(self) -> float:  # Результат float не совсем точный, можно прописывать читаемый формат вывода
         a, b, c, d = self.calculate_sides()
         area = (a + b) / 2 * (c**2 - (((a - b)**2 + c**2 - d**2) / (2 * (a - b)))**2)**0.5
         return area
 
-    def is_eq_sides(self):  # Снова для easy - нужно ли искать непараллельные стороны? Или нумерация по часовой подойдёт?
+    def is_eq_sides(self) -> bool:
         a, b, c, d = self.calculate_sides()
         if round(b, 3) == round(d, 3):
             return True
@@ -82,7 +92,7 @@ class Trapeze:
             return False
 
 
-trapeze = Trapeze((5, 5), (6, 6), (9, 15), (14, 10))
+trapeze = Trapeze((5, 5.8), (6, 6), (9, 15), (14, 10))
 print(trapeze.calculate_sides())
 print(trapeze.calculate_perimeter())
 print(trapeze.calculate_area())
