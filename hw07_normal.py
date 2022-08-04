@@ -19,20 +19,20 @@
 
 class School:
     def __init__(self, name):
-        self.name = name
-        self.class_rooms = []
-        self.teachers = []
+        self._name = name
+        self._class_rooms = []
+        self._teachers = []
 
     def hire_teacher(self, particular_teacher):
-        self.teachers.append(particular_teacher)
+        self._teachers.append(particular_teacher)
 
     def assign_class_room(self, class_room):
-        self.class_rooms.append(class_room)
+        self._class_rooms.append(class_room)
 
     def list_teachers(self, class_room):  # list в смысле перечислить, списка не возвращаем
         teachers_list = []
         for obj in class_room.objects:
-            for teacher in self.teachers:
+            for teacher in self._teachers:
                 if obj == teacher.object:
                     teachers_list.append(teacher)
         print(f"В классе {class_room.name} преподают:")
@@ -40,8 +40,8 @@ class School:
             print(teacher.name, teacher.patronymic, teacher.surname)
 
     def list_classes(self):
-        print(f"Все классы школы {self.name}:")
-        for class_room in self.class_rooms:
+        print(f"Все классы школы {self._name}:")
+        for class_room in self._class_rooms:
             print(class_room.name)
 
 
@@ -60,8 +60,8 @@ class ClassRoom:
         for student in self.students:
             print("{}.{}. {}".format(student.name[0], student.patronymic[0], student.surname))
 
-    def student_objects(self, student):  # Вроде бы просится в класс Student, но тогда тому понадобится передавать дополнительные объекты
-        if student in self.students:
+    def student_objects(self, student):  # Вроде бы просится в класс Student, но тогда тому понадобится
+        if student in self.students:     # передавать дополнительные объекты
             print("Предметы ученика по имени {}.{}. {}:".format(student.name[0], student.patronymic[0], student.surname))
             for obj in self.objects:
                 print(obj)
