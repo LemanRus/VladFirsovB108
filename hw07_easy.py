@@ -1,9 +1,11 @@
 # Задача-1: Написать класс для фигуры-треугольника, заданного координатами трех точек.
 # Определить методы, позволяющие вычислить: площадь, высоту и периметр фигуры.
 
+from typing import Tuple
+
 
 class Triangle:
-    def __init__(self, point1, point2, point3):
+    def __init__(self, point1: Tuple[int], point2: Tuple[int], point3: Tuple[int]): ->
         self.point1 = complex(*point1)  # Комплексные числа по определению есть координаты на плоскости, просто удобно
         self.point2 = complex(*point2)
         self.point3 = complex(*point3)
