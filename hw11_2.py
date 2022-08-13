@@ -9,3 +9,37 @@
 # которые должны выполняться одно за другим. Вопрос задачи заключается в том, чтобы разработать модель поведения
 # (параллельный алгоритм), при котором ни один из философов не будет голодать,
 # то есть будет вечно чередовать приём пищи и размышления.»
+
+import threading
+
+philosopher_qty = 5  # Количество обедающих философов
+
+
+class acquire:
+    def __init__(self, *locks):
+        self.locks = sorted(locks, key=lambda x: id(x))  # Некий уникальный параметр для ранжирования
+
+    def __enter__(self):  # Для реализации диспетчера контекста
+        for lock in self.locks:
+            lock.acquire()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        for lock in reversed(self.locks):
+            lock.release()
+        return False
+
+
+def philosopher(left, right):  # Поток для философа
+    while True:
+        with acquire(left, right):
+            print(f'Philosopher at {threading.currentThread()} is eating.')
+
+
+forks = [threading.Lock() for n in range(philosopher_qty)]  # Вилок столько же, сколько философов
+
+philosophers = [threading.Thread(
+    target=philosopher,
+    args=(forks[n], forks[(n + 1) % philosopher_qty])) for n in range(philosopher_qty)]
+
+for p in philosophers:
+    p.start()
