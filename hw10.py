@@ -3,23 +3,24 @@
 # название продукта, стоимость, количество. Разработать класс FruitProduct на базе класс Product,
 # фрукт характеризуется параметрами: страна изготовителя, срок годности.
 
+from dataclasses import dataclass
 
+
+@dataclass
 class Product:
-    def __init__(self, article: int, name: str, price: int, quantity: int):
-        self.article = article
-        self.name = name
-        self.price = price
-        self.quantity = quantity
+    article: int
+    name: str
+    price: int
+    quantity: int
 
     def __str__(self) -> str:
         return "Продукт: {:>4d}: {}, цена: {}, кол-во: {}".format(self.article, self.name, self.price, self.quantity)
 
 
+@dataclass
 class FruitProduct(Product):
-    def __init__(self, article: int, name: str, price: int, quantity: int, origin_country: str, shelf_life: int):
-        super().__init__(article, name, price, quantity)
-        self.origin_country = origin_country
-        self.shelf_life = shelf_life
+    origin_country: str
+    shelf_life: int
 
     def __str__(self) -> str:
         return "Фрукт: {:>4d}: {}, цена: {}, кол-во: {}, " \
