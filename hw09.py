@@ -4,38 +4,31 @@
 # Должна быть возможность создать необходимый тег, явно его не создавая, т. е не через img = Image(),
 # а через фабричный метод или фабрику, например factory.create_tag(name).
 class Tag:
+    tag_name = "tag"
+
     def get_html(self, *options):
         """
         Функция возвращает соответствующий тег.
         Принимает параметры, присоединяемые к тегу.
         Функция съест любой параметр, конкретный выбор за пользователем.
         """
-        if options:
-            return f"<tag {' '.join(options)}></tag>"
+        return "<{0}{1}></{0}>".format(self.tag_name, (" " if options else "") + "".join(options))
 
 
 class Image(Tag):
-    def get_html(self, *options):
-        if options:
-            return f"<img {' '.join(options)}></img>"
+    tag_name = "img"
 
 
 class Input(Tag):
-    def get_html(self, *options):
-        if options:
-            return f"<input {' '.join(options)}></input>"
+    tag_name = "input"
 
 
 class Text(Tag):
-    def get_html(self, *options):
-        if options:
-            return f"<p {' '.join(options)}></p>"
+    tag_name = "p"
 
 
 class Link(Tag):
-    def get_html(self, *options):
-        if options:
-            return f"<a {' '.join(options)}></a>"
+    tag_name = "a"
 
 
 class TagFactory:
@@ -56,5 +49,6 @@ if __name__ == "__main__":
     for el in elements:
         try:
             print(factory.create_tag(el).get_html("class="))
+            print(factory.create_tag(el).get_html())
         except ValueError as ve:
             print("Недопустимый тег: {}".format(ve))
