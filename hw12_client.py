@@ -2,6 +2,7 @@ import socket
 import threading
 import time
 import json
+import re
 
 shutdown = False
 join = False
@@ -36,6 +37,9 @@ def send_msg():
             try:
                 message_text = input("[YOU] :: ")
                 if message_text != "":
+                    addresate = re.findall(r"^(\w+):", message_text)
+                    if addresate:
+                        print(addresate)
                     json_message = json.dumps({
                         "action": "send_msg",
                         "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
