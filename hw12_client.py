@@ -37,18 +37,18 @@ def send_msg():
             try:
                 message_text = input("[YOU] :: ")
                 if message_text != "":
-                    addresate = re.findall(r"^(\w+):", message_text)
-                    if addresate:
-                        print(addresate)
-                    json_message = json.dumps({
+                    addresate = str(re.findall(r"^(\w+):", message_text)[0])
+                    msg_to_server = {
                         "action": "send_msg",
                         "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
                         "message": message_text,
                         "user": {
                             "name": name,
-                            "status": "online"
+                            "status": "online"}
                         }
-                    }).encode("utf-8")
+                    if addresate:
+                        msg_to_server["addresate"] = addresate
+                    json_message = json.dumps(msg_to_server).encode("utf-8")
                     s.sendto(json_message, server)
                 time.sleep(0.2)
             except Exception as ex:
