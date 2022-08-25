@@ -9,11 +9,28 @@ join = False
 
 
 def receiving(name, sock):
+    global shutdown
     while not shutdown:
         try:
             while True:
                 data, addr = sock.recvfrom(1024)
-                print(data.decode("utf-8"))
+
+                rec_msg = json.loads(data.decode("utf-8"))
+
+                response = rec_msg.get("response")
+                if response:
+                    if response == 200:
+                        print(rec_msg.get("message"))
+                    if response == 201:
+                        pass
+                    elif response == 202:
+                        pass
+                    elif response == 404:
+                        print("User", rec_msg.get("addresate"), "not found")
+                    elif response == 503:
+                        print("Server shutdown")
+                        shutdown = True
+
                 time.sleep(0.2)
         except:
             pass
@@ -37,7 +54,7 @@ def send_msg():
             try:
                 message_text = input("[YOU] :: ")
                 if message_text != "":
-                    addresate = str(re.findall(r"^(\w+):", message_text)[0])
+                    addresate = re.findall(r"^(\w+):", message_text)
                     msg_to_server = {
                         "action": "send_msg",
                         "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
@@ -47,7 +64,8 @@ def send_msg():
                             "status": "online"}
                         }
                     if addresate:
-                        msg_to_server["addresate"] = addresate
+                        msg_to_server["addresate"] = str(addresate[0])
+                        msg_to_server["message"] = "From " + name + ": " + msg_to_server.get("message")
                     json_message = json.dumps(msg_to_server).encode("utf-8")
                     s.sendto(json_message, server)
                 time.sleep(0.2)
