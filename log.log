@@ -1,0 +1,3 @@
+2022-08-29 15:13:46,615 - [INFO] - __main__ - hw13_logger.py line 31 - Функция server_works вызвана из функции hw13_logger
+2022-08-29 15:14:07,661 - [INFO] - __main__ - hw13_logger.py line 31 - Функция receiving вызвана из функции hw13_logger
+2022-08-29 15:14:07,661 - [INFO] - __main__ - hw13_logger.py line 31 - Функция send_msg вызвана из функции hw13_logger

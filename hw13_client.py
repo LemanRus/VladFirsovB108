@@ -3,11 +3,15 @@ import threading
 import time
 import json
 import re
+from hw13_logger import get_logger, log
+
+logger = get_logger(__name__)
 
 shutdown = False
 join = False
 
 
+@log(logger)
 def receiving(name, sock):
     global shutdown
     while not shutdown:
@@ -36,6 +40,7 @@ def receiving(name, sock):
             pass
 
 
+@log(logger)
 def send_msg():
     global join, shutdown
     while not shutdown:
