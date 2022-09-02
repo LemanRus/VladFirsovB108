@@ -3,94 +3,102 @@ import socket
 import time
 
 
-def server_works():
-    global quit
-    while not quit:
-        try:
-            rec_data, addr = s.recvfrom(1024)
+class MyServer:
+    def __init__(self):
+        self.host = "localhost"
+        self.port = 9090
 
-            if addr not in clients:
-                clients.append(addr)
+        self.clients = []
+        self.client_names = {}
 
-            itsatime = time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime())
+        self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.s.bind((self.host, self.port))
+        self.quit = False
+        print("[SERVER STARTED]")
 
-            print("[" + addr[0] + "]=[" + str(addr[1]) + "]=[" + itsatime + "] / ", end="")
-
+    def server_works(self):
+        while not self.quit:
             try:
-                client_msg = json.loads(rec_data.decode("utf-8"))
-                send_data = {k: v for k, v in client_msg.items() if k != "action"}
+                rec_data, addr = self.s.recvfrom(1024)
+
+                if addr not in self.clients:
+                    self.clients.append(addr)
+
+                itsatime = time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime())
+
+                print("[" + addr[0] + "]=[" + str(addr[1]) + "]=[" + itsatime + "] / ", end="")
+
+                action, addresate, user_name, message, send_data = self.disassemble_msg(rec_data)
+                self.assemble_answer(action, addresate, user_name, message, send_data, addr)
             except Exception as ex:
+                try:
+                    for client in self.clients:
+                        self.s.sendto(json.dumps({
+                            "response": 503,
+                            "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime())
+                        }).encode("utf-8"), client)
+                except Exception as int_ex:
+                    print(int_ex)
                 print(ex)
-                print(rec_data.decode("utf-8"))
-                client_msg = {}
-                send_data = {"response": 503}
+                print("\n[SERVER STOPPED]")
+                self.quit = True
 
-            action = client_msg.get("action")
-            addresate = client_msg.get("addresate")
-            user_name = client_msg.get("user").get("name")
-            message = client_msg.get("message")
+    def disassemble_msg(self, rec_data):
+        try:
+            client_msg = json.loads(rec_data.decode("utf-8"))
+            send_data = {k: v for k, v in client_msg.items() if k != "action"}
+        except Exception as ex:
+            print(ex)
+            print(rec_data.decode("utf-8"))
+            client_msg = {}
+            send_data = {"response": 503}
 
-            if action == "join_chat":
-                print(user_name, "=> join chat")
-                send_data["response"] = 201
-                for client in clients:
-                    if addr == client:
-                        client_names[user_name] = addr
-                        s.sendto(json.dumps(send_data).encode("utf-8"), client)
+        action = client_msg.get("action")
+        addresate = client_msg.get("addresate")
+        user_name = client_msg.get("user").get("name")
+        message = client_msg.get("message")
 
-            elif action == "leave_chat":
-                print(user_name, "<= left chat")
+        return action, addresate, user_name, message, send_data
 
-            elif addresate:
-                if addresate in client_names.keys():
-                    print(user_name, "to ->", addresate,
-                          "::", message)
-                    for client in clients:
-                        if addr == client:
-                            send_data["response"] = 202
-                            s.sendto(json.dumps(send_data).encode("utf-8"), client)
-                    send_data["response"] = 200
-                    s.sendto(json.dumps(send_data).encode("utf-8"), client_names[addresate])
-                else:
-                    print("client", addresate, "not found")
-                    send_data["response"] = 404
-                    for client in clients:
-                        if addr == client:
-                            s.sendto(json.dumps(send_data).encode("utf-8"), client)
-            else:
-                print(user_name, "::", message)
-                for client in clients:
+    def assemble_answer(self, action, addresate, user_name, message, send_data, addr):
+        if action == "join_chat":
+            print(user_name, "=> join chat")
+            send_data["response"] = 201
+            for client in self.clients:
+                if addr == client:
+                    self.client_names[user_name] = addr
+                    self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+
+        elif action == "leave_chat":
+            print(user_name, "<= left chat")
+
+        elif addresate:
+            if addresate in self.client_names.keys():
+                print(user_name, "to ->", addresate,
+                      "::", message)
+                for client in self.clients:
                     if addr == client:
                         send_data["response"] = 202
-                    else:
-                        send_data["response"] = 200
-                    s.sendto(json.dumps(send_data).encode("utf-8"), client)
+                        self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+                send_data["response"] = 200
+                self.s.sendto(json.dumps(send_data).encode("utf-8"), self.client_names[addresate])
+            else:
+                print("client", addresate, "not found")
+                send_data["response"] = 404
+                for client in self.clients:
+                    if addr == client:
+                        self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+        else:
+            print(user_name, "::", message)
+            for client in self.clients:
+                if addr == client:
+                    send_data["response"] = 202
+                else:
+                    send_data["response"] = 200
+                self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
 
-        except Exception as ex:
-            try:
-                for client in clients:
-                    s.sendto(json.dumps({
-                        "response": 503,
-                        "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime())
-                    }).encode("utf-8"), client)
-            except Exception as int_ex:
-                print(int_ex)
-            print(ex)
-            print("\n[SERVER STOPPED]")
-            quit = True
 
-
-if __name__ == "__main":
-    host = "localhost"
-    port = 9090
-
-    clients = []
-    client_names = {}
-
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.bind((host, port))
-    quit = False
-    print("[SERVER STARTED]")
-
-    server_works()
-    s.close()
+if __name__ == "__main__":
+    my_server = MyServer()
+    my_server.server_works()
+    my_server.s.close()
