@@ -1,0 +1,45 @@
+<html>  
+<head>
+    <style>
+        .div1 { display: inline-block; }
+    </style>
+</head>
+<body>  
+ <h1>Методики</h1>  
+ <div class=div1>
+ <a href="{{url_for('newMethodic')}}">  
+   <button>Добавить методику</button>  
+ </a> 
+ </div>
+ <div class=div1>
+  <a href="{{url_for('newAssign')}}">  
+   <button>Добавить реактив к методу</button>  
+ </a> 
+ </div>
+ <ol>  
+   {% for methodic, reagent_list in methodics.items() %}
+    <li> {{methodic.name}}, принята в {{methodic.year}}.
+        {% if reagent_list != [''] %}
+            Использует
+        {% endif %}
+    {% for reagent in reagent_list %}
+        {{reagent}}
+        {%- if reagent_list.index(reagent) != loop.length - 1 -%}
+            , 
+        {% endif %}
+    {% endfor %} 
+    </li>  
+    <a href="{{url_for('editMethodic', methodic_id = methodic.id )}}">  
+      Изменить  
+    </a>  
+    <a href="{{url_for('deleteMethodic', methodic_id = methodic.id )}}" style="margin-left: 10px;">  
+      Удалить  
+    </a>  
+    <br> <br>  
+  {% endfor %}  
+ </ol>
+ <p><a href="{{url_for('showIndex')}}">
+    <button>Назад</button>
+ </a></p>
+</body>  
+</html>

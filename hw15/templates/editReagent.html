@@ -1,0 +1,17 @@
+<form action="{{ url_for('editReagent', reagent_id = reagent.id)}}" method="post">  
+  <div class="form-group">  
+    <label for="name">Название:</label>  
+    <input type="text" name="name" value="{{ reagent.name }}"> 
+    
+    <label for="name">Количество:</label>  
+    <input type="text" name="qty" value="{{ reagent.qty }}">
+    
+    <label for="name">Годен до:</label>  
+    <input type="text" name="best" value="{{ reagent.best }}">  
+    
+    <button type="submit">Обновить</button>  
+  </div>
+</form>
+<a href='{{url_for('showReagents')}}'>  
+  <button>Отменить</button>  
+</a> 

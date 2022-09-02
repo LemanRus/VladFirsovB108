@@ -1,0 +1,33 @@
+<html>  
+<body>  
+ <h1>Реактивы</h1>  
+ <a href="{{url_for('newReagent')}}">  
+   <button>Добавить реактив</button>  
+ </a> 
+ <ol>  
+   {% for reagent, methodic_list in reagents.items() %}
+    <li> {{reagent.name}} имеется в количестве {{reagent.qty}}. Годен до {{ reagent.best }}.
+        {% if methodic_list != [''] %}
+            Используется в методиках
+        {% endif %}
+    {% for methodic in methodic_list %}
+        {{methodic}}
+        {%- if methodic_list.index(methodic) != loop.length - 1 -%}
+            , 
+        {% endif %}
+    {% endfor %} 
+    </li>  
+    <a href="{{url_for('editReagent', reagent_id = reagent.id )}}">  
+      Изменить  
+    </a>  
+    <a href="{{url_for('deleteReagent', reagent_id = reagent.id )}}" style="margin-left: 10px;">  
+      Удалить  
+    </a>  
+    <br> <br>  
+  {% endfor %}  
+ </ol>
+ <p><a href="{{url_for('showIndex')}}">
+    <button>Назад</button>
+ </a></p>
+</body>  
+</html>
