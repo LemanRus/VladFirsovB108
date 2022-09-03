@@ -16,7 +16,7 @@ class MyServer:
         self.quit = False
         print("[SERVER STARTED]")
 
-    def server_works(self):
+    def server_works(self, testing=False):
         while not self.quit:
             try:
                 rec_data, addr = self.s.recvfrom(1024)
@@ -27,7 +27,6 @@ class MyServer:
                 itsatime = time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime())
 
                 print("[" + addr[0] + "]=[" + str(addr[1]) + "]=[" + itsatime + "] / ", end="")
-
                 action, addresate, user_name, message, send_data = self.disassemble_msg(rec_data)
                 self.assemble_answer(action, addresate, user_name, message, send_data, addr)
             except Exception as ex:
