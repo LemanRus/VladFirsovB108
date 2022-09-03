@@ -29,19 +29,22 @@ class MyClient():
                     if response:
                         if response == 200:
                             print(rec_msg.get("message"))
+                            return rec_msg.get("message")
                         if response == 201:
                             pass
                         elif response == 202:
                             pass
                         elif response == 404:
                             print("User", rec_msg.get("addresate"), "not found")
+                            return "not found"
                         elif response == 503:
                             print("Server shutdown")
                             self.shutdown = True
+                            return "Server shutdown"
 
                     time.sleep(0.2)
-            except:
-                return False
+            except Exception as ex:
+                return ex
 
     def send_msg(self):
         while not self.shutdown:
@@ -56,6 +59,7 @@ class MyClient():
                 }).encode("utf-8")
                 self.s.sendto(json_message, self.server)
                 self.join = True
+                return json_message
             else:
                 try:
                     message_text = input("[YOU] :: ")
@@ -74,6 +78,7 @@ class MyClient():
                             msg_to_server["message"] = "From " + self.name + ": " + msg_to_server.get("message")
                         json_message = json.dumps(msg_to_server).encode("utf-8")
                         self.s.sendto(json_message, self.server)
+                        return json_message
                     time.sleep(0.2)
                 except Exception as ex:
                     print(ex)

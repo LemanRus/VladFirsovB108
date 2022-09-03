@@ -81,20 +81,24 @@ class MyServer:
                         self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
                 send_data["response"] = 200
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), self.client_names[addresate])
+                return 200
             else:
                 print("client", addresate, "not found")
                 send_data["response"] = 404
                 for client in self.clients:
                     if addr == client:
                         self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+                return 404
         else:
             print(user_name, "::", message)
             for client in self.clients:
                 if addr == client:
                     send_data["response"] = 202
+                    return 202
                 else:
                     send_data["response"] = 200
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+            return 200
 
 
 if __name__ == "__main__":
