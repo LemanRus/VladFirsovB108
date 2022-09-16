@@ -1,17 +1,26 @@
 #!/var/www/u997259/data/flaskenv/bin/python3
 
 import sys
+import os
 
 from flask import Flask, render_template, request, redirect, url_for  
 from sqlalchemy import create_engine
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound
 from sqlalchemy.orm import sessionmaker  
 from database_setup import Base, Methodics, Reagents, Assigns  
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
+db_login = os.environ.get("DB_LOGIN")
+db_password = os.environ.get("DB_PASSWORD")
   
 app = Flask(__name__)  
   
 # Подключаемся и создаем сессию базы данных  
-engine = create_engine("mysql+pymysql://u997259_test:Waha40k@localhost/u997259_test")
+engine = create_engine(f"mysql+pymysql://{db_login}:{db_password}@localhost/u997259_test")
 Base.metadata.bind = engine  
   
 DBSession = sessionmaker(bind=engine)  
@@ -20,11 +29,11 @@ session = DBSession()
   
 # Эта функция работает в режиме чтения.  
 @app.route('/')
-def showIndex():
+def show_index():
     return render_template("index.html")
 
 @app.route('/methodics')  
-def showMethodics():
+def show_methodics():
     query = session.query(Methodics, Reagents)
     query = query.outerjoin(Assigns, Assigns.methodic_id == Methodics.id)
     query = query.outerjoin(Reagents, Reagents.id == Assigns.reagent_id)
@@ -47,47 +56,41 @@ def showMethodics():
   
   
 @app.route('/methodics/new/', methods=['GET', 'POST'])  
-def newMethodic():  
+def add_methodic():  
     if request.method == 'POST':  
-        newMethodic = Methodics(name=request.form['name'], year=request.form['year'])  
-        session.add(newMethodic)  
+        new_methodic = Methodics(name=request.form['name'], year=request.form['year'])  
+        session.add(new_methodic)  
         session.commit()  
-        return redirect(url_for('showMethodics'))  
+        return redirect(url_for('show_methodics'))  
     else:  
-        return render_template('newMethodic.html')  
+        return render_template('new_methodic.html')  
   
   
 @app.route("/methodics/<int:methodic_id>/edit/", methods=['GET', 'POST'])  
-def editMethodic(methodic_id):  
-    editedMethodic = session.query(Methodics).filter_by(id=methodic_id).one()
-    if request.method == 'POST':
-        if request.form['name']:  
-            if request.form['year']:
-                editedMethodic.name = request.form['name']
-                editedMethodic.year = request.form['year']
-                session.commit()
-                return redirect(url_for('showMethodics'))
-            else:  
-                return render_template('editMethodic.html', methodic=editedMethodic)  
-        else:  
-            return render_template('editMethodic.html', methodic=editedMethodic)  
+def edit_methodic(methodic_id):  
+    edited_methodic = session.query(Methodics).filter_by(id=methodic_id).one()
+    if request.method == 'POST' and request.form['name'] and request.form['year']:
+        edited_methodic.name = request.form['name']
+        edited_methodic.year = request.form['year']
+        session.commit()
+        return redirect(url_for('show_methodics'))
     else:  
-        return render_template('editMethodic.html', methodic=editedMethodic)  
+        return render_template('edit_methodic.html', methodic=edited_methodic)  
   
   
 @app.route('/methodics/<int:methodic_id>/delete/', methods=['GET', 'POST'])  
-def deleteMethodic(methodic_id):  
-    methodicToDelete = session.query(Methodics).filter_by(id=methodic_id).one()  
+def delete_methodic(methodic_id):  
+    methodic_to_delete = session.query(Methodics).filter_by(id=methodic_id).one()  
     if request.method == 'POST':  
-        session.delete(methodicToDelete)  
+        session.delete(methodic_to_delete)  
         session.commit()  
-        return redirect(url_for('showMethodics', methodic_id=methodic_id))  
+        return redirect(url_for('show_methodics', methodic_id=methodic_id))  
     else:  
         return render_template('deleteMethodic.html', methodic=methodicToDelete)
 
 
 @app.route('/reagents')  
-def showReagents():
+def show_reagents():
     query = session.query(Reagents, Methodics)
     query = query.outerjoin(Assigns, Assigns.reagent_id == Reagents.id)
     query = query.outerjoin(Methodics, Methodics.id == Assigns.methodic_id)
@@ -110,63 +113,54 @@ def showReagents():
   
   
 @app.route('/reagents/new/', methods=['GET', 'POST'])  
-def newReagent():  
+def add_reagent():  
     if request.method == 'POST':  
-        newReagent = Reagents(name=request.form['name'], qty=request.form['qty'], best=request.form['best'])  
-        session.add(newReagent)  
+        new_reagent = Reagents(name=request.form['name'], qty=request.form['qty'], best=request.form['best'])  
+        session.add(new_reagent)  
         session.commit()  
-        return redirect(url_for('showReagents'))  
+        return redirect(url_for('show_reagents'))  
     else:  
-        return render_template('newReagent.html')  
+        return render_template('new_reagent.html')  
   
   
 @app.route("/reagents/<int:reagent_id>/edit/", methods=['GET', 'POST'])  
-def editReagent(reagent_id):  
-    editedReagent = session.query(Reagents).filter_by(id=reagent_id).one()
-    if request.method == 'POST':
-        if request.form['name']:  
-            if request.form['qty']:
-                if request.form['best']:
-                    editedReagent.name = request.form['name']
-                    editedReagent.qty = request.form['qty']
-                    editedReagent.best = request.form['best']
-                    session.commit()
-                    return redirect(url_for('showReagents'))
-                else:  
-                    return render_template('editReagent.html', reagent=editedReagent)  
-            else:  
-                return render_template('editReagent.html', reagent=editedReagent) 
-        else:  
-            return render_template('editReagent.html', reagent=editedReagent)  
+def edit_reagent(reagent_id):  
+    edited_reagent = session.query(Reagents).filter_by(id=reagent_id).one()
+    if request.method == 'POST' and request.form['name'] and request.form['qty'] and request.form['best']:
+        edited_reagent.name = request.form['name']
+        edited_reagent.qty = request.form['qty']
+        edited_reagent.best = request.form['best']
+        session.commit()
+        return redirect(url_for('show_reagents'))
     else:  
-        return render_template('editReagent.html', reagent=editedReagent)  
+        return render_template('edit_reagent.html', reagent=edited_reagent)  
   
   
 @app.route('/reagents/<int:reagent_id>/delete/', methods=['GET', 'POST'])  
-def deleteReagent(reagent_id):  
-    reagentToDelete = session.query(Reagents).filter_by(id=reagent_id).one()  
+def delete_reagent(reagent_id):  
+    reagent_to_delete = session.query(Reagents).filter_by(id=reagent_id).one()  
     if request.method == 'POST':  
-        session.delete(reagentToDelete)  
+        session.delete(reagent_to_delete)  
         session.commit()  
-        return redirect(url_for('showReagents', reagent_id=reagent_id))  
+        return redirect(url_for('show_reagents', reagent_id=reagent_id))  
     else:  
-        return render_template('deleteReagent.html', reagent=reagentToDelete)
+        return render_template('delete_reagent.html', reagent=reagent_to_delete)
   
 
 @app.route('/assigns/new/', methods=['GET', 'POST'])  
-def newAssign():  
+def new_assign():  
     if request.method == 'POST':  
         try:
             methodic_to_assign = session.query(Methodics).filter_by(name=request.form['methodic']).one() 
             reagent_to_assign = session.query(Reagents).filter_by(name=request.form['reagent']).one() 
-            newAssign = Assigns(methodic_id=methodic_to_assign.id, reagent_id=reagent_to_assign.id)  
-            session.add(newAssign)  
+            new_assign = Assigns(methodic_id=methodic_to_assign.id, reagent_id=reagent_to_assign.id)  
+            session.add(new_assign)  
             session.commit()  
-            return redirect(url_for('showMethodics'))
-        except (NameError, NoResultFound):
-            return render_template('newAssign.html') 
+            return redirect(url_for('show_methodics'))
+        except (NameError, NoResultFound, MultipleResultsFound):
+            return render_template('new_assign.html') 
     else:  
-        return render_template('newAssign.html') 
+        return render_template('new_assign.html') 
 
   
 if __name__ == '__main__':  
