@@ -1,4 +1,6 @@
 .idea/
 .run/
+*.env
+*.flaskenv
 *.pyc
 __pycache__/
