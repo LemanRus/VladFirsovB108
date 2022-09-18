@@ -14,9 +14,10 @@ class MyServer:
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.bind((self.host, self.port))
         self.quit = False
+
         print("[SERVER STARTED]")
 
-    def server_works(self, testing=False):
+    def server_works(self):
         while not self.quit:
             try:
                 rec_data, addr = self.s.recvfrom(1024)
@@ -67,6 +68,7 @@ class MyServer:
                 if addr == client:
                     self.client_names[user_name] = addr
                     self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+                    print("sent answer")
 
         elif action == "leave_chat":
             print(user_name, "<= left chat")
@@ -81,24 +83,20 @@ class MyServer:
                         self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
                 send_data["response"] = 200
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), self.client_names[addresate])
-                return 200
             else:
                 print("client", addresate, "not found")
                 send_data["response"] = 404
                 for client in self.clients:
                     if addr == client:
                         self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
-                return 404
         else:
             print(user_name, "::", message)
             for client in self.clients:
                 if addr == client:
                     send_data["response"] = 202
-                    return 202
                 else:
                     send_data["response"] = 200
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
-            return 200
 
 
 if __name__ == "__main__":
