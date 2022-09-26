@@ -26,17 +26,17 @@ class MyClient:
                 rec_msg = json.loads(data.decode("utf-8"))
 
                 response = rec_msg.get("response")
-                if response:
-                    if response == 200:
-                        print(rec_msg.get("message"))
-                        self.server_ok = True
-                    elif response == 404:
-                        print("User", rec_msg.get("addresate"), "not found")
-                        self.server_ok = True
-                    elif response == 503:
-                        print("Server shutdown")
-                        self.server_ok = False
-                        self.shutdown = True
+
+                if response == 200:
+                    print(rec_msg.get("message"))
+                    self.server_ok = True
+                elif response == 404:
+                    print("User", rec_msg.get("addresate"), "not found")
+                    self.server_ok = True
+                elif response == 503:
+                    print("Server shutdown")
+                    self.server_ok = False
+                    self.shutdown = True
                     time.sleep(0.2)
 
             except Exception as ex:
@@ -46,36 +46,10 @@ class MyClient:
     def send_msg(self):
         while not self.shutdown:
             if not self.join:
-                json_message = json.dumps({
-                    "action": "join_chat",
-                    "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
-                    "user": {
-                        "name": self.name,
-                        "status": "online"
-                    }
-                }).encode("utf-8")
-                self.s.sendto(json_message, self.server)
-                self.join = True
+                self.join_chat()
             else:
                 try:
-                    message_text = input("[YOU] :: ")
-                    if message_text:
-                        addresate = re.findall(r"^(\w+):", message_text)
-                        msg_to_server = {
-                            "action": "send_msg",
-                            "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
-                            "message": message_text,
-                            "user": {
-                                "name": self.name,
-                                "status": "online"}
-                            }
-                        if addresate:
-                            msg_to_server["addresate"] = str(addresate[0])
-                            msg_to_server["message"] = "From " + self.name + ": " + msg_to_server.get("message")
-                        json_message = json.dumps(msg_to_server).encode("utf-8")
-                        self.s.sendto(json_message, self.server)
-                    time.sleep(0.2)
-
+                    self.compile_message()
                 except Exception as ex:
                     print(ex)
                     if self.server_ok:
@@ -89,6 +63,38 @@ class MyClient:
                         }).encode("utf-8")
                         self.s.sendto(json_message, self.server)
                     self.shutdown = True
+
+    def join_chat(self):
+        json_message = json.dumps({
+            "action": "join_chat",
+            "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
+            "user": {
+                "name": self.name,
+                "status": "online"
+            }
+        }).encode("utf-8")
+        self.s.sendto(json_message, self.server)
+        self.join = True
+
+    def compile_message(self):
+        message_text = input("[YOU] :: ")
+        if message_text:
+
+            addresate = re.findall(r"^(\w+):", message_text)
+            msg_to_server = {
+                "action": "send_msg",
+                "time": time.strftime("%Y-%m-%d-%H.%M.%S", time.localtime()),
+                "message": message_text,
+                "user": {
+                    "name": self.name,
+                    "status": "online"}
+            }
+            if addresate:
+                msg_to_server["addresate"] = str(addresate[0])
+                msg_to_server["message"] = "From " + self.name + ": " + msg_to_server.get("message")
+            json_message = json.dumps(msg_to_server).encode("utf-8")
+            self.s.sendto(json_message, self.server)
+        time.sleep(0.2)
 
 
 if __name__ == "__main__":

@@ -21,7 +21,6 @@ class MyServer:
         while not self.quit:
             try:
                 rec_data, addr = self.s.recvfrom(1024)
-
                 if addr not in self.clients:
                     self.clients.append(addr)
 
@@ -31,6 +30,7 @@ class MyServer:
 
                 action, addresate, user_name, message, send_data = self.disassemble_msg(rec_data)
                 self.assemble_answer(action, addresate, user_name, message, send_data, addr)
+
             except Exception as ex:
                 try:
                     for client in self.clients:
@@ -72,9 +72,9 @@ class MyServer:
             if addresate in self.client_names.keys():
                 self.send_private_message(addresate, user_name, message, send_data, addr)
             else:
-                self.addresate_not_found()
+                self.addresate_not_found(addresate, send_data, addr)
         else:
-            self.send_message()
+            self.send_message(user_name, message, send_data, addr)
 
     def client_joined(self, user_name, send_data, addr):
         print(user_name, "=> join chat")
@@ -83,6 +83,7 @@ class MyServer:
             if addr == client:
                 self.client_names[user_name] = addr
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+        return 201
 
     def send_private_message(self, addresate, user_name, message, send_data, addr):
         print(user_name, "to ->", addresate, "::", message)
@@ -92,6 +93,7 @@ class MyServer:
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
         send_data["response"] = 200
         self.s.sendto(json.dumps(send_data).encode("utf-8"), self.client_names[addresate])
+        return 200
 
     def addresate_not_found(self, addresate, send_data, addr):
         print("client", addresate, "not found")
@@ -99,6 +101,7 @@ class MyServer:
         for client in self.clients:
             if addr == client:
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+        return 404
 
     def send_message(self, user_name, message, send_data, addr):
         print(user_name, "::", message)
@@ -108,6 +111,7 @@ class MyServer:
             else:
                 send_data["response"] = 200
             self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
+        return 200
 
 
 
