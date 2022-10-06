@@ -4,7 +4,9 @@ import json
 from mockito import when, unstub
 from mock import Mock, patch
 import socket
+import sys
 
+sys.stdin = open("test_inputs.txt")
 
 mock_socket = Mock(spec=socket.socket)
 attrs = {'recvfrom.return_value': (json.dumps({

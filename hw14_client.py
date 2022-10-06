@@ -15,10 +15,7 @@ class MyClient:
 
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.connect(("localhost", 0))
-        if __name__ == "__main__":
-            self.name = input("Name: ")
-        else:
-            self.name = "Bob"
+        self.name = input("Name: ")
 
     def receiving(self, sock):
         while not self.shutdown:
@@ -85,10 +82,7 @@ class MyClient:
         self.join = True
 
     def compile_message(self):
-        if __name__ == "__main__":
-            message_text = input("[YOU] :: ")
-        else:
-            message_text = "test"
+        message_text = input("[YOU] :: ")
 
         if message_text:
 
