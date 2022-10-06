@@ -30,6 +30,9 @@ class MyServer:
 
                 action, addresate, user_name, message, send_data = self.disassemble_msg(rec_data)
                 self.assemble_answer(action, addresate, user_name, message, send_data, addr)
+                if __name__ != "__main__":
+                    self.status = "OK"
+                    self.quit = True
 
             except Exception as ex:
                 try:
@@ -63,18 +66,18 @@ class MyServer:
 
     def assemble_answer(self, action, addresate, user_name, message, send_data, addr):
         if action == "join_chat":
-            self.client_joined(user_name, send_data, addr)
-
+            code = self.client_joined(user_name, send_data, addr)
         elif action == "leave_chat":
             print(user_name, "<= left chat")
-
+            code = None
         elif addresate:
             if addresate in self.client_names.keys():
-                self.send_private_message(addresate, user_name, message, send_data, addr)
+                code = self.send_private_message(addresate, user_name, message, send_data, addr)
             else:
-                self.addresate_not_found(addresate, send_data, addr)
+                code = self.addresate_not_found(addresate, send_data, addr)
         else:
-            self.send_message(user_name, message, send_data, addr)
+            code = self.send_message(user_name, message, send_data, addr)
+        return code
 
     def client_joined(self, user_name, send_data, addr):
         print(user_name, "=> join chat")
@@ -112,7 +115,6 @@ class MyServer:
                 send_data["response"] = 200
             self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
         return 200
-
 
 
 if __name__ == "__main__":

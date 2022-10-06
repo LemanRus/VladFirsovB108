@@ -15,10 +15,12 @@ class MyClient:
 
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.connect(("localhost", 0))
+        if __name__ == "__main__":
+            self.name = input("Name: ")
+        else:
+            self.name = "Bob"
 
-        self.name = input("Name: ")
-
-    def receiving(self, name, sock):
+    def receiving(self, sock):
         while not self.shutdown:
             try:
                 data, addr = sock.recvfrom(1024)
@@ -39,6 +41,9 @@ class MyClient:
                     self.shutdown = True
                     time.sleep(0.2)
 
+                if __name__ != "__main__":
+                    return rec_msg
+
             except Exception as ex:
                 print(ex)
                 return ex
@@ -49,7 +54,10 @@ class MyClient:
                 self.join_chat()
             else:
                 try:
-                    self.compile_message()
+                    self.s.sendto(self.compile_message(), self.server)
+                    if __name__ != "__main__":
+                        self.shutdown = True
+                        return self.compile_message()
                 except Exception as ex:
                     print(ex)
                     if self.server_ok:
@@ -77,7 +85,11 @@ class MyClient:
         self.join = True
 
     def compile_message(self):
-        message_text = input("[YOU] :: ")
+        if __name__ == "__main__":
+            message_text = input("[YOU] :: ")
+        else:
+            message_text = "test"
+
         if message_text:
 
             addresate = re.findall(r"^(\w+):", message_text)
@@ -93,7 +105,7 @@ class MyClient:
                 msg_to_server["addresate"] = str(addresate[0])
                 msg_to_server["message"] = "From " + self.name + ": " + msg_to_server.get("message")
             json_message = json.dumps(msg_to_server).encode("utf-8")
-            self.s.sendto(json_message, self.server)
+            return json_message
         time.sleep(0.2)
 
 
