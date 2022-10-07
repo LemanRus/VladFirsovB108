@@ -4,29 +4,12 @@ import sys
 import os
 
 from flask import Flask, render_template, request, redirect, url_for  
-from sqlalchemy import create_engine
 from sqlalchemy.exc import NoResultFound, MultipleResultsFound
-from sqlalchemy.orm import sessionmaker  
-from database_setup import Base, Methodics, Reagents, Assigns  
-from dotenv import load_dotenv
+from database_setup import Methodics, Reagents, Assigns
+from database_session import session
 
-dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
-if os.path.exists(dotenv_path):
-    load_dotenv(dotenv_path)
-
-db_login = os.environ.get("DB_LOGIN")
-db_password = os.environ.get("DB_PASSWORD")
-  
 app = Flask(__name__)  
-  
-# Подключаемся и создаем сессию базы данных  
-engine = create_engine(f"mysql+pymysql://{db_login}:{db_password}@localhost/u997259_test")
-Base.metadata.bind = engine  
-  
-DBSession = sessionmaker(bind=engine)  
-session = DBSession()  
-  
-  
+
 # Эта функция работает в режиме чтения.  
 @app.route('/')
 def show_index():
@@ -53,8 +36,8 @@ def show_methodics():
                 methodics[methodic].append("")
         
     return render_template("methodics.html", methodics=methodics)  
-  
-  
+
+
 @app.route('/methodics/new/', methods=['GET', 'POST'])  
 def add_methodic():  
     if request.method == 'POST':  
@@ -86,7 +69,7 @@ def delete_methodic(methodic_id):
         session.commit()  
         return redirect(url_for('show_methodics', methodic_id=methodic_id))  
     else:  
-        return render_template('deleteMethodic.html', methodic=methodicToDelete)
+        return render_template('deleteMethodic.html', methodic=methodic_to_delete)
 
 
 @app.route('/reagents')  

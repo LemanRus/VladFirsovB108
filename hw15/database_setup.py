@@ -1,22 +1,27 @@
 #!/var/www/u997259/data/flaskenv/bin/python3
 
-import sys  
-# для настройки баз данных 
-from sqlalchemy import Column, ForeignKey, Integer, String, Date  
-  
-# для определения таблицы и модели 
-from sqlalchemy.ext.declarative import declarative_base  
-  
-# для создания отношений между таблицами
-from sqlalchemy.orm import relationship  
-  
-# для настроек
-from sqlalchemy import create_engine  
-  
-# создание экземпляра declarative_base
-Base = declarative_base()  
+import sys
+import os
 
-  
+from sqlalchemy import Column, ForeignKey, Integer, String, Date, create_engine
+from sqlalchemy.ext.declarative import declarative_base  
+
+from dotenv import load_dotenv
+
+dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
+
+db_login = os.environ.get("DB_LOGIN")
+db_password = os.environ.get("DB_PASSWORD")
+
+# создание экземпляра declarative_base
+Base = declarative_base() 
+
+# Подключаемся и создаем сессию базы данных  
+engine = create_engine(f"mysql+pymysql://{db_login}:{db_password}@localhost/u997259_test")
+# Base.metadata.bind = engine  
+
 class Methodics(Base):  
     __tablename__ = 'methodics'  
     
@@ -41,11 +46,5 @@ class Assigns(Base):
     methodic_id = Column(Integer, ForeignKey("methodics.id")) 
     reagent_id = Column(Integer, ForeignKey("reagents.id")) 
 
-
-  
-# создает экземпляр create_engine в конце файла  
-engine = create_engine("mysql+pymysql://u997259_test:Waha40k@localhost/u997259_test")
-  
-Base.metadata.create_all(engine)
 
 
