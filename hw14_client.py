@@ -17,7 +17,7 @@ class MyClient:
         self.s.connect(("localhost", 0))
         self.name = input("Name: ")
 
-    def receiving(self, sock):
+    def receiving(self, name, sock):
         while not self.shutdown:
             try:
                 data, addr = sock.recvfrom(1024)
@@ -52,9 +52,6 @@ class MyClient:
             else:
                 try:
                     self.s.sendto(self.compile_message(), self.server)
-                    if __name__ != "__main__":
-                        self.shutdown = True
-                        return self.compile_message()
                 except Exception as ex:
                     print(ex)
                     if self.server_ok:
@@ -83,9 +80,7 @@ class MyClient:
 
     def compile_message(self):
         message_text = input("[YOU] :: ")
-
         if message_text:
-
             addresate = re.findall(r"^(\w+):", message_text)
             msg_to_server = {
                 "action": "send_msg",

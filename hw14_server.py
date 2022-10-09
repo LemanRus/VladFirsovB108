@@ -29,10 +29,7 @@ class MyServer:
                 print("[" + addr[0] + "]=[" + str(addr[1]) + "]=[" + itsatime + "] / ", end="")
 
                 action, addresate, user_name, message, send_data = self.disassemble_msg(rec_data)
-                self.assemble_answer(action, addresate, user_name, message, send_data, addr)
-                if __name__ != "__main__":
-                    self.status = "OK"
-                    self.quit = True
+                self.send_answer(action, addresate, user_name, message, send_data, addr)
 
             except Exception as ex:
                 try:
@@ -56,6 +53,7 @@ class MyServer:
             print(rec_data.decode("utf-8"))
             client_msg = {}
             send_data = {"response": 503}
+            self.quit = True
 
         action = client_msg.get("action")
         addresate = client_msg.get("addresate")
@@ -64,20 +62,18 @@ class MyServer:
 
         return action, addresate, user_name, message, send_data
 
-    def assemble_answer(self, action, addresate, user_name, message, send_data, addr):
+    def send_answer(self, action, addresate, user_name, message, send_data, addr):
         if action == "join_chat":
-            code = self.client_joined(user_name, send_data, addr)
+            self.client_joined(user_name, send_data, addr)
         elif action == "leave_chat":
             print(user_name, "<= left chat")
-            code = None
         elif addresate:
             if addresate in self.client_names.keys():
-                code = self.send_private_message(addresate, user_name, message, send_data, addr)
+                self.send_private_message(addresate, user_name, message, send_data, addr)
             else:
-                code = self.addresate_not_found(addresate, send_data, addr)
+                self.addresate_not_found(addresate, send_data, addr)
         else:
-            code = self.send_message(user_name, message, send_data, addr)
-        return code
+            self.send_message(user_name, message, send_data, addr)
 
     def client_joined(self, user_name, send_data, addr):
         print(user_name, "=> join chat")
@@ -86,7 +82,6 @@ class MyServer:
             if addr == client:
                 self.client_names[user_name] = addr
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
-        return 201
 
     def send_private_message(self, addresate, user_name, message, send_data, addr):
         print(user_name, "to ->", addresate, "::", message)
@@ -96,7 +91,6 @@ class MyServer:
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
         send_data["response"] = 200
         self.s.sendto(json.dumps(send_data).encode("utf-8"), self.client_names[addresate])
-        return 200
 
     def addresate_not_found(self, addresate, send_data, addr):
         print("client", addresate, "not found")
@@ -104,7 +98,6 @@ class MyServer:
         for client in self.clients:
             if addr == client:
                 self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
-        return 404
 
     def send_message(self, user_name, message, send_data, addr):
         print(user_name, "::", message)
@@ -114,7 +107,6 @@ class MyServer:
             else:
                 send_data["response"] = 200
             self.s.sendto(json.dumps(send_data).encode("utf-8"), client)
-        return 200
 
 
 if __name__ == "__main__":
