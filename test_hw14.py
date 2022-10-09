@@ -40,7 +40,7 @@ def test_server_disassemble_msg():
 
 
 def test_client_receiving():
-    msg = client_for_test.receiving(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)).get("message")
+    msg = client_for_test.receiving("test", socket.socket(socket.AF_INET, socket.SOCK_DGRAM)).get("message")
     assert msg == "test_message"
 
 
