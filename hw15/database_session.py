@@ -3,8 +3,6 @@ from sqlalchemy.orm import sessionmaker
 from database_setup import engine, Base
 
 DBSession = sessionmaker(bind=engine)  
-session = DBSession() 
 
-
-# Создаём таблицы при первом запуске один раз, раскоментив вручную
+# Создаём таблицы при первом запуске
 Base.metadata.create_all(engine)

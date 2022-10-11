@@ -1,17 +1,25 @@
-<form action="{{ url_for('edit_reagent', reagent_id = reagent.id)}}" method="post">  
-  <div class="form-group">  
-    <label for="name">Название:</label>  
-    <input type="text" name="name" value="{{ reagent.name }}"> 
-    
-    <label for="name">Количество:</label>  
-    <input type="text" name="qty" value="{{ reagent.qty }}">
-    
-    <label for="name">Годен до:</label>  
-    <input type="text" name="best" value="{{ reagent.best }}">  
-    
-    <button type="submit">Обновить</button>  
-  </div>
-</form>
-<a href='{{url_for('show_reagents')}}'>  
-  <button>Отменить</button>  
-</a> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{{ url_for('edit_reagent', reagent_id = reagent.id)}}" method="post">  
+        <div class="form-group">  
+            <label for="name">Название:</label>  
+            <input type="text" name="name" value="{{ reagent.name }}"> 
+            <label for="name">Количество:</label>  
+            <input type="text" name="qty" value="{{ reagent.qty }}">
+            <label for="name">Годен до:</label>  
+            <input type="text" name="best" value="{{ reagent.best }}">  
+            <button type="submit">Обновить</button>  
+        </div>
+    </form>
+    <a href="{{url_for('show_reagents')}}">  
+        <button>Отменить</button>  
+    </a> 
+</body>
+</html>

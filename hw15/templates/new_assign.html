@@ -1,12 +1,33 @@
-<h1>Добавление реактива к методике</h1>  
-<form action="#" method="post">  
-  <div class="form-group">  
-    <label for="methodic">Название методики:</label>  
-    <input type="text" maxlength="100" name="methodic" placeholder="Название методики">  
-    
-    <label for="reagent">Название реактива:</label>  
-    <input type="text" maxlength="100" name="reagent" placeholder="Название реактива">  
-  
-    <button type="submit">Добавить</button>  
-   </div>
-</form>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Добавление реактива к методике</h1>
+    <form action="#" method="post">
+        <div class="form-group">
+            <label for="methodic">Название методики:</label>
+                <select name="methodic">
+                    {% for a in all %}
+                        {% if a[0] %}
+                            <option value="{{ a[0] }}">{{ a[0] }}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+            <label for="reagent">Название реактива:</label>
+                <select name="reagent">
+                    {% for a in all %}
+                        {% if a[1] %}
+                            <option value="{{ a[1] }}">{{ a[1] }}</option>
+                        {% endif %}
+                    {% endfor %} 
+                </select>
+            <button type="submit">Добавить</button>
+        </div>
+    </form>
+</body>
+</html>

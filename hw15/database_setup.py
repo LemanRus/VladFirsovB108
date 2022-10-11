@@ -15,12 +15,10 @@ if os.path.exists(dotenv_path):
 db_login = os.environ.get("DB_LOGIN")
 db_password = os.environ.get("DB_PASSWORD")
 
-# создание экземпляра declarative_base
 Base = declarative_base() 
 
-# Подключаемся и создаем сессию базы данных  
 engine = create_engine(f"mysql+pymysql://{db_login}:{db_password}@localhost/u997259_test")
-# Base.metadata.bind = engine  
+
 
 class Methodics(Base):  
     __tablename__ = 'methodics'  
@@ -43,8 +41,8 @@ class Assigns(Base):
     __tablename__ = 'assigns'  
     
     id = Column(Integer, primary_key=True)  
-    methodic_id = Column(Integer, ForeignKey("methodics.id")) 
-    reagent_id = Column(Integer, ForeignKey("reagents.id")) 
+    methodic_id = Column(Integer, ForeignKey("methodics.id", ondelete='CASCADE')) 
+    reagent_id = Column(Integer, ForeignKey("reagents.id", ondelete='CASCADE')) 
 
 
 

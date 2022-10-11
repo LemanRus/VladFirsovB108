@@ -9,7 +9,9 @@ from sqlalchemy import pool
 from alembic import context
 
 sys.path.insert(1, "../")
-print(sys.path)
+
+from database_setup import Methodics, Reagents, Assigns
+
 from database_setup import Base
 target_metadata = Base.metadata
 
@@ -81,7 +83,7 @@ def run_migrations_online():
 
     with connectable.connect() as connection:
         context.configure(
-            connection=connection, target_metadata=target_metadata
+            connection=connection, target_metadata=target_metadata, compare_type=True
         )
 
         with context.begin_transaction():
