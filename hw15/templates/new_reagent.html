@@ -4,20 +4,32 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <base href="https://test.hand-made-tlt.ru/"/>
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Добавление реактива</title>
 </head>
 <body>
     <h1>Добавление реактива</h1>  
-<form action="#" method="post">  
-    <div class="form-group">  
-        <label for="name">Название:</label>  
-        <input type="text" maxlength="100" name="name" placeholder="Название реактива">  
-        <label for="year">Количество:</label>  
-        <input type="text" maxlength="100" name="qty" placeholder="Количество">
-        <label for="year">Годен до:</label>  
-        <input type="text" maxlength="100" name="best" placeholder="ГГГГ-ММ-ДД">  
-        <button type="submit">Добавить</button>  
+<form method="post">  
+    <div class="form-group"> 
+        <div class="divided">
+            <label for="name">Название:</label>  
+            <input type="text" maxlength="100" name="name" placeholder="Название реактива">  
+        </div> 
+        <div class="divided">
+            <label for="year">Количество:</label>  
+            <input type="text" maxlength="100" name="qty" placeholder="Количество">
+        </div> 
+        <div class="divided">
+            <label for="year">Годен до:</label>  
+            <input type="text" maxlength="100" name="best" placeholder="ГГГГ-ММ-ДД">  
+        </div> 
+        <button type="submit" class="button">Добавить</button>  
     </div>
+    <a href="{{url_for('show_index')}}" class="button">На главную</a>
 </form>
 </body>
 </html>

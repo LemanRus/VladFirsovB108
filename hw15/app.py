@@ -41,11 +41,16 @@ def show_methodics():
 @app.route('/methodics/new/', methods=['GET', 'POST'])  
 def add_methodic():  
     with DBSession() as session:
-        if request.method == 'POST':  
-            new_methodic = Methodics(name=request.form['name'], year=request.form['year'])  
-            session.add(new_methodic)  
-            session.commit()  
-            return redirect(url_for('show_methodics'))  
+        if request.method == 'POST':
+            name = request.form.get('name')
+            year = request.form.get('year')
+            if name and year:
+                new_methodic = Methodics(name=name, year=year)  
+                session.add(new_methodic)  
+                session.commit()  
+                return redirect(url_for('show_methodics'))  
+            else:
+                return render_template('new_methodic.html') 
         else:  
             return render_template('new_methodic.html')  
 
@@ -54,13 +59,18 @@ def add_methodic():
 def edit_methodic(methodic_id):
     with DBSession() as session:  
         edited_methodic = session.query(Methodics).filter_by(id=methodic_id).one()
-        if request.method == 'POST' and request.form['name'] and request.form['year']:
-            edited_methodic.name = request.form['name']
-            edited_methodic.year = request.form['year']
-            session.commit()
-            return redirect(url_for('show_methodics'))
+        if request.method == 'POST':
+            name = request.form.get('name')
+            year = request.form.get('year')
+            if name and year:
+                edited_methodic.name = name
+                edited_methodic.year = year
+                session.commit()
+                return redirect(url_for('show_methodics'))
+            else:
+                return render_template('edit_methodic.html', methodic=edited_methodic)
         else:  
-            return render_template('edit_methodic.html', methodic=edited_methodic)  
+            return render_template('edit_methodic.html', methodic=edited_methodic)
 
 
 @app.route('/methodics/<int:methodic_id>/delete/', methods=['GET', 'POST'])  
@@ -102,11 +112,17 @@ def show_reagents():
 @app.route('/reagents/new/', methods=['GET', 'POST'])  
 def add_reagent():
     with DBSession() as session:  
-        if request.method == 'POST':  
-            new_reagent = Reagents(name=request.form['name'], qty=request.form['qty'], best=request.form['best'])  
-            session.add(new_reagent)  
-            session.commit()  
-            return redirect(url_for('show_reagents'))  
+        if request.method == 'POST':
+            name = request.form.get("name")
+            qty = request.form.get("qty")
+            best = request.form.get("best")
+            if name and qty and best:
+                new_reagent = Reagents(name=name, qty=qty, best=best)  
+                session.add(new_reagent)  
+                session.commit()  
+                return redirect(url_for('show_reagents'))
+            else:  
+                return render_template('new_reagent.html')  
         else:  
             return render_template('new_reagent.html')  
 
@@ -115,12 +131,18 @@ def add_reagent():
 def edit_reagent(reagent_id):
     with DBSession() as session:  
         edited_reagent = session.query(Reagents).filter_by(id=reagent_id).one()
-        if request.method == 'POST' and request.form['name'] and request.form['qty'] and request.form['best']:
-            edited_reagent.name = request.form['name']
-            edited_reagent.qty = request.form['qty']
-            edited_reagent.best = request.form['best']
-            session.commit()
-            return redirect(url_for('show_reagents'))
+        if request.method == 'POST':
+            name = request.form.get("name")
+            qty = request.form.get("qty")
+            best = request.form.get("best")
+            if name and qty and best:
+                edited_reagent.name = name
+                edited_reagent.qty = qty
+                edited_reagent.best = best
+                session.commit()
+                return redirect(url_for('show_reagents'))
+            else:  
+                return render_template('edit_reagent.html', reagent=edited_reagent)  
         else:  
             return render_template('edit_reagent.html', reagent=edited_reagent)  
 
@@ -149,14 +171,17 @@ def new_assign():
         all = query.all()  
         if request.method == 'POST':  
             try:
-                methodic_got = request.form
-                reagent_got = request.form
-                methodic_to_assign = session.query(Methodics).filter_by(name=request.form.get('methodic')).one() 
-                reagent_to_assign = session.query(Reagents).filter_by(name=request.form.get('reagent')).one() 
-                new_assign = Assigns(methodic_id=methodic_to_assign.id, reagent_id=reagent_to_assign.id)  
-                session.add(new_assign)  
-                session.commit()  
-                return redirect(url_for('show_methodics'))
+                methodic_got = request.form.get('methodic')
+                reagent_got = request.form.get('reagent')
+                if methodic_got and reagent_got:
+                    methodic_to_assign = session.query(Methodics).filter_by(name=methodic_got).one()
+                    reagent_to_assign = session.query(Reagents).filter_by(name=reagent_got).one()
+                    new_assign = Assigns(methodic_id=methodic_to_assign.id, reagent_id=reagent_to_assign.id)
+                    session.add(new_assign)  
+                    session.commit()  
+                    return redirect(url_for('show_methodics'))
+                else:
+                    return render_template('new_assign.html', all=all) 
             except (NameError, NoResultFound, MultipleResultsFound) as err:
                 return render_template('error.html', args = [methodic_got, reagent_got], error=err) 
         else:  

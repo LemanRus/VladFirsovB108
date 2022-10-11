@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <base href="https://test.hand-made-tlt.ru/"/>
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Добавление реактива к методике</title>
 </head>
 <body>
     <h1>Добавление реактива к методике</h1>
-    <form action="#" method="post">
+    <form method="post">
         <div class="form-group">
-            <label for="methodic">Название методики:</label>
+            <div class="divided">
+                <label for="methodic">Название методики:</label>
                 <select name="methodic">
                     {% for a in all %}
                         {% if a[0] %}
@@ -18,7 +24,9 @@
                         {% endif %}
                     {% endfor %} 
                 </select>
-            <label for="reagent">Название реактива:</label>
+            </div>
+            <div class="divided">
+                <label for="reagent">Название реактива:</label>
                 <select name="reagent">
                     {% for a in all %}
                         {% if a[1] %}
@@ -26,8 +34,10 @@
                         {% endif %}
                     {% endfor %} 
                 </select>
-            <button type="submit">Добавить</button>
+            </div>
+            <button type="submit" class="button">Добавить</button>
         </div>
     </form>
+    <a href="{{url_for('show_index')}}" class="button">На главную</a>
 </body>
 </html>

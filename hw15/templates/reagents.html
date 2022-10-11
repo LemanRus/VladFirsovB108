@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <base href="https://test.hand-made-tlt.ru/"/>
+    <link href="/css/style.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>Реактивы</title>
 </head>
 <body>
     <h1>Реактивы</h1>  
-    <a href="{{url_for('add_reagent')}}">  
-        <button>Добавить реактив</button>  
-    </a> 
+    <a href="{{url_for('add_reagent')}}" class="button">Добавить реактив</a> 
     <ol>  
         {% for reagent, methodic_list in reagents.items() %}
             <li> 
-                {{reagent.name}} имеется в количестве {{reagent.qty}}. Годен до {{ reagent.best }}.
+                <p>{{reagent.name}} имеется в количестве {{reagent.qty}}. Годен до {{ reagent.best }}.
                 {% if methodic_list != [''] %}
                     Используется в методиках
                 {% endif %}
@@ -23,18 +26,16 @@
                     {%- if methodic_list.index(methodic) != loop.length - 1 -%}
                         , 
                     {% endif %}
-                {% endfor %} 
+                {% endfor %} </p>
                 <a href="{{url_for('edit_reagent', reagent_id = reagent.id )}}">  
                     Изменить  
                 </a>  
                 <a href="{{url_for('delete_reagent', reagent_id = reagent.id )}}" style="margin-left: 10px;">  
-                    далить  
+                    Удалить  
                 </a>  
             </li>  
         {% endfor %}  
     </ol>
-    <a href="{{url_for('show_index')}}">
-        <button>Назад</button>
-    </a>
+    <a href="{{url_for('show_index')}}" class="button">Назад</a>
 </body>
 </html>
