@@ -27,13 +27,9 @@ def show_methodics():
                 methodics[methodic] = []
                 if reagent:
                     methodics[methodic].append(reagent.name)
-                else:
-                    methodics[methodic].append("")
             else:
                 if reagent:
                     methodics[methodic].append(reagent.name)
-                else:
-                    methodics[methodic].append("")
         
         return render_template("methodics.html", methodics=methodics)  
 
@@ -88,24 +84,28 @@ def delete_methodic(methodic_id):
 @app.route('/reagents')  
 def show_reagents():
     with DBSession() as session:
-        query = session.query(Reagents, Methodics)
-        query = query.outerjoin(Assigns, Assigns.reagent_id == Reagents.id)
-        query = query.outerjoin(Methodics, Methodics.id == Assigns.methodic_id)
-        all_reagents = query.all()
+        query = session.query(Reagents, Methodics).outerjoin(Assigns, Assigns.reagent_id == Reagents.id).outerjoin(Methodics, Methodics.id == Assigns.methodic_id)
+        all_reagents = session.execute("SELECT reagents.id AS reagents_id, reagents.name AS reagents_name, reagents.qty AS reagents_qty, reagents.best AS reagents_best, methodics.id AS methodics_id, methodics.name AS methodics_name, methodics.year AS methodics_year \
+            FROM reagents \
+            LEFT OUTER JOIN assigns \
+            ON assigns.reagent_id = reagents.id \
+            LEFT OUTER JOIN methodics \
+            ON methodics.id = assigns.methodic_id").mappings().all()
         reagents = {}
-        for reagent, methodic in all_reagents:
-            if not reagents.get(reagent):
-                reagents[reagent] = []
-                if methodic:
-                    reagents[reagent].append(methodic.name)
-                else:
-                    reagents[reagent].append("")
+        cur_reagent = []
+        cur_methodic = []
+        for row in all_reagents:
+            cur_reagent = []
+            cur_methodic = []
+            for col, data in row.items():
+                if col.startswith("rea"):
+                    cur_reagent.append(data)
+                if col.startswith("met"):
+                    cur_methodic.append(data)
+            if not reagents.get(tuple(cur_reagent)):
+                reagents[tuple(cur_reagent)] = [cur_methodic]
             else:
-                if methodic:
-                    reagents[reagent].append(methodic.name)
-                else:
-                    reagents[reagent].append("")
-            
+                reagents[tuple(cur_reagent)].append(cur_methodic)
         return render_template("reagents.html", reagents=reagents)  
 
 
@@ -117,7 +117,8 @@ def add_reagent():
             qty = request.form.get("qty")
             best = request.form.get("best")
             if name and qty and best:
-                new_reagent = Reagents(name=name, qty=qty, best=best)  
+                new_reagent = Reagents(name=name, qty=qty, best=best)
+                print(new_reagent, file=sys.stderr)
                 session.add(new_reagent)  
                 session.commit()  
                 return redirect(url_for('show_reagents'))

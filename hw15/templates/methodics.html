@@ -19,7 +19,7 @@
         {% for methodic, reagent_list in methodics.items() %}
             <li> 
                 <p>{{methodic.name}}, принята в {{methodic.year}}.
-                {% if reagent_list != [''] %}
+                {% if reagent_list %}
                     Использует
                 {% endif %}
                 {% for reagent in reagent_list %}

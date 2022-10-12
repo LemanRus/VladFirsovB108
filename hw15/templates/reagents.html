@@ -17,20 +17,22 @@
     <ol>  
         {% for reagent, methodic_list in reagents.items() %}
             <li> 
-                <p>{{reagent.name}} имеется в количестве {{reagent.qty}}. Годен до {{ reagent.best }}.
-                {% if methodic_list != [''] %}
+                <p>{{reagent[1]}} имеется в количестве {{reagent[2]}}. Годен до {{ reagent[3] }}.
+                {% if methodic_list[0][1] -%}
                     Используется в методиках
                 {% endif %}
-                {% for methodic in methodic_list %}
-                    {{methodic}}
+                {%- for methodic in methodic_list -%}
+                    {%- if methodic[0] -%}
+                        {{methodic[1]}}
+                    {%- endif -%}
                     {%- if methodic_list.index(methodic) != loop.length - 1 -%}
                         , 
                     {% endif %}
                 {% endfor %} </p>
-                <a href="{{url_for('edit_reagent', reagent_id = reagent.id )}}">  
+                <a href="{{url_for('edit_reagent', reagent_id = reagent[0])}}">  
                     Изменить  
                 </a>  
-                <a href="{{url_for('delete_reagent', reagent_id = reagent.id )}}" style="margin-left: 10px;">  
+                <a href="{{url_for('delete_reagent', reagent_id = reagent[0])}}" style="margin-left: 10px;">  
                     Удалить  
                 </a>  
             </li>  
