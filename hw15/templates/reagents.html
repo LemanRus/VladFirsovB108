@@ -17,7 +17,7 @@
     <ol>  
         {% for reagent, methodic_list in reagents.items() %}
             <li> 
-                <p>{{reagent[1]}} имеется в количестве {{reagent[2]}}. Годен до {{ reagent[3] }}.
+                <p>{{reagent[1]}} имеется в количестве {{reagent[2]}}. Годен до {{ reagent[3]}}.
                 {% if methodic_list[0][1] -%}
                     Используется в методиках
                 {% endif %}

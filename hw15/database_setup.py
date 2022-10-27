@@ -24,7 +24,7 @@ class Methodics(Base):
     __tablename__ = 'methodics'  
     
     id = Column(Integer, primary_key=True)  
-    name = Column(String(250), nullable=False)  
+    name = Column(String(250), nullable=False, unique=True)  
     year = Column(Integer, nullable=False)
 
 
@@ -32,7 +32,7 @@ class Reagents(Base):
     __tablename__ = 'reagents'  
     
     id = Column(Integer, primary_key=True)  
-    name = Column(String(250), nullable=False)  
+    name = Column(String(250), nullable=False, unique=True)  
     qty = Column(String(250), nullable=False) 
     best = Column(Date, nullable=False)
     

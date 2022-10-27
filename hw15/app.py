@@ -4,7 +4,7 @@ import sys
 import os
 
 from flask import Flask, render_template, request, redirect, url_for  
-from sqlalchemy.exc import NoResultFound, MultipleResultsFound
+from sqlalchemy.exc import NoResultFound, MultipleResultsFound, IntegrityError
 from database_setup import Methodics, Reagents, Assigns
 from database_session import DBSession
 
@@ -36,19 +36,22 @@ def show_methodics():
 
 @app.route('/methodics/new/', methods=['GET', 'POST'])  
 def add_methodic():  
-    with DBSession() as session:
-        if request.method == 'POST':
-            name = request.form.get('name')
-            year = request.form.get('year')
-            if name and year:
-                new_methodic = Methodics(name=name, year=year)  
-                session.add(new_methodic)  
-                session.commit()  
-                return redirect(url_for('show_methodics'))  
-            else:
-                return render_template('new_methodic.html') 
-        else:  
-            return render_template('new_methodic.html')  
+    try:
+        with DBSession() as session:
+            if request.method == 'POST':
+                name = request.form.get('name')
+                year = request.form.get('year')
+                if name and year:
+                    new_methodic = Methodics(name=name, year=year)  
+                    session.add(new_methodic)  
+                    session.commit()  
+                    return redirect(url_for('show_methodics'))  
+                else:
+                    return render_template('new_methodic.html') 
+            else:  
+                return render_template('new_methodic.html')  
+    except IntegrityError as e:
+        return render_template('new_methodic.html', warning="Такое имя уже существует")
 
 
 @app.route("/methodics/<int:methodic_id>/edit/", methods=['GET', 'POST'])  
@@ -111,21 +114,25 @@ def show_reagents():
 
 @app.route('/reagents/new/', methods=['GET', 'POST'])  
 def add_reagent():
-    with DBSession() as session:  
-        if request.method == 'POST':
-            name = request.form.get("name")
-            qty = request.form.get("qty")
-            best = request.form.get("best")
-            if name and qty and best:
-                new_reagent = Reagents(name=name, qty=qty, best=best)
-                print(new_reagent, file=sys.stderr)
-                session.add(new_reagent)  
-                session.commit()  
-                return redirect(url_for('show_reagents'))
+    try:
+        with DBSession() as session:  
+            if request.method == 'POST':
+                name = request.form.get("name")
+                qty = request.form.get("qty")
+                best = request.form.get("best")
+                if name and qty and best:
+                    new_reagent = Reagents(name=name, qty=qty, best=best)
+                    print(new_reagent, file=sys.stderr)
+                    session.add(new_reagent)  
+                    session.commit()  
+                    return redirect(url_for('show_reagents'))
+                else:  
+                    return render_template('new_reagent.html')  
             else:  
                 return render_template('new_reagent.html')  
-        else:  
-            return render_template('new_reagent.html')  
+    except IntegrityError as e:
+        return render_template('new_reagent.html', warning="Такое имя уже существует")
+
 
 
 @app.route("/reagents/<int:reagent_id>/edit/", methods=['GET', 'POST'])  

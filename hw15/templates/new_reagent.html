@@ -13,19 +13,20 @@
 </head>
 <body>
     <h1>Добавление реактива</h1>  
+    <h2>{{warning}}</h2>
 <form method="post">  
     <div class="form-group"> 
         <div class="divided">
             <label for="name">Название:</label>  
-            <input type="text" maxlength="100" name="name" placeholder="Название реактива">  
+            <input type="text" maxlength="100" name="name" placeholder="Название реактива" required>  
         </div> 
         <div class="divided">
             <label for="year">Количество:</label>  
-            <input type="text" maxlength="100" name="qty" placeholder="Количество">
+            <input type="text" maxlength="100" name="qty" placeholder="Количество (числом)" pattern="\d+([,\.]\d+)?" required>
         </div> 
         <div class="divided">
             <label for="year">Годен до:</label>  
-            <input type="text" maxlength="100" name="best" placeholder="ГГГГ-ММ-ДД">  
+            <input type="date" id="date" name="best" required>  
         </div> 
         <button type="submit" class="button">Добавить</button>  
     </div>
