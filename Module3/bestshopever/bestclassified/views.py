@@ -5,3 +5,6 @@ from django.http import HttpResponse
 
 def index(request):
     return HttpResponse("I'm OK, I'm not alcoholic")
+
+def about(request):
+    return HttpResponse("We live on Earth")
