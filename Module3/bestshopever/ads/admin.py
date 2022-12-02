@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Advertisement, Stars, Rating
+
+admin.site.register(Advertisement)
+# admin.site.register(ThingPriority)
+admin.site.register(Rating)
