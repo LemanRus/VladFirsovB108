@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bestclassified',
     'phone_field',
+    'ads',
 ]
 
 MIDDLEWARE = [
