@@ -15,7 +15,19 @@ class Advertisement(models.Model):
     image = models.ImageField(upload_to=ad_image_path)
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
-    rate = models.ManyToManyField(CustomUser, through='Rating')
+    # rate = models.ManyToManyField(CustomUser, through='Rating')
+
+    @property
+    def rating_calc(self):
+        return Advertisement.objects.aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+
+    def __str__(self):
+        print(self.rating_calc)
+        return f"Ad from {self.author} with rating {self.rating_calc}"
+
+
+class Category(models.Model):
+    pass
 
 
 class Stars(models.IntegerChoices):
@@ -29,4 +41,7 @@ class Stars(models.IntegerChoices):
 class Rating(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
-    rating = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
+    rating_value = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
+
+    def __str__(self):
+        return f'User {self.user} rated ad \"{self.advertisement}\" with {self.rating_value} stars'
