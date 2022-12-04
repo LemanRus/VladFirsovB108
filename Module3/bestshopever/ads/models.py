@@ -8,6 +8,24 @@ def ad_image_path(instance, filename):
     return f'user_photos/user-{user_id}/{filename}'
 
 
+class Category(models.Model):
+    title = models.CharField(max_length=150, blank=False, default='Common')
+
+    def __str__(self):
+        return f"{self.title} with ID{self.id}"
+
+
+def default_category():
+    try:
+        existing_default_category = Category.objects.get(title='Common').id
+    except:
+        existing_default_category = None
+    if existing_default_category:
+        return existing_default_category
+    else:
+        return Category.objects.create().id
+
+
 class Advertisement(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='ads')
     title = models.CharField(max_length=150, blank=False)
@@ -16,18 +34,14 @@ class Advertisement(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
     # rate = models.ManyToManyField(CustomUser, through='Rating')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='categories', default=default_category())
 
     @property
     def rating_calc(self):
-        return Advertisement.objects.aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+        return Advertisement.objects.filter(rating__advertisement=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
 
     def __str__(self):
-        print(self.rating_calc)
-        return f"Ad from {self.author} with rating {self.rating_calc}"
-
-
-class Category(models.Model):
-    pass
+        return f"Ad \"{self.title}\" from {self.author} with rating {self.rating_calc}"
 
 
 class Stars(models.IntegerChoices):
@@ -39,8 +53,8 @@ class Stars(models.IntegerChoices):
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rating')
+    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='rating')
     rating_value = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
 
     def __str__(self):
