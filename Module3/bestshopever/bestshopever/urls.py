@@ -21,6 +21,7 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('bestclassified.urls')),
+    path('', include('ads.urls')),
 ]
 
 if settings.DEBUG:
