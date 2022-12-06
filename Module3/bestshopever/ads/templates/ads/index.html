@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Best shop ever</title>
+</head>
+<body>
+{% if ads %}
+<ul>
+    {% for ad in ads %}
+    <li>
+        <p>{{ ad }}</p>
+        <p>{{ ad.author }}</p>
+        <img src="{{ ad.image_url }}">
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>

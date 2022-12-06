@@ -1,8 +1,18 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.template import loader
+
+from .models import Advertisement
+
 
 def index(request):
-    return HttpResponse("Best shop ever")
+    ad_query = Advertisement.objects.order_by('-date_pub')[:10]
+    output = [f"{ad.title} from {ad.author} published: {ad.date_pub}\n" for ad in ad_query]
+    template = loader.get_template('ads/index.html')
+    context = {
+        'ads': ad_query
+    }
+    return HttpResponse(template.render(context))
 
 
 def recent_ads(request):

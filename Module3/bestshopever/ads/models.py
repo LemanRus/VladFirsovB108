@@ -34,11 +34,16 @@ class Advertisement(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
     # rate = models.ManyToManyField(CustomUser, through='Rating')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='categories', default=default_category())
+    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='categories', default=default_category())
 
     @property
     def rating_calc(self):
         return Advertisement.objects.filter(rating__advertisement=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+
+    @property
+    def image_url(self):
+        if self.image and hasattr(self.image, 'url'):
+            return self.image.url
 
     def __str__(self):
         return f"Ad \"{self.title}\" from {self.author} with rating {self.rating_calc}"
