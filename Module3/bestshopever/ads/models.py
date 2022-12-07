@@ -23,7 +23,9 @@ def default_category():
     if existing_default_category:
         return existing_default_category
     else:
-        return Category.objects.create().id
+        created_default = Category.objects.create().id
+        created_default.save()
+        return created_default
 
 
 class Advertisement(models.Model):
@@ -38,7 +40,11 @@ class Advertisement(models.Model):
 
     @property
     def rating_calc(self):
-        return Advertisement.objects.filter(rating__advertisement=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+        rating = Advertisement.objects.filter(rating__advertisement=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+        if rating:
+            return rating
+        else:
+            return 0
 
     @property
     def image_url(self):

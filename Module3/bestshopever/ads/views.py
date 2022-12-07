@@ -1,18 +1,17 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.http import HttpResponse, Http404
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
 
+from . import models
 from .models import Advertisement
 
 
 def index(request):
     ad_query = Advertisement.objects.order_by('-date_pub')[:10]
-    output = [f"{ad.title} from {ad.author} published: {ad.date_pub}\n" for ad in ad_query]
-    template = loader.get_template('ads/index.html')
     context = {
         'ads': ad_query
     }
-    return HttpResponse(template.render(context))
+    return render(request, 'ads/index.html', context)
 
 
 def recent_ads(request):
@@ -24,7 +23,11 @@ def category_show(request, categoty_id):
 
 
 def ad_show(request, ad_id):
-    return HttpResponse("Ad")
+    ad = get_object_or_404(models.Advertisement, pk=ad_id)
+    context = {
+        'ad': ad,
+    }
+    return render(request, 'ads/ad_show.html', context)
 
 
 def ad_create(request):

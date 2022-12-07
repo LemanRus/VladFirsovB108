@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertisement</title>
+</head>
+<body>
+    <p>{{ ad.category.title }} /</p>
+    <p>{{ ad.title }}</p>
+    <p>published at {{ ad.date_pub.date }} by {{ ad.author }}</p>
+    <p>{{ ad.description }}</p>
+    <img src="{{ ad.image_url }}">
+    <p>Rating: {{ ad.rating_calc }}</p>
+</body>
+</html>
