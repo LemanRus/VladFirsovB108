@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertisements</title>
+</head>
+<body>
+<h1>Advertisements</h1>
+<p>Newest on top</p>
+{% if ads %}
+<ul>
+    {% for ad in ads %}
+    <li>
+        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
+        <p>{{ ad.author }}</p>
+        <p>{{ ad.description }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>

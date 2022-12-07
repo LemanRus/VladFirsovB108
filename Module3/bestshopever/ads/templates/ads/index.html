@@ -5,11 +5,16 @@
     <title>Best shop ever</title>
 </head>
 <body>
+<h1>Best shop ever</h1>
+<p>Greetings visitor!</p>
+<p>Behold the greatest bulletin board since the Aztec civilization! By reading this, you receive the great power of the knowledge of the universe.</p>
+<a href="{% url 'ads:recent_ads' %}">Объявления</a>
+<a href="{% url 'ads:categories' %}">Категории</a>
 {% if ads %}
 <ul>
     {% for ad in ads %}
     <li>
-        <p>{{ ad }}</p>
+        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
         <p>{{ ad.author }}</p>
         <img src="{{ ad.image_url }}">
     </li>

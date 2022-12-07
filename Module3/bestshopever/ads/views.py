@@ -3,11 +3,11 @@ from django.shortcuts import render, get_object_or_404
 from django.template import loader
 
 from . import models
-from .models import Advertisement
+from .models import Advertisement, Category
 
 
 def index(request):
-    ad_query = Advertisement.objects.order_by('-date_pub')[:10]
+    ad_query = Advertisement.objects.order_by('-date_pub')[:7]
     context = {
         'ads': ad_query
     }
@@ -15,11 +15,27 @@ def index(request):
 
 
 def recent_ads(request):
-    return HttpResponse("Recent ads")
+    ad_query = Advertisement.objects.order_by('-date_pub')
+    context = {
+        'ads': ad_query
+    }
+    return render(request, 'ads/recent_ads.html', context)
 
 
-def category_show(request, categoty_id):
-    return HttpResponse("Category")
+def categories(request):
+    categories_query = Category.objects.all()
+    context = {
+        'categories': categories_query
+    }
+    return render(request, 'ads/categories.html', context)
+
+
+def category_show(request, category_id):
+    category = get_object_or_404(models.Category, pk=category_id)
+    context = {
+        'category': category,
+    }
+    return render(request, 'ads/category_show.html', context)
 
 
 def ad_show(request, ad_id):

@@ -36,7 +36,7 @@ class Advertisement(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
     # rate = models.ManyToManyField(CustomUser, through='Rating')
-    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='categories', default=default_category())
+    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='advertisements', default=default_category())
 
     @property
     def rating_calc(self):

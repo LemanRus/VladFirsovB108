@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Categories</title>
+</head>
+<body>
+<h1>{{ category.title }}</h1>
+{% if category.advertisements.all %}
+<ul>
+    {% for ad in category.advertisements.all %}
+    <li>
+        <p>{{ ad.title }}</p>
+        <p>{{ ad.description }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+</body>
+</html>
