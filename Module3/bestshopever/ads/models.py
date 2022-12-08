@@ -44,21 +44,5 @@ class Advertisement(models.Model):
             return self.image.url
 
     def __str__(self):
-        return f"Ad \"{self.title}\" from {self.author} with rating {self.rating_calc}"
+        return f"Ad \"{self.title}\" from {self.author} with rating {self.author.rating_calc}"
 
-
-class Stars(models.IntegerChoices):
-    ONE = 1, 'One'
-    TWO = 2, 'Two'
-    THREE = 3, 'Three'
-    FOUR = 4, 'Four'
-    FIVE = 5, 'Five'
-
-
-class Rating(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rating')
-    advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='rating')
-    rating_value = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
-
-    def __str__(self):
-        return f'User {self.user} rated user \"{self.advertisement.author}\" with {self.rating_value} stars'

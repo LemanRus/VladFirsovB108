@@ -18,8 +18,26 @@ class CustomUser(AbstractUser):
 
     @property
     def rating_calc(self):
-        rating = CustomUser.objects.filter(rating__advertisement__author=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+        rating = Rating.objects.filter(user_rated=self).aggregate(calculated_rating=models.Avg('rating_value')).get('calculated_rating')
         if rating:
             return rating
         else:
             return 0
+
+
+class Stars(models.IntegerChoices):
+    ONE = 1, 'One'
+    TWO = 2, 'Two'
+    THREE = 3, 'Three'
+    FOUR = 4, 'Four'
+    FIVE = 5, 'Five'
+
+
+class Rating(models.Model):
+    user_who_rate = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rate')
+    user_rated = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rated')
+    # advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='rating')
+    rating_value = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
+
+    def __str__(self):
+        return f'User {self.user_who_rate} rated user \"{self.user_rated}\" with {self.rating_value} stars'
