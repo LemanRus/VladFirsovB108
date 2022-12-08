@@ -11,5 +11,16 @@
     <p>{{ ad.description }}</p>
     <img src="{{ ad.image_url }}">
     <p>Author rating: {{ ad.author.rating_calc }}</p>
+    <form method="post" action="{% url 'ads:rate_ad_author' ad.id %}">
+        {% csrf_token %}
+        <select>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+        <button type="submit">Оценить автора объявления</button>
+    </form>
 </body>
 </html>

@@ -4,6 +4,7 @@ from django.template import loader
 
 from . import models
 from .models import Advertisement, Category
+from bestclassified.models import Rating
 
 
 def index(request):
@@ -58,6 +59,14 @@ def ad_delete(request, ad_id):
     return HttpResponse("Delete ad")
 
 
-def rate_ad(request, ad_id):
-    return HttpResponse("Rate ad")
+def rate_ad_author(request, ad_id):
+    ad = get_object_or_404(models.Advertisement, pk=ad_id)
+    if request.user and request.user.is_authenticated:
+        rate_query = Rating.objects.filter(user_who_rate=request.user).filter(user_rated=ad.author)
+        if not rate_query:
+            pass
+        else:
+            user_rating = rate_query.first()
+            # TODO:Дописать получение оценки из формы
+    return HttpResponse("Rate ad author")
 
