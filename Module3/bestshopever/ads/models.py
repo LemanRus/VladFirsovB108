@@ -39,14 +39,6 @@ class Advertisement(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='advertisements', default=default_category())
 
     @property
-    def rating_calc(self):
-        rating = Advertisement.objects.filter(rating__advertisement=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
-        if rating:
-            return rating
-        else:
-            return 0
-
-    @property
     def image_url(self):
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
@@ -69,4 +61,4 @@ class Rating(models.Model):
     rating_value = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
 
     def __str__(self):
-        return f'User {self.user} rated ad \"{self.advertisement}\" with {self.rating_value} stars'
+        return f'User {self.user} rated user \"{self.advertisement.author}\" with {self.rating_value} stars'

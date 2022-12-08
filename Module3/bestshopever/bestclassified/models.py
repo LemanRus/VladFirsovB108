@@ -15,3 +15,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.username} with ID{self.id}"
+
+    @property
+    def rating_calc(self):
+        rating = CustomUser.objects.filter(rating__advertisement__author=self).aggregate(calculated_rating=models.Avg('rating__rating_value')).get('calculated_rating')
+        if rating:
+            return rating
+        else:
+            return 0
