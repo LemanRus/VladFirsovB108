@@ -1,5 +1,5 @@
 from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 
 from . import models
@@ -62,11 +62,8 @@ def ad_delete(request, ad_id):
 def rate_ad_author(request, ad_id):
     ad = get_object_or_404(models.Advertisement, pk=ad_id)
     if request.user and request.user.is_authenticated:
-        rate_query = Rating.objects.filter(user_who_rate=request.user).filter(user_rated=ad.author)
-        if not rate_query:
-            pass
-        else:
-            user_rating = rate_query.first()
-            # TODO:Дописать получение оценки из формы
-    return HttpResponse("Rate ad author")
+        ad_rating, created = Rating.objects.get_or_create(user_who_rate=request.user, user_rated=ad.author)
+        ad_rating.rating_value = request.POST.get('selected_rating')
+        ad_rating.save()
+    return redirect(request.META.get('HTTP_REFERER'), request)
 
