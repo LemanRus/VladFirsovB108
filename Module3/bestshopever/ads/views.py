@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 
 from . import models
+from .forms import AdCreateForm
 from .models import Advertisement, Category
 from bestclassified.models import Rating
 
@@ -48,7 +49,10 @@ def ad_show(request, ad_id):
 
 
 def ad_create(request):
-    return HttpResponse("New ad")
+    template_name = 'ads/ad_create.html'
+    form = AdCreateForm()
+    context = {'form': form,}
+    return render(request, template_name, context)
 
 
 def ad_edit(request, ad_id):
