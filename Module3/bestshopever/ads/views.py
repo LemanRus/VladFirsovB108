@@ -1,6 +1,10 @@
+import time
+
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
+from django.urls import reverse
+from django.utils import timezone
 
 from . import models
 from .forms import AdCreateForm
@@ -50,9 +54,23 @@ def ad_show(request, ad_id):
 
 def ad_create(request):
     template_name = 'ads/ad_create.html'
-    form = AdCreateForm()
-    context = {'form': form,}
-    return render(request, template_name, context)
+    if request.method == 'GET':
+        form = AdCreateForm()
+        context = {'form': form,}
+        return render(request, template_name, context)
+    elif request.method == 'POST':
+        form = AdCreateForm(request.POST, request.FILES)
+        print(form)
+        print(form.is_valid())
+        if form.is_valid():
+            ad = form.save(commit=False)
+            ad.author = request.user
+            ad.date_pub = timezone.now()
+            ad.save()
+            return redirect(reverse('ads:ad_show', kwargs={'ad_id': ad.id}))
+        else:
+            context = {'form': form}
+            return render(request, template_name, context)
 
 
 def ad_edit(request, ad_id):
