@@ -5,6 +5,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.urls import reverse
 from django.utils import timezone
+from django.views import View
+from django.views.generic import ListView, DetailView
 
 from . import models
 from .forms import AdCreateForm
@@ -12,36 +14,31 @@ from .models import Advertisement, Category
 from bestclassified.models import Rating
 
 
-def index(request):
-    ad_query = Advertisement.objects.order_by('-date_pub')[:7]
-    context = {
-        'ads': ad_query
-    }
-    return render(request, 'ads/index.html', context)
+class IndexView(ListView):
+    model = Advertisement
+    template_name = 'ads/index.html'
+    context_object_name = 'ads'
+    queryset = Advertisement.objects.order_by('-date_pub')[:7]
 
 
-def recent_ads(request):
-    ad_query = Advertisement.objects.order_by('-date_pub')
-    context = {
-        'ads': ad_query
-    }
-    return render(request, 'ads/recent_ads.html', context)
+
+class AdList(ListView):
+    model = Advertisement
+    template_name = 'ads/ad_list.html'
+    context_object_name = 'ads'
+    queryset = Advertisement.objects.order_by('-date_pub')
 
 
-def categories(request):
-    categories_query = Category.objects.all()
-    context = {
-        'categories': categories_query
-    }
-    return render(request, 'ads/categories.html', context)
+class Categories(ListView):
+    model = Category
+    template_name = 'ads/categories.html'
+    context_object_name = 'categories'
 
 
-def category_show(request, category_id):
-    category = get_object_or_404(models.Category, pk=category_id)
-    context = {
-        'category': category,
-    }
-    return render(request, 'ads/category_show.html', context)
+class CategoryDetailed(DetailView):
+    model = Category
+    template_name = 'ads/category_show.html'
+    context_object_name = 'category'
 
 
 def ad_show(request, ad_id):

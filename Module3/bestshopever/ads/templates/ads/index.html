@@ -16,7 +16,6 @@
     <li>
         <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
         <p>{{ ad.author }}</p>
-        <img src="{{ ad.image_url }}">
     </li>
     {% endfor %}
 </ul>
