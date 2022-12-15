@@ -6,7 +6,7 @@ from django.template import loader
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 from . import models
 from .forms import AdCreateForm
@@ -19,7 +19,6 @@ class IndexView(ListView):
     template_name = 'ads/index.html'
     context_object_name = 'ads'
     queryset = Advertisement.objects.order_by('-date_pub')[:7]
-
 
 
 class AdList(ListView):
@@ -39,35 +38,33 @@ class CategoryDetailed(DetailView):
     model = Category
     template_name = 'ads/category_show.html'
     context_object_name = 'category'
+    pk_url_kwarg = 'category_id'
 
 
-def ad_show(request, ad_id):
-    ad = get_object_or_404(models.Advertisement, pk=ad_id)
-    context = {
-        'ad': ad,
-    }
-    return render(request, 'ads/ad_show.html', context)
+class AdDetailed(DetailView):
+    model = Advertisement
+    template_name = 'ads/ad_show.html'
+    context_object_name = 'ad'
+    pk_url_kwarg = 'ad_id'
 
 
-def ad_create(request):
+class AdCreate(CreateView):
+    form_class = AdCreateForm
     template_name = 'ads/ad_create.html'
-    if request.method == 'GET':
-        form = AdCreateForm()
-        context = {'form': form,}
-        return render(request, template_name, context)
-    elif request.method == 'POST':
-        form = AdCreateForm(request.POST, request.FILES)
-        print(form)
-        print(form.is_valid())
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, request.FILES)
+        context = {}
         if form.is_valid():
             ad = form.save(commit=False)
             ad.author = request.user
             ad.date_pub = timezone.now()
             ad.save()
+            context['form'] = self.form_class
             return redirect(reverse('ads:ad_show', kwargs={'ad_id': ad.id}))
         else:
-            context = {'form': form}
-            return render(request, template_name, context)
+            context['form'] = self.form_class
+            return render(request, self.template_name, context)
 
 
 def ad_edit(request, ad_id):

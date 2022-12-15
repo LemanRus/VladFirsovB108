@@ -10,7 +10,7 @@
 <ul>
     {% for ad in category.advertisements.all %}
     <li>
-        <p>{{ ad.title }}</p>
+        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
         <p>{{ ad.description }}</p>
     </li>
     {% endfor %}
