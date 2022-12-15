@@ -11,9 +11,9 @@
 <ul>
     {% for ad in ads %}
     <li>
-        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
-        <p>{{ ad.author }}</p>
-        <p>{{ ad.description }}</p>
+        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
+        <p> {{ ad.author.username }} </p>
+        <p> {{ ad.description }}</p>
         <img src="{{ ad.image_url }}">
     </li>
     {% endfor %}

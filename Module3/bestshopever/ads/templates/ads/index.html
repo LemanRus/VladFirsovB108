@@ -14,7 +14,7 @@
 <ul>
     {% for ad in ads %}
     <li>
-        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
+        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
         <p>{{ ad.author }}</p>
     </li>
     {% endfor %}

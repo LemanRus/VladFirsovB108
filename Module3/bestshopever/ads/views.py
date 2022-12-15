@@ -6,7 +6,7 @@ from django.template import loader
 from django.urls import reverse
 from django.utils import timezone
 from django.views import View
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from . import models
 from .forms import AdCreateForm
@@ -69,6 +69,16 @@ class AdCreate(CreateView):
 
 def ad_edit(request, ad_id):
     return HttpResponse("Edit ad")
+
+
+class AdDelete(DeleteView):
+    model = Advertisement
+    template_name = 'ads/ad_delete.html'
+    pk_url_kwarg = 'ad_id'
+
+    def get_success_url(self):
+        ad_id = self.kwargs['ad_id']
+        return reverse('ads:delete-ad-success', args=(ad_id, ))
 
 
 def ad_delete(request, ad_id):

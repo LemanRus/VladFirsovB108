@@ -11,6 +11,7 @@
     {% for ad in category.advertisements.all %}
     <li>
         <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
+        <p>{{ ad.author.username }}</p>
         <p>{{ ad.description }}</p>
     </li>
     {% endfor %}
