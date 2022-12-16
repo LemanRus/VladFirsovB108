@@ -67,22 +67,33 @@ class AdCreate(CreateView):
             return render(request, self.template_name, context)
 
 
-def ad_edit(request, ad_id):
-    return HttpResponse("Edit ad")
+class AdEdit(UpdateView):
+    model = Advertisement
+    template_name = 'ads/ad_edit.html'
+    pk_url_kwarg = 'ad_id'
+    form_class = AdCreateForm
+    context_object_name = 'ad'
+
+    def dispatch(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.author != self.request.user:
+            raise Exception('You are not allowed to edit! Go away!')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_success_url(self):
+        ad_id = self.kwargs['ad_id']
+        return reverse('ads:ad_show', args=(ad_id, ))
 
 
 class AdDelete(DeleteView):
     model = Advertisement
     template_name = 'ads/ad_delete.html'
     pk_url_kwarg = 'ad_id'
+    context_object_name = 'ad'
 
     def get_success_url(self):
         ad_id = self.kwargs['ad_id']
-        return reverse('ads:delete-ad-success', args=(ad_id, ))
-
-
-def ad_delete(request, ad_id):
-    return HttpResponse("Delete ad")
+        return reverse('ads:ad-delete-success', args=(ad_id, ))
 
 
 def rate_ad_author(request, ad_id):
