@@ -1,6 +1,6 @@
 from django import forms
 
-from ads.models import Advertisement
+from .models import Advertisement, Comment
 
 
 class AdCreateForm(forms.ModelForm):
@@ -26,4 +26,13 @@ class AdCreateForm(forms.ModelForm):
                     'class': 'form-control',
                 }
             )
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Write your comment here"})
         }

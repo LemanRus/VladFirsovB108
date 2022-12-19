@@ -11,7 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView, U
 from . import models
 from .forms import AdCreateForm
 from .models import Advertisement, Category
-from bestclassified.models import Rating
+from core.models import Rating
 
 
 class IndexView(ListView):

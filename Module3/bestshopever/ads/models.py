@@ -1,6 +1,6 @@
 from django.db import models
 
-from bestclassified.models import CustomUser
+from core.models import CustomUser
 
 
 def ad_image_path(instance, filename):
@@ -11,21 +11,15 @@ def ad_image_path(instance, filename):
 class Category(models.Model):
     title = models.CharField(max_length=150, blank=False, default='Common')
 
+    @classmethod
+    def get_default_pk(cls):
+        default_category, created = cls.objects.get_or_create(
+            title='Common',
+        )
+        return default_category.pk
+
     def __str__(self):
         return f"{self.title} with ID{self.id}"
-
-
-def default_category():
-    try:
-        existing_default_category = Category.objects.get(title='Common').id
-    except:
-        existing_default_category = None
-    if existing_default_category:
-        return existing_default_category
-    else:
-        created_default = Category.objects.create().id
-        created_default.save()
-        return created_default
 
 
 class Advertisement(models.Model):
@@ -36,7 +30,7 @@ class Advertisement(models.Model):
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
     # rate = models.ManyToManyField(CustomUser, through='Rating')
-    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='advertisements', default=default_category())
+    category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='advertisements', default=Category.get_default_pk)
 
     @property
     def image_url(self):
