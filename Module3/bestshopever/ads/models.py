@@ -46,3 +46,12 @@ class Advertisement(models.Model):
     def __str__(self):
         return f"Ad \"{self.title}\" from {self.author} with rating {self.author.rating_calc}"
 
+
+class Comment(models.Model):
+    author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='comments')
+    ad = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='comments')
+    text = models.TextField(max_length=200)
+    date_pub = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "Comment from {} to ad #{}".format(self.author, self.ad.id)
