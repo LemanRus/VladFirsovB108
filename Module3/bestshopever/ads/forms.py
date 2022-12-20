@@ -30,9 +30,19 @@ class AdCreateForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(CommentForm, self).__init__(*args, **kwargs)
+
     class Meta:
         model = Comment
         fields = ['text']
         widgets = {
             'text': forms.Textarea(attrs={'class': 'form-control', 'placeholder': "Write your comment here"})
         }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if not self.request.user.is_authenticated:
+            raise forms.ValidationError('Please log in to leave the comment')

@@ -29,7 +29,6 @@ class Advertisement(models.Model):
     image = models.ImageField(upload_to=ad_image_path)
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
-    # rate = models.ManyToManyField(CustomUser, through='Rating')
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='advertisements', default=Category.get_default_pk)
 
     @property

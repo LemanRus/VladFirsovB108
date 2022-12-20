@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
     telephone = PhoneField(blank=True)
 
     def __str__(self):
-        return f"{self.username} with ID{self.id}"
+        return f"{self.username}"
 
     @property
     def rating_calc(self):
@@ -36,7 +36,6 @@ class Stars(models.IntegerChoices):
 class Rating(models.Model):
     user_who_rate = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rate')
     user_rated = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='rated')
-    # advertisement = models.ForeignKey(Advertisement, on_delete=models.CASCADE, related_name='rating')
     rating_value = models.IntegerField(default=Stars.FIVE, choices=Stars.choices)
 
     def __str__(self):

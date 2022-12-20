@@ -1,5 +1,6 @@
 import time
 
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
@@ -9,8 +10,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
 
 from . import models
-from .forms import AdCreateForm
-from .models import Advertisement, Category
+from .forms import AdCreateForm, CommentForm
+from .models import Advertisement, Category, Comment
 from core.models import Rating
 
 
@@ -42,16 +43,47 @@ class CategoryDetailed(DetailView):
 
 
 class AdDetailed(DetailView):
+
     model = Advertisement
+    comment_form = CommentForm
     template_name = 'ads/ad_show.html'
     context_object_name = 'ad'
     pk_url_kwarg = 'ad_id'
+
+    def get_form_kwargs(self):
+        kwargs = super(AdDetailed, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
+
+    def get(self, request, ad_id, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+        context['comments'] = Comment.objects.filter(ad__pk=ad_id).order_by('-date_pub')[:5]
+        context['comment_form'] = self.comment_form(request=request)
+        return self.render_to_response(context)
+
+    def post(self, request, ad_id, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.comment_form(request.POST, request=request)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.author = request.user
+            comment.ad = self.object
+            comment.save()
+
+        context = self.get_context_data(object=self.object)
+        context.update({
+            'comments': Comment.objects.filter(ad__pk=ad_id).order_by('-date_pub')[:5],
+            'comment_form': form,
+        })
+        return self.render_to_response(context)
 
 
 class AdCreate(CreateView):
     form_class = AdCreateForm
     template_name = 'ads/ad_create.html'
 
+    @login_required()
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         context = {}
