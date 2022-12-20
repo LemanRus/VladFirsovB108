@@ -1,6 +1,7 @@
 import time
 
 from django.contrib.auth.decorators import login_required
+from django.forms import forms
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
@@ -43,28 +44,24 @@ class CategoryDetailed(DetailView):
 
 
 class AdDetailed(DetailView):
-
     model = Advertisement
     comment_form = CommentForm
     template_name = 'ads/ad_show.html'
     context_object_name = 'ad'
     pk_url_kwarg = 'ad_id'
 
-    def get_form_kwargs(self):
-        kwargs = super(AdDetailed, self).get_form_kwargs()
-        kwargs['request'] = self.request
-        return kwargs
-
     def get(self, request, ad_id, *args, **kwargs):
         self.object = self.get_object()
         context = self.get_context_data(object=self.object)
         context['comments'] = Comment.objects.filter(ad__pk=ad_id).order_by('-date_pub')[:5]
-        context['comment_form'] = self.comment_form(request=request)
+        context['comment_form'] = self.comment_form
         return self.render_to_response(context)
 
     def post(self, request, ad_id, *args, **kwargs):
         self.object = self.get_object()
-        form = self.comment_form(request.POST, request=request)
+        form = self.comment_form(request.POST)
+        if not request.user.is_authenticated:
+            form.add_error(None, forms.ValidationError('Please log in to leave a comment'))
         if form.is_valid():
             comment = form.save(commit=False)
             comment.author = request.user
