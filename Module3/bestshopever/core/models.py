@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 from phone_field import PhoneField
 
 
@@ -15,6 +16,9 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return f"{self.username}"
+
+    def get_absolute_url(self):
+        return reverse('core:profile', kwargs={'user_id': self.pk})
 
     @property
     def rating_calc(self):
