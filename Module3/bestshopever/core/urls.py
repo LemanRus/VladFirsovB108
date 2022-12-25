@@ -1,7 +1,8 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, reverse
 from . import views
+from .models import CustomUser
 
-appname = 'core'
+app_name = 'core'
 
 urlpatterns = [
     path('login/', views.LoginView.as_view(template_name='core/login.html'), name="login"),

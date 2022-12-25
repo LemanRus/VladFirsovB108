@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Signup</title>
+</head>
+<body>
+    <H1>New user</H1>
+    {% if not user.is_authenticated %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Sign up!</button>
+        </form>
+    {% else %}
+        <H2>You have been already registered!</H2>
+    {% endif %}
+</body>
+</html>
+</body>
+</html>
