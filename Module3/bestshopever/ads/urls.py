@@ -16,6 +16,6 @@ urlpatterns = [
     path('ads/<int:ad_id>/edit/', views.AdEdit.as_view(), name='ad_edit'),
     path('ads/<int:ad_id>/rate/', views.rate_ad_author, name='rate_ad_author'),
     re_path(r'^ads/(?P<ad_id>\w+)$', views.AdDetailed.as_view(), name='ad_show'),
-    re_path(r'^(?P<category_id>\w+)$', views.CategoryDetailed.as_view(), name='category_show'),
+    re_path(r'^cat-(?P<category_id>\w+)$', views.CategoryDetailed.as_view(), name='category_show'),
 ]
 
