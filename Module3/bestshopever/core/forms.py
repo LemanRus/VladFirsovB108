@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
+from django.contrib.auth.password_validation import validate_password
 from django.utils.datetime_safe import datetime
 
 from .models import CustomUser
@@ -27,6 +28,26 @@ class SignupForm(UserCreationForm, UserActions):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'birth_date', 'photo', 'telephone')
+
+
+class PasswordResetForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
+
+    class Meta:
+        model = CustomUser
+        fields = ('email', 'password')
+        labels = {
+            'email': 'Email used for registration',
+            'password': 'Enter your new password',
+        }
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if not email:
+            raise forms.ValidationError('Enter email!')
+        if email and not CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError('Email doesn\'t exist. Please sign up')
+        return email
 
 
 class UpdateProfileForm(forms.ModelForm):

@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     birth_date = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to=user_profile_photo_path)
     telephone = PhoneField(blank=True)
+    email = models.EmailField("email address", blank=False)
 
     def __str__(self):
         return f"{self.username}"
