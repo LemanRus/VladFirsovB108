@@ -27,17 +27,17 @@ class SignupForm(UserCreationForm, UserActions):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'email', 'birth_date', 'photo', 'telephone')
+        fields = ('username', 'email', 'birth_date', 'photo', 'telephone', 'secret_question', 'secret_answer')
 
 
-class PasswordResetForm(forms.ModelForm):
+class PasswordResetValidateForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput, validators=[validate_password])
 
     class Meta:
         model = CustomUser
-        fields = ('email', 'password')
+        fields = ('secret_answer', 'password')
         labels = {
-            'email': 'Email used for registration',
+            'secret_answer': 'Answer',
             'password': 'Enter your new password',
         }
 

@@ -14,6 +14,8 @@ class CustomUser(AbstractUser):
     photo = models.ImageField(upload_to=user_profile_photo_path)
     telephone = PhoneField(blank=True)
     email = models.EmailField("email address", blank=False)
+    secret_question = models.CharField(blank=False, max_length=150, default='Name of your first pet')
+    secret_answer = models.CharField(blank=False, max_length=50)
 
     def __str__(self):
         return f"{self.username}"

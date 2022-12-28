@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import DetailView, UpdateView
 
 from .models import CustomUser, Rating
-from .forms import SignupForm, PasswordResetForm
+from .forms import SignupForm, PasswordResetValidateForm
 
 
 # Create your views here.
@@ -72,18 +72,41 @@ class ProfileEditView(UpdateView):
 
 class PasswordResetView(View):
     template_name = 'core/password_reset.html'
-    form = PasswordResetForm
+    context = {
+        'error': "",
+    }
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+    def post(self, request, *args, **kwargs):
+        email_for_reset = request.POST.get('email_for_reset')
+        if email_for_reset and not CustomUser.objects.filter(email=email_for_reset).exists():
+            self.context['error'] = 'Email does not exist. Check it or sign up:'
+            return render(request, self.template_name, self.context)
+        else:
+            user = CustomUser.objects.filter(email=email_for_reset).get()
+            return redirect(reverse('core:password_reset_validate',  kwargs={'user_id': user.id}))
+
+
+class PasswordResetValidateView(View):
+    template_name = 'core/password_reset_validate.html'
+    form = PasswordResetValidateForm
 
     def get(self, request, *args, **kwargs):
         context = {
             'form': self.form,
+            'secret_question': CustomUser.objects.get(pk=kwargs['user_id']).secret_question,
+            'user_id': kwargs['user_id'],
         }
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
-        form = PasswordResetForm(request.POST)
+        form = self.form(request.POST)
+        user_who_reset = CustomUser.objects.get(pk=kwargs['user_id'])
+        if form.data.get('secret_answer') != user_who_reset.secret_answer:
+            form.add_error('secret_answer', 'Secret answer is not correct')
         if form.is_valid():
-            user_who_reset = CustomUser.objects.get(email=form.cleaned_data.get('email'))
             print(user_who_reset)
             user_who_reset.password = form.cleaned_data.get('password')
             user_who_reset.save()
@@ -91,4 +114,6 @@ class PasswordResetView(View):
         else:
             return render(request, self.template_name, {
                 'form': form,
+                'secret_question': user_who_reset.secret_question,
+                'user_id': kwargs['user_id'],
             })
