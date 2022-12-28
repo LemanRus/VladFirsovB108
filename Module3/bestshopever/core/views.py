@@ -108,7 +108,7 @@ class PasswordResetValidateView(View):
             form.add_error('secret_answer', 'Secret answer is not correct')
         if form.is_valid():
             print(user_who_reset)
-            user_who_reset.password = form.cleaned_data.get('password')
+            user_who_reset.set_password(form.cleaned_data.get('password'))
             user_who_reset.save()
             return redirect(reverse('core:password_reset_completed'))
         else:
