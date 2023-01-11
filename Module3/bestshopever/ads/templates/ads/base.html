@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'ads/css/style.css' %}">
+    <title>
+        {% block title %}
+            Best shop ever
+        {% endblock title %}
+    </title>
+</head>
+<body>
+{% block page %}
+    {% block header %}
+        {% include 'ads/header.html' %}
+    {% endblock header %}
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+    {% block footer %}
+        {% include 'ads/footer.html' %}
+    {% endblock footer %}
+{% endblock page %}
+</body>
+{% include 'ads/ext_scripts.html' %}
+</html>

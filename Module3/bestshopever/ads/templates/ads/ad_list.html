@@ -1,23 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Advertisements</title>
-</head>
-<body>
-<h1>Advertisements</h1>
-<p>Newest on top</p>
-{% if ads %}
-<ul>
-    {% for ad in ads %}
-    <li>
-        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
-        <p> {{ ad.author.username }} </p>
-        <p> {{ ad.description }}</p>
-        <img src="{{ ad.image_url }}">
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Advertisements
+{% endblock title %}
+
+{% block content %}
+    <h1>Advertisements</h1>
+    <p>Newest on top</p>
+    {% include 'ads/ad_ul.html' %}
+{% endblock content %}

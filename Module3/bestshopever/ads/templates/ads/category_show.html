@@ -1,21 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Categories</title>
-</head>
-<body>
-<h1>{{ category.title }}</h1>
-{% if category.advertisements.all %}
-<ul>
-    {% for ad in category.advertisements.all %}
-    <li>
-        <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
-        <p>{{ ad.author.username }}</p>
-        <p>{{ ad.description }}</p>
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Categories
+{% endblock title %}
+
+{% block content %}
+    <h1>{{ category.title }}</h1>
+    {% with ads=category.advertisements.all %}
+        {% include 'ads/ad_ul.html' %}
+    {% endwith %}
+{% endblock content %}

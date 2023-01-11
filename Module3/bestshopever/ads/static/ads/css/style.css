@@ -1,16 +1,23 @@
 * {
-  box-sizing: border-box
+    box-sizing: border-box
 }
 
 body {
-  background: radial-gradient(#000, #111), #000;
-  min-height: 100%;
-  color: white;
+    background: radial-gradient(#000, #111), #000;
+    min-height: 100%;
+    color: white;
+    pointer-events: none;
+}
+
+a, p, div, span, canvas, h1 {
+    pointer-events: auto;
 }
 
 canvas {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  z-index: -1;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: -1;
+    top:0;
+    left:0;
 }

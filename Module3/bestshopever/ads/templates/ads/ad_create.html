@@ -1,14 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Create new ad</title>
-</head>
-<body>
-<form action="{% url 'ads:ad_create' %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="OK">
-</form>
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Create new ad
+{% endblock title %}
+
+{% block content %}
+    <form action="{% url 'ads:ad_create' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="OK">
+    </form>
+{% endblock content %}

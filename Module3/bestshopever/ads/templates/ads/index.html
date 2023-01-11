@@ -1,41 +1,26 @@
-<!DOCTYPE html>
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{% static 'ads/css/style.css' %}">
-    <title>Best shop ever</title>
-</head>
-<body>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.20.3/TweenMax.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.5/lodash.js"></script>
-<script type="text/javascript" src="{% static 'ads/js/script.js' %}"></script>
-<h1>Best shop ever</h1>
-<p>Greetings visitor!</p>
-<p>Behold the greatest bulletin board since the Aztec civilization! By reading this, you receive the great power of the
-    knowledge of the universe.</p>
-{% if user.is_authenticated %}
-    <ul>
-        <li><a href="{% url 'core:profile' user.id %}">Мой профиль</a></li>
-        <li><a href="{% url 'core:logout' %}">Выйти</a></li>
-    </ul>
-{% else %}
-    <ul>
-        <li><a href="{% url 'core:signup' %}">Зарегистрироваться</a></li>
-        <li><a href="{% url 'core:login' %}">Войти</a></li>
-    </ul>
-{% endif %}
-<a href="{% url 'ads:recent_ads' %}">Объявления</a>
-<a href="{% url 'ads:categories' %}">Категории</a>
-{% if ads %}
-    <ul>
-        {% for ad in ads %}
-        <li>
-            <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
-            <p>{{ ad.author }}</p>
-        </li>
-        {% endfor %}
-    </ul>
-{% endif %}
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+{% block content %}
+    <h1>Best shop ever</h1>
+    <p>Greetings visitor!</p>
+    <p>Behold the greatest bulletin board since the Aztec civilization! By reading this, you receive the great power of the
+        knowledge of the universe.</p>
+    {% if user.is_authenticated %}
+        <ul>
+            <li><a href="{% url 'core:profile' user.id %}">Мой профиль</a></li>
+            <li><a href="{% url 'core:logout' %}">Выйти</a></li>
+        </ul>
+    {% else %}
+        <ul>
+            <li><a href="{% url 'core:signup' %}">Зарегистрироваться</a></li>
+            <li><a href="{% url 'core:login' %}">Войти</a></li>
+        </ul>
+    {% endif %}
+    <a href="{% url 'ads:recent_ads' %}">Объявления</a>
+    <a href="{% url 'ads:categories' %}">Категории</a>
+    {% include 'ads/ad_ul.html' %}
+{% endblock content %}
