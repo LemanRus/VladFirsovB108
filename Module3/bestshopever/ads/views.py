@@ -131,5 +131,6 @@ def rate_ad_author(request, ad_id):
         ad_rating, created = Rating.objects.get_or_create(user_who_rate=request.user, user_rated=ad.author)
         ad_rating.rating_value = request.POST.get('selected_rating')
         ad_rating.save()
+    print(request)
     return redirect(request.META.get('HTTP_REFERER'), request)
 

@@ -1,44 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Advertisement</title>
-</head>
-<body>
-<p>{{ ad.category.title }} /</p>
-<p>{{ ad.title }}</p>
-<p>published at {{ ad.date_pub.date }} by {{ ad.author }}</p>
-<p>{{ ad.description }}</p>
-<img src="{{ ad.image_url }}">
-<p>Author rating: {{ ad.author.rating_calc }}</p>
-<form method="post" action="{% url 'ads:rate_ad_author' ad.id %}">
-    {% csrf_token %}
-    <select name="selected_rating">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>5</option>
-    </select>
-    <button type="submit">Rate ad author</button>
-</form>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Advertisement "{{ ad.title }}"
+{% endblock title %}
+
+{% block content %}
+    <p>{{ ad.category.title }} /</p>
+    <p>{{ ad.title }}</p>
+    <p>published at {{ ad.date_pub.date }} by {{ ad.author }}</p>
+    <p>{{ ad.description }}</p>
+    <img src="{{ ad.image_url }}">
+    <p>Author rating: {{ ad.author.rating_calc }}</p>
+    <form method="post" action="{% url 'ads:rate_ad_author' ad.id %}">
+        {% csrf_token %}
+        <select name="selected_rating">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+        <button type="submit">Rate ad author</button>
+    </form>
 
 
-{% if comments %}
-    <h2>Comments:</h2>
-    {% for comment in comments %}
-        <p>{{ comment.author }}</p>
-        <p>{{ comment.date_pub }}</p>
-        <p>{{ comment.text }}</p>
-    {% endfor %}
-    {% else %}
-    <h2>No comments yet. Be first!</h2>
-{% endif %}
+    {% if comments %}
+        <h2>Comments:</h2>
+        {% for comment in comments %}
+            <p>{{ comment.author }}</p>
+            <p>{{ comment.date_pub }}</p>
+            <p>{{ comment.text }}</p>
+        {% endfor %}
+        {% else %}
+        <h2>No comments yet. Be first!</h2>
+    {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    <button type="submit">Add comment</button>
-</form>
-</body>
-</html>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Add comment</button>
+    </form>
+{% endblock content %}

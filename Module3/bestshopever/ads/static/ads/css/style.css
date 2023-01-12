@@ -9,7 +9,7 @@ body {
     pointer-events: none;
 }
 
-a, p, div, span, canvas, h1 {
+a, p, div, span, canvas, h1, form {
     pointer-events: auto;
 }
 

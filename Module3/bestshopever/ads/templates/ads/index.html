@@ -9,18 +9,5 @@
     <p>Greetings visitor!</p>
     <p>Behold the greatest bulletin board since the Aztec civilization! By reading this, you receive the great power of the
         knowledge of the universe.</p>
-    {% if user.is_authenticated %}
-        <ul>
-            <li><a href="{% url 'core:profile' user.id %}">Мой профиль</a></li>
-            <li><a href="{% url 'core:logout' %}">Выйти</a></li>
-        </ul>
-    {% else %}
-        <ul>
-            <li><a href="{% url 'core:signup' %}">Зарегистрироваться</a></li>
-            <li><a href="{% url 'core:login' %}">Войти</a></li>
-        </ul>
-    {% endif %}
-    <a href="{% url 'ads:recent_ads' %}">Объявления</a>
-    <a href="{% url 'ads:categories' %}">Категории</a>
     {% include 'ads/ad_ul.html' %}
 {% endblock content %}

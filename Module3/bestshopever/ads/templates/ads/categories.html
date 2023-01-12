@@ -1,19 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Categories</title>
-</head>
-<body>
-<h1>Categories</h1>
-{% if categories %}
-<ul>
-    {% for cat in categories %}
-    <li>
-        <a href="{% url 'ads:category_show' cat.id %}">{{ cat.title }}</a>
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Categories
+{% endblock title %}
+
+{% block content %}
+    {% if categories %}
+    <ul>
+        {% for cat in categories %}
+        <li>
+            <a href="{% url 'ads:category_show' cat.id %}">{{ cat.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endblock content %}
