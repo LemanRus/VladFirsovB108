@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ad delete</title>
-</head>
-<body>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Ad delete
+{% endblock title %}
+
+{% block content %}
     {% if ad.author != user %}
         <h1>Вы не можете удалить объявление!</h1>
         <p>{{user}}</p>
@@ -17,5 +17,4 @@
             <a href="{% url 'ads:ad_show' ad.id %}">Нет!</a>
         </form>
     {% endif %}
-</body>
-</html>
+{% endblock content %}

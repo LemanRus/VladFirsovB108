@@ -1,10 +1,4 @@
-{% extends 'ads/base.html' %}
 
-{% block title %}
-    Advertisement "{{ ad.title }}"
-{% endblock title %}
-
-{% block content %}
     <p>{{ ad.category.title }} /</p>
     <p>{{ ad.title }}</p>
     <p>published at {{ ad.date_pub.date }} by {{ ad.author }}</p>

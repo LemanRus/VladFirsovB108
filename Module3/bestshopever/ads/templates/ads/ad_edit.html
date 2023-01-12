@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit advertisement</title>
-</head>
-<body>
-<h1>Edit advertisement</h1>
-<form action="{% url 'ads:ad_edit' ad.id %}" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="OK">
-</form>
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Edit advertisement
+{% endblock title %}
+
+{% block content %}
+    <h1>Edit advertisement</h1>
+    <form action="{% url 'ads:ad_edit' ad.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="OK">
+    </form>
+{% endblock content %}
