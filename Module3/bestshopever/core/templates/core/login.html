@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Login</title>
-</head>
-<body>
-<H1>Greetings!</H1>
-<form method="post" action="{% url 'core:login' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Log in</button>
-</form>
-<a href="{% url 'core:password_reset' %}">Forgot your password?</a>
-</body>
-</html>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Sign up
+{% endblock title %}
+
+{% block content %}
+    <H1>Greetings!</H1>
+    <form method="post" action="{% url 'core:login' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Log in</button>
+    </form>
+    <a href="{% url 'core:password_reset' %}">Forgot your password?</a>
+{% endblock content %}

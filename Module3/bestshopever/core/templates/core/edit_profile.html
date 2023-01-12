@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Edit {{ profile }}</title>
-</head>
-<body>
+{% extends 'ads/base.html' %}
+
+{% block title %}
+    Edit {{ profile }}
+{% endblock title %}
+
+{% block content %}
     <h1>Editing: {{profile}}</h1>
     <img src="{{profile.avatar.url}}" alt="avatar">
 
@@ -13,5 +13,4 @@
         {{ form.as_p }}
         <button type="submit">Save changes</button>
     </form>
-</body>
-</html>
+{% endblock content %}
