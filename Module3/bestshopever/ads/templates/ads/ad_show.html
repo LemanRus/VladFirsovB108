@@ -11,7 +11,7 @@
     <p>{{ ad.description }}</p>
     <img src="{{ ad.image_url }}">
     <p>Author rating: {{ ad.author.rating_calc }}</p>
-    {% with goto="ads:rate_ad_author" var=ad.id %} %}
+    {% with goto="ads:rate_ad_author" var=ad.id %}
         {% include 'core/rate_author.html' %}
     {% endwith %}
 

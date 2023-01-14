@@ -3,6 +3,8 @@ from django.db import models
 from django.urls import reverse
 from phone_field import PhoneField
 
+from core.validators import validate_birth_date
+
 
 def user_profile_photo_path(instance, filename):
     user_id = instance.id
@@ -10,8 +12,8 @@ def user_profile_photo_path(instance, filename):
 
 
 class CustomUser(AbstractUser):
-    birth_date = models.DateField(blank=True, null=True)
-    photo = models.ImageField(upload_to=user_profile_photo_path)
+    birth_date = models.DateField(blank=True, null=True, validators=[validate_birth_date,])
+    photo = models.ImageField(upload_to=user_profile_photo_path, default='default.png')
     telephone = PhoneField(blank=True)
     email = models.EmailField("email address", blank=False)
     secret_question = models.CharField(blank=False, max_length=150, default='Name of your first pet')

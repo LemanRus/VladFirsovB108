@@ -128,9 +128,9 @@ class AdDelete(DeleteView):
 def rate_ad_author(request, ad_id):
     ad = get_object_or_404(models.Advertisement, pk=ad_id)
     if request.user and request.user.is_authenticated:
-        ad_rating, created = Rating.objects.get_or_create(user_who_rate=request.user, user_rated=ad.author)
-        ad_rating.rating_value = request.POST.get('selected_rating')
-        ad_rating.save()
+        author_rating, created = Rating.objects.get_or_create(user_who_rate=request.user, user_rated=ad.author)
+        author_rating.rating_value = request.POST.get('selected_rating')
+        author_rating.save()
     print(request)
     return redirect(request.META.get('HTTP_REFERER'), request)
 
