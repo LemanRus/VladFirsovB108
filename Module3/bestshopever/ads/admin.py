@@ -26,19 +26,22 @@ class AdvertisementInline(admin.TabularInline):
 
 class AdvertisementAdmin(admin.ModelAdmin):
     fieldsets =[
-        (None, {'fields': ['author', ]}),
+        (None, {'fields': ['author', 'status']}),
         ('Advertisement content', {'fields': ['title', 'description', 'image', 'category',]}),
         ('Date information', {'fields': ['date_pub', 'date_edit']}),
     ]
     readonly_fields = ['date_pub', 'date_edit']
     inlines = [CommentInline]
-    list_display = ['__str__', 'description', 'author', 'category', 'date_pub']
+    list_display = ['__str__', 'description', 'author', 'category', 'status', 'date_pub']
     list_display_links = ['__str__', 'description']
-    list_editable = ['category']
+    list_editable = ['category', 'status']
     sortable_by = ['date_pub']
     list_filter = ['category', 'date_pub']
     search_fields = ['author__username', 'author__first_name', 'author__last_name', 'title', 'category']
+    actions = ['make_public']
 
+    def make_public(self, request, queryset):
+        queryset.update(status='p')
 
 admin.site.register(Advertisement, AdvertisementAdmin)
 

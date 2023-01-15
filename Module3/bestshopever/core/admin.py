@@ -25,7 +25,7 @@ class CustomUserAdmin(UserAdmin):
     def make_stuff(self, request, queryset):
         queryset.update(is_staff=True)
 
-    def dismiss_stuff(request, queryset):
+    def dismiss_stuff(self, request, queryset):
         queryset.update(is_staff=False)
 
 

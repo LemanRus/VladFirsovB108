@@ -25,12 +25,19 @@ class Category(models.Model):
     def __str__(self):
         return f"{self.title} with ID{self.id}"
 
+STATUS_CHOICES = [
+    ('d', 'Draft'),
+    ('p', 'Published'),
+    ('w', 'Withdrawn'),
+]
+
 
 class Advertisement(models.Model):
     author = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='ads')
     title = models.CharField(max_length=150, blank=False)
     description = models.TextField(max_length=5000, blank=False)
     image = models.ImageField(upload_to=ad_image_path, default='default.png')
+    status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='d')
     date_pub = models.DateTimeField(auto_now_add=True)
     date_edit = models.DateTimeField(auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.SET_DEFAULT, related_name='advertisements', default=Category.get_default_pk)
