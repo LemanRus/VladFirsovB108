@@ -10,6 +10,10 @@ def ad_image_path(instance, filename):
 
 class Category(models.Model):
     title = models.CharField(max_length=150, blank=False, default='Common')
+    description = models.TextField(max_length=5000, blank=False, default='Goods category')
+
+    class Meta:
+        verbose_name_plural = 'Categories'
 
     @classmethod
     def get_default_pk(cls):

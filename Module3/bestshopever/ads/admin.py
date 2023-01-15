@@ -32,10 +32,29 @@ class AdvertisementAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ['date_pub', 'date_edit']
     inlines = [CommentInline]
-    list_display = ['__str__', 'description', 'category', 'date_pub']
+    list_display = ['__str__', 'description', 'author', 'category', 'date_pub']
+    list_display_links = ['__str__', 'description']
     list_editable = ['category']
+    sortable_by = ['date_pub']
+    list_filter = ['category', 'date_pub']
+    search_fields = ['author__username', 'author__first_name', 'author__last_name', 'title', 'category']
 
 
 admin.site.register(Advertisement, AdvertisementAdmin)
 
-admin.site.register(Category)
+
+class CategoryAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields': ['title', 'description']}),
+    ]
+    readonly_fields = []
+    inlines = [AdvertisementInline]
+    list_display = ['title', 'description',]
+    list_display_links = ['title']
+    list_editable = ['description']
+    sortable_by = ['title']
+    list_filter = ['title']
+    search_fields = ['title', 'description']
+
+
+admin.site.register(Category, CategoryAdmin)
