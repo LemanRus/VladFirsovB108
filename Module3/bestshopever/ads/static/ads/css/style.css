@@ -2,15 +2,31 @@
     box-sizing: border-box
 }
 
+a {
+    text-decoration: none;
+    color: snow;
+    text-decoration: underline;
+}
+
 body {
     background: radial-gradient(#000, #111), #000;
     min-height: 100%;
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
     color: white;
-    pointer-events: none;
 }
 
-a, p, div, span, canvas, h1, form {
-    pointer-events: auto;
+.wrapper {
+    max-width: 1180px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    align-items: center;
 }
 
 canvas {
@@ -20,4 +36,40 @@ canvas {
     z-index: -1;
     top:0;
     left:0;
+}
+
+.header__logo {
+    margin-right: auto;
+}
+
+.header__navigation {
+    display: flex;
+    width: 50%;
+    justify-content: space-between;
+}
+
+.header__menu {
+    display: flex;
+    justify-content: space-between;
+    width: 40%;
+}
+
+.ads-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ads-list__item {
+    margin: 0 30px;
+    width: 235px;
+}
+
+.ads-list__image {
+    width: 200px;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    text-align: center;
 }

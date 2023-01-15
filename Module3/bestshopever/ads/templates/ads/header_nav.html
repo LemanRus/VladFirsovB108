@@ -1,5 +1,5 @@
-<nav>
-    <ul>
+<nav class="header__navigation">
+    <ul class="header__menu">
     <li>
         <a href="{% url 'ads:recent_ads' %}">Объявления</a>
     </li>
@@ -8,12 +8,12 @@
     </li>
 </ul>
 {% if user.is_authenticated %}
-    <ul>
+    <ul class="header__menu">
         <li><a href="{% url 'core:profile' user.id %}">Мой профиль</a></li>
         <li><a href="{% url 'core:logout' %}">Выйти</a></li>
     </ul>
 {% else %}
-    <ul>
+    <ul class="header__menu">
         <li><a href="{% url 'core:signup' %}">Зарегистрироваться</a></li>
         <li><a href="{% url 'core:login' %}">Войти</a></li>
     </ul>

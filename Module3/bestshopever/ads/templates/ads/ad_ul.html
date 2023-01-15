@@ -1,12 +1,12 @@
 {% if ads %}
-<ul>
+<ul class="ads-list">
     {% for ad in ads %}
     {% if ad.status == 'p' %}
-    <li>
+    <li class="ads-list__item">
         <a href="{% url 'ads:ad_show' ad.id %}">{{ ad.title }}</a>
         <p> {{ ad.author.username }} </p>
         <p> {{ ad.description }}</p>
-        <img src="{{ ad.image_url }}">
+        <img class="ads-list__image" src="{{ ad.image_url }}">
     </li>
     {% endif %}
     {% endfor %}
