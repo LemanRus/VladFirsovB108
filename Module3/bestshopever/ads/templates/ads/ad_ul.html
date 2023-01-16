@@ -3,10 +3,10 @@
     {% for ad in ads %}
     {% if ad.status == 'p' %}
     <li class="ads-list__item">
-        <a href="{% url 'ads:ad_show' ad.id %}" >
+        <a href="{% url 'ads:ad_show' ad.id %}" class="ads-list__card">
             <p class="ads-list__title">{{ ad.title }}</p>
             <p class="ads-list__author"> {{ ad.author.username }} </p>
-            <p class="ads-list__description"> {{ ad.description }}</p>
+            <p class="ads-list__description"> {{ ad.description|truncatechars:140 }}</p>
             <img class="ads-list__image" src="{{ ad.image_url }}">
         </a>
     </li>

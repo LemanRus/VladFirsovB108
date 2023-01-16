@@ -16,13 +16,15 @@ body {
     font-size: 16px;
     line-height: 22px;
     color: white;
+    max-width: 1180px;
+    margin: auto;
 }
 
-.wrapper {
-    max-width: 1180px;
-    width: 100%;
-    margin: 0 auto;
-}
+/*.wrapper {*/
+/*    max-width: 1180px;*/
+/*    width: 100%;*/
+/*    margin: 0 auto;*/
+/*}*/
 
 .header {
     display: flex;
@@ -51,7 +53,8 @@ canvas {
 .header__menu {
     display: flex;
     justify-content: space-between;
-    width: 40%;
+    width: 45%;
+    margin: 0 auto;
 }
 
 .header__menu-item {
@@ -64,10 +67,18 @@ canvas {
 }
 
 .ads-list__item {
-    margin: 0 30px;
+    margin: 0 10px;
+    padding: 0 10px;
     width: 235px;
-    text-align: center;
+    background-color: rgba(255, 255, 255, .1);
     display: block;
+}
+
+.ads-list__card {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-content: space-between;
 }
 
 .ads-list__title {
@@ -94,5 +105,5 @@ canvas {
 .footer {
     display: flex;
     align-items: center;
-    text-align: center;
+    justify-content: center;
 }
