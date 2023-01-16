@@ -54,6 +54,10 @@ canvas {
     width: 40%;
 }
 
+.header__menu-item {
+    display: block;
+}
+
 .ads-list {
     display: flex;
     flex-wrap: wrap;
@@ -62,6 +66,25 @@ canvas {
 .ads-list__item {
     margin: 0 30px;
     width: 235px;
+    text-align: center;
+    display: block;
+}
+
+.ads-list__title {
+    font-size: 30px;
+    line-height: 40px;
+    text-decoration: none;
+    
+}
+
+.ads-list__author {
+    font-size: 12px;
+    line-height: 16px;
+    text-decoration: none;
+}
+
+.ads-list__description {
+
 }
 
 .ads-list__image {

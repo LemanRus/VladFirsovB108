@@ -1,21 +1,29 @@
 <nav class="header__navigation">
     <ul class="header__menu">
-    <li>
+    <li class="header__menu-item">
         <a href="{% url 'ads:recent_ads' %}">Объявления</a>
     </li>
-    <li>
+    <li class="header__menu-item">
         <a href="{% url 'ads:categories' %}">Категории</a>
     </li>
 </ul>
 {% if user.is_authenticated %}
     <ul class="header__menu">
-        <li><a href="{% url 'core:profile' user.id %}">Мой профиль</a></li>
-        <li><a href="{% url 'core:logout' %}">Выйти</a></li>
+        <li class="header__menu-item">
+            <a href="{% url 'core:profile' user.id %}">Мой профиль</a>
+        </li>
+        <li class="header__menu-item">
+            <a href="{% url 'core:logout' %}">Выйти</a>
+        </li>
     </ul>
 {% else %}
     <ul class="header__menu">
-        <li><a href="{% url 'core:signup' %}">Зарегистрироваться</a></li>
-        <li><a href="{% url 'core:login' %}">Войти</a></li>
+        <li class="header__menu-item">
+            <a href="{% url 'core:signup' %}">Зарегистрироваться</a>
+        </li>
+        <li class="header__menu-item">
+            <a href="{% url 'core:login' %}">Войти</a>
+        </li>
     </ul>
 {% endif %}
 </nav>
