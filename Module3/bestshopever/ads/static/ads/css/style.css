@@ -29,6 +29,7 @@ body {
 .header {
     display: flex;
     align-items: center;
+    margin-top: 2rem;
 }
 
 canvas {
@@ -40,8 +41,20 @@ canvas {
     left:0;
 }
 
+.margined10 {
+    margin: 10px;
+}
+
 .header__logo {
     margin-right: auto;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 40px;
+    line-height: 50px;
+    text-transform: uppercase;
+    background: linear-gradient(gold, darkred);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: #0B2349;
 }
 
 .header__navigation {
@@ -84,7 +97,7 @@ canvas {
 .ads-list__title {
     font-size: 30px;
     line-height: 40px;
-    text-decoration: none;
+    text-decoration: underline;
     text-align: center;
 }
 
