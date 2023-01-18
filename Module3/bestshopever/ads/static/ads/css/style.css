@@ -68,7 +68,7 @@ canvas {
 
 .ads-list__item {
     margin: 0 10px;
-    padding: 0 10px;
+    padding: 5px 10px 20px 10px;
     width: 235px;
     background-color: rgba(255, 255, 255, .1);
     display: block;
@@ -106,4 +106,8 @@ canvas {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.pagination {
+    text-align: center;
 }

@@ -20,7 +20,7 @@ class IndexView(ListView):
     model = Advertisement
     template_name = 'ads/index.html'
     context_object_name = 'ads'
-    queryset = Advertisement.objects.order_by('-date_pub')[:7]
+    queryset = Advertisement.objects.order_by('-date_pub')[:9]
 
 
 class AdList(ListView):
@@ -28,6 +28,13 @@ class AdList(ListView):
     template_name = 'ads/ad_list.html'
     context_object_name = 'ads'
     queryset = Advertisement.objects.order_by('-date_pub')
+    paginate_by = 12
+
+    def get(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        context = self.get_context_data(object_list=self.object_list)
+        context['is_listed'] = True
+        return self.render_to_response(context)
 
 
 class Categories(ListView):

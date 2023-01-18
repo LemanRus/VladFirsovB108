@@ -32,13 +32,16 @@ class AdvertisementAdmin(admin.ModelAdmin):
     ]
     readonly_fields = ['date_pub', 'date_edit']
     inlines = [CommentInline]
-    list_display = ['__str__', 'description', 'author', 'category', 'status', 'date_pub']
-    list_display_links = ['__str__', 'description']
+    list_display = ['__str__', 'short_description', 'author', 'category', 'status', 'date_pub']
+    list_display_links = ['__str__', 'short_description']
     list_editable = ['category', 'status']
     sortable_by = ['date_pub']
     list_filter = ['category', 'date_pub']
     search_fields = ['author__username', 'author__first_name', 'author__last_name', 'title', 'category']
     actions = ['make_public']
+
+    def short_description(self, obj):
+        return obj.description if len(obj.description) < 45 else (obj.description[:43] + '..')
 
     def make_public(self, request, queryset):
         queryset.update(status='p')
