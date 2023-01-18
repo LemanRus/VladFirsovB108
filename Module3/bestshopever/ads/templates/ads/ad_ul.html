@@ -5,6 +5,11 @@
     <li class="ads-list__item">
         <a href="{% url 'ads:ad_show' ad.id %}" class="ads-list__card">
             <p class="ads-list__title">{{ ad.title }}</p>
+            {{ objects_list }}
+            {{ ads }}
+            {% if context.is_listed %}
+            <p>LIIIISSSSSTTTTT</p>
+            {% endif %}
             <p class="ads-list__author"> {{ ad.author.username }} </p>
             <p class="ads-list__description"> {{ ad.description|truncatechars:140 }}</p>
             <img class="ads-list__image" src="{{ ad.image_url }}">

@@ -30,11 +30,10 @@ class AdList(ListView):
     queryset = Advertisement.objects.order_by('-date_pub')
     paginate_by = 12
 
-    def get(self, request, *args, **kwargs):
-        self.object_list = self.get_queryset()
-        context = self.get_context_data(object_list=self.object_list)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['is_listed'] = True
-        return self.render_to_response(context)
+        return context
 
 
 class Categories(ListView):
