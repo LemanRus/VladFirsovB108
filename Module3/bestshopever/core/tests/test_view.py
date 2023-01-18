@@ -32,8 +32,8 @@ class TestView(TestCase):
         self.client.login(username='test_user', password='testTEST1234')
         response = self.client.get(reverse('ads:index'))
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Мой профиль')
-        self.assertContains(response, 'Выйти')
+        self.assertContains(response, 'My profile')
+        self.assertContains(response, 'Exit')
 
     def test_edit_foreign_profile(self):
         self.client.force_login(CustomUser.objects.get_or_create(username='burglar')[0])

@@ -6,15 +6,15 @@
 
 {% block content %}
     {% if ad.author != user %}
-        <h1>Вы не можете удалить объявление!</h1>
+        <h1>You cannot delete advertisement!</h1>
         <p>{{user}}</p>
         <p>{{ad.author}}f</p>
     {% else %}
-        <h1>Вы уверены, что хотите удалить объявление?</h1>
+        <h1>Are you sure to delete advertisement?</h1>
         <form method="post" action="{% url 'ads:ad_delete' ad.id %}">
             {% csrf_token %}
-            <button type="submit">Да, удалить!</button>
-            <a href="{% url 'ads:ad_show' ad.id %}">Нет!</a>
+            <button type="submit">Yep, delete!</button>
+            <a href="{% url 'ads:ad_show' ad.id %}">Oh, no!</a>
         </form>
     {% endif %}
 {% endblock content %}

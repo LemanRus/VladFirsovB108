@@ -1,19 +1,19 @@
 <nav class="header__navigation">
     <ul class="header__menu">
     <li class="header__menu-item">
-        <a href="{% url 'ads:recent_ads' %}">Объявления</a>
+        <a href="{% url 'ads:recent_ads' %}">Advertisements</a>
     </li>
     <li class="header__menu-item">
-        <a href="{% url 'ads:categories' %}">Категории</a>
+        <a href="{% url 'ads:categories' %}">Categories</a>
     </li>
 </ul>
 {% if user.is_authenticated %}
     <ul class="header__menu">
         <li class="header__menu-item">
-            <a href="{% url 'core:profile' user.id %}">Мой профиль</a>
+            <a href="{% url 'core:profile' user.id %}">My profile</a>
         </li>
         <li class="header__menu-item">
-            <a href="{% url 'core:logout' %}">Выйти</a>
+            <a href="{% url 'core:logout' %}">Exit</a>
         </li>
     </ul>
 {% else %}
