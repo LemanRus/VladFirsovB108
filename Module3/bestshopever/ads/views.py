@@ -20,7 +20,7 @@ class IndexView(ListView):
     model = Advertisement
     template_name = 'ads/index.html'
     context_object_name = 'ads'
-    queryset = Advertisement.objects.order_by('-date_pub')[:9]
+    queryset = Advertisement.objects.order_by('-date_pub')[:4]
 
 
 class AdList(ListView):

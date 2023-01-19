@@ -1,15 +1,22 @@
 {% extends 'ads/base.html' %}
 
+{% load static %}
+
 {% block title %}
     Home
 {% endblock title %}
 
 {% block content %}
-    <section class="wrapper">
-        <h1>Best shop ever</h1>
-        <p>Greetings visitor!</p>
-        <p>Behold the greatest bulletin board since the Aztec civilization! By reading this, you receive the great power of the
-            knowledge of the universe.</p>
+    <section class="wrapper index">
+        <h1 class="hidden-text">Best shop ever</h1>
+        <div class="index__greet">
+            <div class="index__greet-text">
+                <p>Greetings visitor!</p>
+                <p>Behold the greatest bulletin board since the Aztec civilization! By reading this, you receive the great power of the knowledge of the universe.</p>
+            </div>
+            <img src="{% static 'ads/media/img.png' %}" class="index__image">
+        </div>
+        <p>Ads fresh as the sea breeze:</p>
         {% include 'ads/ad_ul.html' %}
     </section>
 {% endblock content %}

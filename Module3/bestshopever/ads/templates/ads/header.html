@@ -1,4 +1,34 @@
 <header class="wrapper header">
-    <a class="header__logo" href={% url 'ads:index' %}>Best shop ever</a>
-    {% include 'ads/header_nav.html' %}
+    <nav class="header__navigation">
+        <ul class="header__menu">
+        <li class="header__menu-item">
+            <a href="{% url 'ads:recent_ads' %}">Advertisements</a>
+        </li>
+        <li class="header__menu-item">
+            <a href="{% url 'ads:categories' %}">Categories</a>
+        </li>
+    </ul>
+    </nav>
+    <a class="header__logo" href={% url 'ads:index' %} data-text="Best shop ever">Best shop ever</a>
+    <nav class="header__navigation">
+    {% if user.is_authenticated %}
+        <ul class="header__menu">
+            <li class="header__menu-item">
+                <a href="{% url 'core:profile' user.id %}">My profile</a>
+            </li>
+            <li class="header__menu-item">
+                <a href="{% url 'core:logout' %}">Exit</a>
+            </li>
+        </ul>
+    {% else %}
+        <ul class="header__menu">
+            <li class="header__menu-item">
+                <a href="{% url 'core:signup' %}">Sign up</a>
+            </li>
+            <li class="header__menu-item">
+                <a href="{% url 'core:login' %}">Sign in</a>
+            </li>
+        </ul>
+    {% endif %}
+    </nav>
 </header>
