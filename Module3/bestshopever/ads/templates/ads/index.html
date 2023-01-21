@@ -16,7 +16,9 @@
             </div>
             <img src="{% static 'ads/media/img.png' %}" class="index__image">
         </div>
-        <p>Ads fresh as the sea breeze:</p>
+        {% if ads %}
+            <p>Ads fresh as the sea breeze:</p>
+        {% endif %}
         {% include 'ads/ad_ul.html' %}
     </section>
 {% endblock content %}

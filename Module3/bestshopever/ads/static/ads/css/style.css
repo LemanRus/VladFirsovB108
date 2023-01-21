@@ -38,6 +38,27 @@ canvas {
     left:0;
 }
 
+button {
+    mix-blend-mode: hard-light;
+    background: linear-gradient(gray, darkgray, gray);
+    color: #fff;
+    outline: gold 2px solid;
+    display: inline-block;
+    padding: 9px 22px;
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    outline: darkred 2px solid;
+    opacity: 0.8;
+}
+
 .margined10 {
     margin: 10px;
 }
@@ -45,6 +66,10 @@ canvas {
 .hidden-text {
     font-size: 0;
     line-height: 0;
+}
+
+.flex {
+    display: flex;
 }
 
 .header {
@@ -96,10 +121,14 @@ canvas {
 
 .ads-list__item {
     margin: 10px;
-    padding: 5px 10px 20px 10px;
+    padding: 10px 10px 5px 10px;
     width: 275px;
     background-color: rgba(255, 255, 255, .1);
     display: block;
+}
+
+.ads-list__item p {
+    margin: 5px 0;
 }
 
 .ads-list__card {
@@ -110,10 +139,21 @@ canvas {
     padding: 15px;
 }
 
+.ads-list__item:hover {
+    opacity: 0.8;
+    outline: #570808 2px solid;
+}
+
+.ads-list__item:hover .ads-list__title{
+    text-decoration: underline;
+}
+
 .ads-list__title {
+    display: block;
     font-size: 30px;
     line-height: 40px;
     text-align: center;
+    margin-top: 20px;
 }
 
 .ads-list__author {
@@ -127,7 +167,7 @@ canvas {
 }
 
 .ads-list__image {
-    width: 200px;
+    width: 100%;
 }
 
 .index > p{
@@ -161,8 +201,29 @@ canvas {
     position: relative;
 }
 
-img {
-    content: "";
+.categories__list {
+    list-style: none;
+    margin: 20px 10px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.categories__item {
+    background-color: rgba(255, 255, 255, .1);
+    text-align: center;
+    margin: 20px;
+    padding: 20px;
+    max-width: 300px;
+}
+
+.categories__item:hover {
+    opacity: 0.8;
+    outline: #570808 2px solid;
+}
+
+.categories__item:hover .categories__title{
+    text-decoration: underline;
 }
 
 .footer {

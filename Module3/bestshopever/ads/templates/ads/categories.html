@@ -5,13 +5,16 @@
 {% endblock title %}
 
 {% block content %}
-    {% if categories %}
-    <ul>
-        {% for cat in categories %}
-        <li>
-            <a href="{% url 'ads:category_show' cat.id %}">{{ cat.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
+    <section class="categories">
+        {% if categories %}
+        <ul class="categories__list">
+            {% for cat in categories %}
+            <li class="categories__item">
+                <a href="{% url 'ads:category_show' cat.id %}" class="categories__title">{{ cat.title }}</a>
+                <p> {{ cat.description }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </section>
 {% endblock content %}

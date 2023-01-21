@@ -3,14 +3,12 @@
     {% for ad in ads %}
     {% if ad.status == 'p' %}
     <li class="ads-list__item">
-        <div  class="ads-list__card">
+        <div href="{% url 'ads:ad_show' ad.id %}" class="ads-list__card">
+            <img class="ads-list__image" alt="{{ ad.title }}" src="{{ ad.image_url }}">
             <a href="{% url 'ads:ad_show' ad.id %}" class="ads-list__title">{{ ad.title }}</a>
-            <a href="{% url 'ads:category_show' ad.category.id %}" class="margined10">{{ ad.category.title }}</a>
-            <p class="ads-list__author"> {{ ad.author.username }} </p>
             <p class="ads-list__description"> {{ ad.description|truncatechars:140 }}</p>
-            <a href="{% url 'ads:ad_show' ad.id %}">
-                <img class="ads-list__image" src="{{ ad.image_url }}">
-            </a>
+            <a href="{% url 'ads:category_show' ad.category.id %}" class="margined10">Category: {{ ad.category.title }}</a>
+            <p class="ads-list__author">Author: {{ ad.author.username }} </p>
         </div>
     </li>
     {% endif %}
