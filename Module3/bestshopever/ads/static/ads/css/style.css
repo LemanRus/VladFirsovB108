@@ -76,6 +76,7 @@ button:hover {
     display: flex;
     align-items: center;
     margin-top: 2rem;
+    margin-bottom: 50px;
     justify-content: space-between;
     mix-blend-mode: hard-light;
     background: linear-gradient(gray, darkgray, gray);
@@ -226,6 +227,42 @@ button:hover {
     text-decoration: underline;
 }
 
+.advertisement__upper {
+    display: flex;
+}
+
+.advertisement__image {
+    display: block;
+    width: 100%;
+    max-width: 300px;
+}
+
+.advertisement__summary {
+    margin-left: 50px;
+}
+
+.advertisement__title {
+    font-size: 34px;
+    line-height: 40px;
+    font-weight: bolder;
+}
+
+.advertisement__published {
+    font-size: 12px;
+    line-height: 26px;
+}
+
+.advertisement__description {
+    margin-left: 30px;
+    margin-bottom: 50px;
+    font-size: 20px;
+    line-height: 26px;
+}
+
+.advertisement__author-rating {
+    font-weight: bold;
+}
+
 .footer {
     display: flex;
     align-items: center;
@@ -234,4 +271,28 @@ button:hover {
 
 .pagination {
     text-align: center;
+}
+
+.selected_rating {
+    width: 100px;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 50px;
+}
+
+input,
+textarea {
+    resize: none;
+    outline: none;
+    background: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 4px;
+    font-size: 18px;
+    line-height: 25px;
+
+    /* Перебивается встроенным textarea стилем, добавил явно */
+    font-family: 'Open Sans', 'Arial', sans-serif;
+    height: 35px;
 }

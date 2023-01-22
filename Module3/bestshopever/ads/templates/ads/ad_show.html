@@ -5,30 +5,35 @@
 {% endblock title %}
 
 {% block content %}
-    <p>{{ ad.category.title }} /</p>
-    <p>{{ ad.title }}</p>
-    <p>published at {{ ad.date_pub.date }} by {{ ad.author }}</p>
-    <p>{{ ad.description }}</p>
-    <img src="{{ ad.image_url }}">
-    <p>Author rating: {{ ad.author.rating_calc }}</p>
-    {% with goto="ads:rate_ad_author" var=ad.id %}
-        {% include 'core/rate_author.html' %}
-    {% endwith %}
+    <section class="advertisement">
+        <div class="advertisement__upper">
+            <img src="{{ ad.image_url }}" alt="{{ ad.title }}" class="advertisement__image margined10">
+            <div class="advertisement__summary">
+                <p>{{ ad.category.title }}</p>
+                <p class="advertisement__title">{{ ad.title }}</p>
+                <p class="advertisement__published">published at {{ ad.date_pub.date }} by {{ ad.author }}</p>
+            </div>
+        </div>
+        <p class="advertisement__description">{{ ad.description }}</p>
+        <p class="advertisement__author-rating">Author rating: {{ ad.author.rating_calc }}</p>
+        {% with goto="ads:rate_ad_author" var=ad.id %}
+            {% include 'core/rate_author.html' %}
+        {% endwith %}
 
-    {% if comments %}
-        <h2>Comments:</h2>
-        {% for comment in comments %}
-            <p>{{ comment.author }}</p>
-            <p>{{ comment.date_pub }}</p>
-            <p>{{ comment.text }}</p>
-        {% endfor %}
-        {% else %}
-        <h2>No comments yet. Be first!</h2>
-    {% endif %}
-
-    <form method="post">
-        {% csrf_token %}
-        {{ comment_form.as_p }}
-        <button type="submit">Add comment</button>
-    </form>
+        {% if comments %}
+            <h2>Comments:</h2>
+            {% for comment in comments %}
+                <p>{{ comment.author }}</p>
+                <p>{{ comment.date_pub }}</p>
+                <p>{{ comment.text }}</p>
+            {% endfor %}
+            {% else %}
+            <h2>No comments yet. Be first!</h2>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Add comment</button>
+        </form>
+    </section>
 {% endblock content %}
