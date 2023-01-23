@@ -28,6 +28,9 @@ class SignupForm(UserCreationForm, UserActions):
     class Meta:
         model = CustomUser
         fields = ('username', 'email', 'birth_date', 'photo', 'telephone', 'secret_question', 'secret_answer')
+        widgets = {
+            'birth_date': forms.TextInput(attrs={'placeholder': 'YYYY-MM-DD'}),
+        }
 
 
 class PasswordResetValidateForm(forms.ModelForm):
