@@ -5,32 +5,40 @@
 {% endblock title %}
 
 {% block content %}
-    <h1>Info about {{profile}}</h1>
-    <h2>{{profile.birth_date|date:"d F Y"}}</h2>
-    {% if user.id == profile.id %}
-        <a href="{% url 'core:profile_edit' profile.id %}">Редактировать</a>
-    {% endif %}
-    {% if profile.photo %}
-        <img src="{{ profile.photo.url }}" alt="photo">
-    {% endif %}
-    <h2>Ads:</h2>
-    <ul>
-        {% for ad in profile.ads.all %}
-            <li>
-                <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
-                <img src="{{ ad.image_url }}">
-            </li>
-        {% endfor %}
-    </ul>
-    <p>Author rating: {{ profile.rating_calc }}</p>
-    {{ error }}
-    {% if user.id != profile.id %}
+    <section class="profile">
+        <div class="profile__upper">
+            <h1>Info about {{profile}}</h1>
+            {% if user.id == profile.id %}
+                <a href="{% url 'core:profile_edit' profile.id %}" class="button">Edit profile</a>
+            {% endif %}
+        </div>
+        <div class="profile__page">
+        {% if profile.photo %}
+            <img src="{{ profile.photo.url }}" alt="photo" class="profile__photo">
+        {% endif %}
+            <div class="profile__credentials">
+                <p>Name: {{profile.first_name}} {{ profile.last_name }}</p>
+                <p>E-mail: {{profile.email}}</p>
+                <p>Telephone: {{profile.telephone}}</p>
+                <p>Birthday: {{profile.birth_date|date:"d F Y"}}</p>
+            </div>
+        </div>
+        <h2>My ads:</h2>
+        <ul>
+            {% for ad in profile.ads.all %}
+                <li>
+                    <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
+                    <img src="{{ ad.image_url }}">
+                </li>
+            {% endfor %}
+        </ul>
+        <p>Author rating: {{ profile.rating_calc }}</p>
         {{ error }}
-        {% with goto="core:rate_user" var=profile.id %}
-            {% include 'core/rate_author.html' %}
-        {% endwith %}
-    {% endif %}
-    {% if user.is_authenticated %}
-        <a href="{% url 'core:logout' %}">Exit</a>
-    {% endif %}
+        {% if user.id != profile.id %}
+            {{ error }}
+            {% with goto="core:rate_user" var=profile.id %}
+                {% include 'core/rate_author.html' %}
+            {% endwith %}
+        {% endif %}
+    </section>
 {% endblock content %}

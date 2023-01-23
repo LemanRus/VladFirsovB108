@@ -38,7 +38,7 @@ canvas {
     left:0;
 }
 
-button {
+button, .button {
     mix-blend-mode: hard-light;
     background: linear-gradient(gray, darkgray, gray);
     color: #fff;
@@ -54,8 +54,8 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    outline: darkred 2px solid;
+button:hover, .button:hover {
+    outline: red 2px solid;
     opacity: 0.8;
 }
 
@@ -227,11 +227,11 @@ button:hover {
     text-decoration: underline;
 }
 
-.advertisement__upper {
+.advertisement__upper, .profile__upper {
     display: flex;
 }
 
-.advertisement__image {
+.advertisement__image, .profile__photo {
     display: block;
     width: 100%;
     max-width: 300px;
@@ -261,6 +261,22 @@ button:hover {
 
 .advertisement__author-rating {
     font-weight: bold;
+}
+
+.profile__upper {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.profile__page {
+    display: flex;
+    margin: 20px;
+}
+
+.profile__credentials {
+    margin-left: 50px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
 }
 
 .footer {

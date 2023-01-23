@@ -19,6 +19,35 @@ class RatingInline(admin.TabularInline):
 
 
 class CustomUserAdmin(UserAdmin):
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        ("Personal info", {"fields": (
+            "first_name",
+            "last_name",
+            "email",
+            "birth_date",
+            "photo",
+            "telephone")
+        }),
+        ("Permissions", {
+            "fields": (
+                "is_active",
+                "is_staff",
+                "is_superuser",
+                "groups",
+                "user_permissions",
+            ),
+        }),
+        ("Password change information", {
+            "fields": (
+                "secret_question",
+                "secret_answer"
+            )
+        }),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
+    )
+
+    readonly_fields = ['date_joined', 'last_login']
     inlines = [AdvertisementInline, RatingInline]
     actions = ['make_stuff']
 
