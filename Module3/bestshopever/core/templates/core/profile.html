@@ -25,9 +25,9 @@
             </div>
         </div>
         <h2>My ads:</h2>
-        <ul>
+        <ul class="profile__ads-list">
             {% for ad in profile.ads.all %}
-                <li>
+                <li class="profile__ads-item">
                     <a href="{% url 'ads:ad_show' ad.id %}">{{ ad }}</a>
                     <img src="{{ ad.image_url }}">
                 </li>

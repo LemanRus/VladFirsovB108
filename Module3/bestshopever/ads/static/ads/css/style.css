@@ -114,13 +114,13 @@ button:hover, .button:hover {
     margin: 0 15px;
 }
 
-.ads-list {
+.ads-list, .profile__ads-list {
     display: flex;
     flex-wrap: wrap;
     padding: 0;
 }
 
-.ads-list__item {
+.ads-list__item, .profile__ads-item {
     margin: 10px;
     padding: 10px 10px 5px 10px;
     width: 275px;
@@ -140,12 +140,12 @@ button:hover, .button:hover {
     padding: 15px;
 }
 
-.ads-list__item:hover {
+.ads-list__item:hover, .profile__ads-item:hover {
     opacity: 0.8;
     outline: #570808 2px solid;
 }
 
-.ads-list__item:hover .ads-list__title{
+.ads-list__item:hover .ads-list__title, .profile__ads-item:hover a {
     text-decoration: underline;
 }
 
@@ -167,8 +167,9 @@ button:hover, .button:hover {
 
 }
 
-.ads-list__image {
+.ads-list__image, .profile__ads-item img {
     width: 100%;
+    padding: 15px;
 }
 
 .index > p{
@@ -321,6 +322,6 @@ textarea {
     height: 35px;
 }
 
-.textarea {
+textarea {
     height: 100px;
 }

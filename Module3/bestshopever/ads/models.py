@@ -48,7 +48,7 @@ class Advertisement(models.Model):
             return self.image.url
 
     def __str__(self):
-        return f"Ad \"{self.title}\" from {self.author} with rating {self.author.rating_calc}"
+        return f"Ad \"{self.title}\""
 
 
 class Comment(models.Model):
