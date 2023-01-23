@@ -263,6 +263,14 @@ button:hover, .button:hover {
     font-weight: bold;
 }
 
+.profile h1 {
+    margin-right: auto;
+}
+
+.profile .button {
+    margin-left: 15px;
+}
+
 .profile__upper {
     align-items: center;
     justify-content: space-between;
@@ -311,4 +319,8 @@ textarea {
     /* Перебивается встроенным textarea стилем, добавил явно */
     font-family: 'Open Sans', 'Arial', sans-serif;
     height: 35px;
+}
+
+.textarea {
+    height: 100px;
 }

@@ -86,7 +86,12 @@ class AdCreate(CreateView):
     form_class = AdCreateForm
     template_name = 'ads/ad_create.html'
 
-    @login_required()
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            raise Exception('You are not allowed to create advertisement! Please sign in or sign up on previous page.')
+        return super().get(request, *args, **kwargs)
+
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES)
         context = {}

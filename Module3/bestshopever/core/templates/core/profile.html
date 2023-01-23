@@ -10,6 +10,7 @@
             <h1>Info about {{profile}}</h1>
             {% if user.id == profile.id %}
                 <a href="{% url 'core:profile_edit' profile.id %}" class="button">Edit profile</a>
+                <a href="{% url 'ads:ad_create' %}" class="button">Create advertisement</a>
             {% endif %}
         </div>
         <div class="profile__page">

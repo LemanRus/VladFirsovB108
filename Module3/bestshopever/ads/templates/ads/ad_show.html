@@ -15,6 +15,9 @@
             </div>
         </div>
         <p class="advertisement__description">{{ ad.description }}</p>
+        {% if ad.author == user %}
+            <a href="{% url 'ads:ad_edit' ad.pk %}" class="button">Edit advertisement</a>
+        {% endif %}
         <p class="advertisement__author-rating">Author rating: {{ ad.author.rating_calc }}</p>
         {% with goto="ads:rate_ad_author" var=ad.id %}
             {% include 'core/rate_author.html' %}
@@ -30,10 +33,12 @@
             {% else %}
             <h2>No comments yet. Be first!</h2>
         {% endif %}
+        {% if ad.author != user %}
         <form method="post">
             {% csrf_token %}
             {{ comment_form.as_p }}
             <button type="submit">Add comment</button>
         </form>
+        {% endif %}
     </section>
 {% endblock content %}

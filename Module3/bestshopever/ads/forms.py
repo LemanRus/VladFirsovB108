@@ -7,7 +7,7 @@ class AdCreateForm(forms.ModelForm):
 
     class Meta:
         model = Advertisement
-        fields = ['title', 'description', 'image', 'category']
+        fields = ['title', 'description', 'image', 'category', 'status']
         labels = {
             'title': 'Title',
             'description': 'Description of advertisement',

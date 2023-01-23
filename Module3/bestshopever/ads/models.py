@@ -10,7 +10,7 @@ def ad_image_path(instance, filename):
 
 class Category(models.Model):
     title = models.CharField(max_length=150, blank=False, default='Common')
-    description = models.TextField(max_length=5000, blank=False, default='Goods category')
+    description = models.TextField(max_length=5000, blank=False, default='Uncategorized goods category')
 
     class Meta:
         verbose_name_plural = 'Categories'
@@ -23,7 +23,7 @@ class Category(models.Model):
         return default_category.pk
 
     def __str__(self):
-        return f"{self.title} with ID{self.id}"
+        return f"{self.title}"
 
 STATUS_CHOICES = [
     ('d', 'Draft'),
