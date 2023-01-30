@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import logout, login
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
@@ -17,7 +18,6 @@ def logout_view(request):
     logout(request)
     return redirect(reverse("ads:index"))
 
-# TODO: сделать форму на классе для отображения ошибки
 def rate_user(request, profile_id):
     profile = get_object_or_404(CustomUser, pk=profile_id)
     if request.user and request.user.is_authenticated:
@@ -69,6 +69,12 @@ class ProfileEditView(UpdateView):
             raise Http404('You are not allowed to edit profile that is not yours')
         return super().dispatch(request, *args, **kwargs)
 
+    def get_success_url(self):
+        obj = self.get_object()
+        login(self.request, obj)
+        messages.success(self.request, "Profile updated succesfully")
+        return reverse("core:profile", kwargs={"user_id": obj.id})
+
 
 class PasswordResetView(View):
     template_name = 'core/password_reset.html'
@@ -82,7 +88,7 @@ class PasswordResetView(View):
     def post(self, request, *args, **kwargs):
         email_for_reset = request.POST.get('email_for_reset')
         if email_for_reset and not CustomUser.objects.filter(email=email_for_reset).exists():
-            self.context['error'] = 'Email does not exist. Check it or sign up:'
+            self.context['error'] = 'Email does not exist. Check it or sign up.'
             return render(request, self.template_name, self.context)
         else:
             user = CustomUser.objects.filter(email=email_for_reset).get()

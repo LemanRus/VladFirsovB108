@@ -16,9 +16,10 @@ class UserActions:
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
+        username = self.cleaned_data.get('username')
         if not email:
             raise forms.ValidationError('Enter email!')
-        if email and CustomUser.objects.filter(email=email).exists():
+        if email and CustomUser.objects.filter(email=email).exists() and CustomUser.objects.get_or_create(username=username)[1] == True:
             raise forms.ValidationError('Email entered is not free')
         return email
 

@@ -15,7 +15,10 @@ import re
 #
 expression = input("Введите выражние: ")
 
-fracs = re.split(r"\s[+-]\s", expression)  # Вычленим дроби
+frac = re.compile(r"\s[+-]\s")
+fracs = frac.split(expression)
+
+# fracs = re.split(r"\s[+-]\s", expression)  # Вычленим дроби
 action_sign = True if re.findall(r"\s[+]\s", expression) else False  # И поймём, что с ними делать
 
 frac1, frac2 = fracs
